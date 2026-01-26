@@ -1,8 +1,13 @@
 {
   "name": "@field-logic/doc-gen",
   "version": "1.0.0",
+  "description": "Field Logic Documentation Generator",
+  "type": "module",
   "bin": {
     "doc-gen": "./src/index.ts"
+  },
+  "scripts": {
+    "doc-gen": "bun ./src/index.ts"
   },
   "dependencies": {
     "bun-types": "latest"

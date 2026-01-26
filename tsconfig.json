@@ -7,6 +7,8 @@
     "moduleDetection": "force",
     "jsx": "react-jsx",               // Defaults all apps to React (override in CLI tools if needed)
     "allowJs": true,
+    "types": ["bun-types"],
+
 
     /* --- Bundler Mode (KEEP THESE) --- */
     "moduleResolution": "bundler",
