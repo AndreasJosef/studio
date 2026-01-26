@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    /* --- Bun Defaults (KEEP THESE) --- */
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
+    "module": "Preserve",             // The modern standard for Bundlers
+    "moduleDetection": "force",
+    "jsx": "react-jsx",               // Defaults all apps to React (override in CLI tools if needed)
+    "allowJs": true,
+
+    /* --- Bundler Mode (KEEP THESE) --- */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true, // Allows writing "import x from './file.ts'"
+    "verbatimModuleSyntax": true,
+    "noEmit": true,                   // The Root never outputs files
+
+    /* --- Monorepo "Glue" (ADD THESE) --- */
+    "baseUrl": ".",
+    "paths": {
+      "@field-logic/*": ["packages/*/src"]
+    },
+    // "composite": true is vital for VS Code to understand project references
+    "composite": true,
+    // "declaration": true is needed so your packages expose types to your apps
+    "declaration": true,
+    "declarationMap": true,
+
+    /* --- Strictness (KEEP THESE) --- */
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    
+    // NOTE: This is very safe but annoying. 
+    // It makes `array[0]` return `Type | undefined`. 
+    // If it annoys you, set it to false.
+    "noUncheckedIndexedAccess": true, 
+    "noImplicitOverride": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false
+  },
+  "exclude": ["node_modules", "dist", ".bun"]
+}

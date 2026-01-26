@@ -1,0 +1,10 @@
+{
+  "name": "@field-logic/doc-gen",
+  "version": "1.0.0",
+  "bin": {
+    "doc-gen": "./src/index.ts"
+  },
+  "dependencies": {
+    "bun-types": "latest"
+  }
+}

@@ -1,0 +1,31 @@
+# Bun
+node_modules
+.bun/
+
+# OS
+.DS_Store
+*.swp
+*.swo
+
+# Build outputs
+dist
+out
+build
+.next
+.astro
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+bun.lockb.tmp
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea

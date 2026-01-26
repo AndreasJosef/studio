@@ -1,0 +1,16 @@
+{
+  "name": "field-logic-studio",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules",
+    "dev": "bun run --filter '*' dev"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "typescript": "^5.0.0"
+  }
+}
