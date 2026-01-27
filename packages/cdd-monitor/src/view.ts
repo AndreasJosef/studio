@@ -13,18 +13,17 @@ const C = {
 
 export function clearScreen() {
   stdout.write(C.CLEAR);
-  console.log(`${C.BOLD}TSCDD Focus Mode${C.RESET}`);
+  console.log(`${C.BOLD}TSCDD Error Tasklist${C.RESET}`);
   console.log(`${C.CYAN}Watching...${C.RESET}\n`);
 }
 
 export function printSuccess() {
   stdout.write(C.CLEAR);
-  console.log(`${C.GREEN}${C.BOLD}✔ Zero Errors. Flow State Active.${C.RESET}`);
+  console.log(`${C.GREEN}${C.BOLD}✔ TSC is Happy!${C.RESET}`);
 }
 
 export function printError(err: CompilerError) {
   const loc = `${err.file}:${err.line}:${err.col}`;
   console.log(`${C.BOLD}${C.CYAN}${loc}${C.RESET}`);
-  console.log(`${C.RED}→ ${err.message}${C.RESET}`);
-  console.log(`${C.CYAN}  [${err.code}]${C.RESET}\n`);
+  console.log(`${C.RED}→ ${err.message}${C.RESET}\n`);
 }

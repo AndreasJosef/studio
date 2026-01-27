@@ -8,6 +8,7 @@ export interface CompilerError {
 
 export type LineType =
   | { type: "start" }
+  | { type: "complete" }
   | { type: "success" }
   | { type: "error"; payload: CompilerError }
   | { type: "ignore" };
