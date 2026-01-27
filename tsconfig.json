@@ -35,7 +35,7 @@
     // NOTE: This is very safe but annoying. 
     // It makes `array[0]` return `Type | undefined`. 
     // If it annoys you, set it to false.
-    "noUncheckedIndexedAccess": true, 
+    // "noUncheckedIndexedAccess": true, 
     "noImplicitOverride": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,

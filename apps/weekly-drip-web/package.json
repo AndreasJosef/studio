@@ -8,13 +8,15 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "docs": "doc-gen ./src ./REFERENCE.md"
+    "docs": "doc-gen ./src ./REFERENCE.md",
+    "cdd": "bun run tsc -b --watch --preserveWatchOutput --pretty false | cdd"
   },
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@field-logic/cdd": "workspace:*",
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",

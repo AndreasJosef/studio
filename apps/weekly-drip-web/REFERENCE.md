@@ -16,7 +16,7 @@ The primary application container.
 * @returns The rendered application
 
 ```typescript
-export function App(): JSX.Element
+export function App(state: string |
 ```
 
 ---
