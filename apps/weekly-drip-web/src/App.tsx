@@ -9,12 +9,14 @@ import "./App.css";
 /**
  * The primary application container.
  * @returns The rendered application
+ *
+ * In here the question becomes what is ultimately the most stable layout of the app.
  */
 export default function App() {
   return (
     <>
-      <h1>Finally working</h1>
-      <p>Lets build this parser</p>
+      <h1>Weekly Drip</h1>
+      <nav></nav>
       <AuditPage />
     </>
   );
