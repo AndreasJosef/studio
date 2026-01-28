@@ -3,6 +3,7 @@
  * The main root component of the Weekly Drip application.
  * Contains the global layout and theme providers.
  */
+import AuditPage from "./audit/AuditPage";
 import "./App.css";
 
 /**
@@ -14,6 +15,7 @@ export default function App() {
     <>
       <h1>Finally working</h1>
       <p>Lets build this parser</p>
+      <AuditPage />
     </>
   );
 }
