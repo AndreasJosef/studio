@@ -8,7 +8,7 @@ interface JobListProps {
 
 export default function JobList({ jobs }: JobListProps) {
   return (
-    <ul className="inline-block">
+    <ul className="">
       {jobs.map((job) => (
         <JobListItem job={job} />
       ))}

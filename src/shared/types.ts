@@ -1,3 +1,7 @@
+/**
+ * The main type in JobChasers domain representing
+ * a single Job as it exist in the App
+ **/
 export interface Job {
   id: number;
   company: string;
