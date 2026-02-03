@@ -1,8 +1,8 @@
-import { type JSX } from "react";
-import { jobs } from "../data";
+import { type JSX } from 'react';
+import { jobs } from '../data';
 
-import SearchBar from "./SearchBar";
-import JobList from "./JobList";
+import SearchBar from './SearchBar';
+import JobList from './JobList';
 
 /**
  * The main component containing the JobChaser App

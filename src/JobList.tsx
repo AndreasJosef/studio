@@ -1,6 +1,6 @@
-import { type Job } from "./shared/types";
+import { type Job } from './shared/types';
 
-import JobListItem from "./JobListItem";
+import JobListItem from './JobListItem';
 
 interface JobListProps {
   jobs: Job[];

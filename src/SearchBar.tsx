@@ -1,4 +1,4 @@
-import type { JSX } from "react";
+import type { JSX } from 'react';
 
 /**
  * Configuration for the SeachrBar Component
@@ -17,7 +17,7 @@ export default function SearchBar(props: SearchBarProps): JSX.Element {
       <input
         type="text"
         className="grow bg-neutral-600 px-4 py-2 rounded"
-        placeholder={props.placeholder || "Search a Job!"}
+        placeholder={props.placeholder || 'Search a Job!'}
       />
       <button className="px-6 bg-indigo-800 rounded">Find Job</button>
     </form>

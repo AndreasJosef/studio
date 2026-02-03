@@ -1,4 +1,4 @@
-import type { Job } from "./shared/types";
+import type { Job } from './shared/types';
 
 interface JobListItemProbs {
   job: Job;
