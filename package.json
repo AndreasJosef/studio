@@ -1,17 +1,12 @@
 {
-  "name": "field-logic-studio",
+  "name": "studio",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
-    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules",
-    "dev": "bun run --filter '*' dev"
+    "build": "turbo build",
+    "dev": "turbo dev"
   },
   "devDependencies": {
-    "@types/node": "^25.0.10",
-    "bun-types": "latest",
-    "typescript": "^5.0.0"
+    "turbo": "latest",
+    "typescript": "latest"
   }
 }

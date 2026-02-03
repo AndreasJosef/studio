@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 export const useStore = create(() => ({
-  test: "Moin!",
+  test: "Ciao!",
 }));
 
 export const setState = useStore.setState;
