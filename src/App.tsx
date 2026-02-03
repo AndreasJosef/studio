@@ -6,7 +6,6 @@ import JobList from './JobList';
 
 /**
  * The main component containing the JobChaser App
- * @returns {JSX.Element}
  */
 export default function App(): JSX.Element {
   return (
