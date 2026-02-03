@@ -1,8 +1,8 @@
-import path from "node:path";
-import { Glob } from "bun";
+import path from 'node:path';
+import { Glob } from 'bun';
 
-const SOURCE_DIR = "./src";
-const OUTPUT_FILE = "./REFERENCE.md";
+const SOURCE_DIR = './src';
+const OUTPUT_FILE = './REFERENCE.md';
 
 /**
  * 1. REPLACEMENT: Bun.Glob
@@ -10,7 +10,7 @@ const OUTPUT_FILE = "./REFERENCE.md";
  * native Glob scanner. It is extremely fast and handles directory walking for us.
  */
 async function getFiles() {
-  const glob = new Glob("**/*.ts");
+  const glob = new Glob('**/*.ts');
   const files = [];
   // Scans the directory asynchronously
   for await (const file of glob.scan(SOURCE_DIR)) {
@@ -22,49 +22,49 @@ async function getFiles() {
 // ... [formatComment function remains exactly the same as your original] ...
 function formatComment(rawComment) {
   const lines = rawComment
-    .replace(/\/\*\*/, "")
-    .replace(/\*\//, "")
-    .split("\n")
-    .map((line) => line.replace(/^\s*\*\s?/, "").trim())
-    .filter((line) => line !== "");
+    .replace(/\/\*\*/, '')
+    .replace(/\*\//, '')
+    .split('\n')
+    .map((line) => line.replace(/^\s*\*\s?/, '').trim())
+    .filter((line) => line !== '');
 
   let output = [];
   let listStarted = false;
 
   lines.forEach((line) => {
-    if (line.startsWith("@module") || line.startsWith("@description")) return;
+    if (line.startsWith('@module') || line.startsWith('@description')) return;
 
-    if (line.startsWith("TODO:")) {
-      output.push(`> 🚧 **Pending:** ${line.replace("TODO:", "").trim()}`);
+    if (line.startsWith('TODO:')) {
+      output.push(`> 🚧 **Pending:** ${line.replace('TODO:', '').trim()}`);
       return;
     }
 
-    if (line.startsWith("@param")) {
+    if (line.startsWith('@param')) {
       if (!listStarted) {
-        output.push("\n**Parameters:**");
+        output.push('\n**Parameters:**');
         listStarted = true;
       }
       const match = line.match(/@param\s+([a-zA-Z0-9_]+)\s*-?\s*(.*)/);
       if (match) output.push(`* \`${match[1]}\`: ${match[2]}`);
-      else output.push(`* ${line.replace("@param", "").trim()}`);
-    } else if (line.startsWith("@property")) {
+      else output.push(`* ${line.replace('@param', '').trim()}`);
+    } else if (line.startsWith('@property')) {
       if (!listStarted) {
-        output.push("\n**Properties:**");
+        output.push('\n**Properties:**');
         listStarted = true;
       }
       const match = line.match(/@property\s+([a-zA-Z0-9_]+)\s*-?\s*(.*)/);
       if (match) output.push(`* \`${match[1]}\` - ${match[2]}`);
-      else output.push(`* ${line.replace("@property", "").trim()}`);
-    } else if (line.startsWith("@returns") || line.startsWith("@return")) {
+      else output.push(`* ${line.replace('@property', '').trim()}`);
+    } else if (line.startsWith('@returns') || line.startsWith('@return')) {
       listStarted = false;
-      output.push(`\n**Returns:** ${line.replace(/@returns?/, "").trim()}`);
+      output.push(`\n**Returns:** ${line.replace(/@returns?/, '').trim()}`);
     } else {
       listStarted = false;
       output.push(line);
     }
   });
 
-  return output.join("\n");
+  return output.join('\n');
 }
 
 // ... [extractDocs function remains exactly the same as your original] ...
@@ -80,12 +80,12 @@ function extractDocs(content) {
   if (headerMatch) {
     const raw = headerMatch[1];
     if (
-      raw.includes("@module") ||
-      raw.includes("@description") ||
+      raw.includes('@module') ||
+      raw.includes('@description') ||
       !content.match(/^\s*\/\*\*[\s\S]*?\*\/\s*export/)
     ) {
       fileDescription = formatComment(raw);
-      remainingContent = content.replace(headerMatch[0], "");
+      remainingContent = content.replace(headerMatch[0], '');
     }
   }
 
@@ -100,7 +100,7 @@ function extractDocs(content) {
     const name = match[3];
     const rawSignature = match[4];
 
-    const cleanSignature = rawSignature.replace(/\s+/g, " ").trim();
+    const cleanSignature = rawSignature.replace(/\s+/g, ' ').trim();
     const fullSignature = `export ${typeKeyword} ${name}${cleanSignature}`;
 
     if (commentBlock && commentBlock.trim().length > 0) {
@@ -108,14 +108,14 @@ function extractDocs(content) {
         name,
         signature: fullSignature,
         comment: formatComment(commentBlock),
-        status: "ok",
+        status: 'ok',
       });
     } else {
       items.push({
         name,
         signature: fullSignature,
-        comment: "_No documentation provided._",
-        status: "missing",
+        comment: '_No documentation provided._',
+        status: 'missing',
       });
     }
   }
@@ -133,12 +133,12 @@ async function generateMarkdown() {
   let totalItems = 0;
   let documentedItems = 0;
   let missingFiles = 0;
-  let outputBody = "";
+  let outputBody = '';
 
   // Note: We switch from forEach to for...of to handle Async file reading cleanly
   for (const filePath of files) {
     const relativePath = path.relative(process.cwd(), filePath);
-    if (relativePath.endsWith("index.ts")) continue;
+    if (relativePath.endsWith('index.ts')) continue;
 
     // 3. REPLACEMENT: Bun.file()
     // Lazy loads the file. .text() returns a promise.
@@ -149,7 +149,7 @@ async function generateMarkdown() {
     if (items.length > 0 || fileDescription) {
       if (items.length > 0) {
         totalItems += items.length;
-        documentedItems += items.filter((i) => i.status === "ok").length;
+        documentedItems += items.filter((i) => i.status === 'ok').length;
       }
       if (!fileDescription) missingFiles++;
 
@@ -161,22 +161,22 @@ async function generateMarkdown() {
         outputBody += `> 🔴 **FILE MISSING DESCRIPTION**\n\n`;
       }
 
-      items.sort((a, b) => (a.status === "missing" ? -1 : 1));
+      items.sort((a, b) => (a.status === 'missing' ? -1 : 1));
 
       items.forEach((doc) => {
-        const icon = doc.status === "missing" ? "🔴" : "";
+        const icon = doc.status === 'missing' ? '🔴' : '';
         outputBody += `### ${icon} **${doc.name}**\n`;
         outputBody += `${doc.comment}\n\n`;
-        outputBody += "```typescript\n" + doc.signature + "\n```\n\n";
+        outputBody += '```typescript\n' + doc.signature + '\n```\n\n';
       });
 
-      outputBody += "---\n\n";
+      outputBody += '---\n\n';
     }
   }
 
   const coverage =
     totalItems === 0 ? 100 : Math.round((documentedItems / totalItems) * 100);
-  const color = coverage > 80 ? "green" : coverage > 50 ? "orange" : "red";
+  const color = coverage > 80 ? 'green' : coverage > 50 ? 'orange' : 'red';
 
   let header = `# Reference Docs\n\n`;
   header += `![Coverage](https://img.shields.io/badge/Coverage-${coverage}%25-${color})\n`;

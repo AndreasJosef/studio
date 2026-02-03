@@ -12,10 +12,10 @@ This tool operates on the Unix philosophy of text streams, following a strict **
 
 1. **Input:** Reads raw `stdout` from the compiler.
 2. **Process:**
-* **Normalization:** Strips ANSI codes and detects build events (Start/Error/Complete).
-* **Coalescing:** Bridges the gap between composite sub-projects (e.g., `node` -> `app`) to prevent screen flickering.
-* **Deduplication:** Filters out redundant error messages caused by composite builds re-checking shared files.
 
+- **Normalization:** Strips ANSI codes and detects build events (Start/Error/Complete).
+- **Coalescing:** Bridges the gap between composite sub-projects (e.g., `node` -> `app`) to prevent screen flickering.
+- **Deduplication:** Filters out redundant error messages caused by composite builds re-checking shared files.
 
 3. **Output:** Renders a single, stable frame: either a list of unique errors or a success indicator.
 
@@ -45,11 +45,11 @@ Add the following script to your `package.json`.
 
 ### Flags Reference
 
-* **`-b` (Build Mode):** Mandatory for composite projects (Vite, Monorepos). Forces `tsc` to follow project references (`tsconfig.app.json`). Without this, `tsc` may report "0 Errors" even when code is broken.
-* **`--watch`:** Keep the process alive and streaming.
-* **`--preserveWatchOutput`:** Prevents `tsc` from clearing the buffer, allowing `cdd` to manage the screen.
-* **`--pretty false`:** Disables complex formatting, ensuring machine-readable output for the parser.
-* **`| cdd`:** Pipes the raw stream into the monitor.
+- **`-b` (Build Mode):** Mandatory for composite projects (Vite, Monorepos). Forces `tsc` to follow project references (`tsconfig.app.json`). Without this, `tsc` may report "0 Errors" even when code is broken.
+- **`--watch`:** Keep the process alive and streaming.
+- **`--preserveWatchOutput`:** Prevents `tsc` from clearing the buffer, allowing `cdd` to manage the screen.
+- **`--pretty false`:** Disables complex formatting, ensuring machine-readable output for the parser.
+- **`| cdd`:** Pipes the raw stream into the monitor.
 
 ---
 

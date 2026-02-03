@@ -1,14 +1,14 @@
-import { stdout } from "node:process";
-import { type CompilerError } from "./types";
+import { stdout } from 'node:process';
+import { type CompilerError } from './types';
 
 // ANSI Codes (Level 2 Logic buried here)
 const C = {
-  CYAN: "\x1b[36m",
-  RED: "\x1b[31m",
-  GREEN: "\x1b[32m",
-  RESET: "\x1b[0m",
-  BOLD: "\x1b[1m",
-  CLEAR: "\x1b[2J\x1b[3J\x1b[H",
+  CYAN: '\x1b[36m',
+  RED: '\x1b[31m',
+  GREEN: '\x1b[32m',
+  RESET: '\x1b[0m',
+  BOLD: '\x1b[1m',
+  CLEAR: '\x1b[2J\x1b[3J\x1b[H',
 };
 
 export function clearScreen() {

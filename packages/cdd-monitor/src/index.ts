@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
-import { createInterface } from "node:readline";
-import { stdin, stdout } from "node:process";
-import { parseLine } from "./parser";
-import * as View from "./view";
+import { createInterface } from 'node:readline';
+import { stdin, stdout } from 'node:process';
+import { parseLine } from './parser';
+import * as View from './view';
 
 const rl = createInterface({ input: stdin, output: stdout, terminal: false });
 
@@ -21,14 +21,14 @@ let errorCount = 0;
 // We wipe this memory only on a "New Save" (Start).
 const seenErrors = new Set<string>();
 
-rl.on("line", (rawLine) => {
+rl.on('line', (rawLine) => {
   if (!rawLine) return;
 
   const action = parseLine(rawLine);
   const now = Date.now();
 
   // --- 1. START SIGNAL ---
-  if (action.type === "start") {
+  if (action.type === 'start') {
     // Kill any pending "Success" message so it doesn't flash.
     if (successTimer) clearTimeout(successTimer);
 
@@ -48,7 +48,7 @@ rl.on("line", (rawLine) => {
   }
 
   // --- 2. ERROR SIGNAL (With De-Duplication) ---
-  if (action.type === "error") {
+  if (action.type === 'error') {
     if (successTimer) clearTimeout(successTimer);
 
     // Create a unique fingerprint: "App.tsx:10:5-TS2322"
@@ -63,7 +63,7 @@ rl.on("line", (rawLine) => {
   }
 
   // --- 3. COMPLETE SIGNAL ---
-  if (action.type === "complete") {
+  if (action.type === 'complete') {
     if (successTimer) clearTimeout(successTimer);
 
     // Wait 600ms. If silence remains, AND we found no errors, show Green.
