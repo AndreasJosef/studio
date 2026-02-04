@@ -4,6 +4,14 @@
  **/
 export interface Job {
   id: number;
+  headline: string;
+  employer: string;
+  description: string;
+  logoUrl: string;
+}
+
+export interface JobOld {
+  id: number;
   company: string;
   logo: string;
   position: string;

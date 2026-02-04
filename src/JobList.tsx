@@ -4,12 +4,22 @@ import JobListItem from './JobListItem';
 
 interface JobListProps {
   jobs: Job[];
+  filter: string;
 }
 
-export default function JobList({ jobs }: JobListProps) {
+export default function JobList({ jobs, filter }: JobListProps) {
+  const filteredList = jobs.filter((job) => {
+    const searchTerm = filter.toLowerCase();
+    return (
+      job.headline.toLowerCase().includes(searchTerm) ||
+      job.employer.toLowerCase().includes(searchTerm)
+    );
+  });
+
   return (
     <ul className="">
-      {jobs.map((job) => (
+      <h3 className="text-orange-200">{filter}</h3>
+      {filteredList.map((job) => (
         <JobListItem job={job} />
       ))}
     </ul>
