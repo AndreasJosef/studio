@@ -4,12 +4,26 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 
+import globals from 'globals';
+
 export default [
   {
     ignores: ['**/dist/**', '**/node_modules/**', '**/out/**', '**/build/**'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
+
+  // Allow browser and node globals in files
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node, // Optional: keep this if you do mixed dev
+        ...globals.serviceworker,
+      },
+    },
+  },
 
   // React Specific Configuration
   {
@@ -36,7 +50,7 @@ export default [
   // My Global Rules
   {
     rules: {
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },

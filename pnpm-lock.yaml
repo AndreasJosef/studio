@@ -32,6 +32,9 @@ importers:
       eslint-plugin-react-refresh:
         specifier: ^0.4.26
         version: 0.4.26(eslint@9.39.2(jiti@2.6.1))
+      globals:
+        specifier: ^17.3.0
+        version: 17.3.0
       live-server:
         specifier: ^1.2.2
         version: 1.2.2
@@ -67,11 +70,7 @@ importers:
         specifier: ^7.2.4
         version: 7.3.1(@types/node@24.10.10)(jiti@2.6.1)(lightningcss@1.30.2)
 
-  apps/rtc-video-conf:
-    dependencies:
-      vite:
-        specifier: ^7.3.1
-        version: 7.3.1(@types/node@24.10.10)(jiti@2.6.1)(lightningcss@1.30.2)
+  apps/rtc-video-conf: {}
 
   packages/cdd-monitor:
     devDependencies:
@@ -1301,6 +1300,10 @@ packages:
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+
+  globals@17.3.0:
+    resolution: {integrity: sha512-yMqGUQVVCkD4tqjOJf3TnrvaaHDMYp4VlUSObbkIiuCPe/ofdMBFIAcBbCSRFWOnos6qRiTVStDwqPLUclaxIw==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -3752,6 +3755,8 @@ snapshots:
       is-glob: 4.0.3
 
   globals@14.0.0: {}
+
+  globals@17.3.0: {}
 
   globalthis@1.0.4:
     dependencies:
