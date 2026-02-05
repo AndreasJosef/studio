@@ -5,9 +5,11 @@ import JobListItem from './JobListItem';
 interface JobListProps {
   jobs: Job[];
   filter: string;
+  mode: 'search' | 'filter';
 }
 
 export default function JobList({ jobs, filter }: JobListProps) {
+  // calculating the list list to show this should happen in a projection
   const filteredList = jobs.filter((job) => {
     const searchTerm = filter.toLowerCase();
     return (

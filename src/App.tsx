@@ -24,12 +24,23 @@ function parseAFJobs(input: unknown): Result<Job> {
   }
 
   // Map external keys to internal the internal Job Type
+  // Making this valuable via searching the reponse for contact information -> This can become an address book
   return ok({
     id: data.id || '',
     headline: data.headline || '',
     description: data.description.text || '',
     employer: data.employer.name || '',
     logoUrl: data.logo_url || 'No Logo',
+    contactName:
+      data.application_contacts[0]?.name ||
+      data.employer.url ||
+      data.employer.url ||
+      'No Name',
+    contactEmail:
+      data.application_contacts[0]?.email ||
+      data.application_details.email ||
+      data.employer.email ||
+      'No Email',
   });
 }
 
@@ -49,7 +60,7 @@ export default function App() {
       setError(null);
 
       const result = await fetchSafeList(
-        'https://jobsearch.api.jobtechdev.se/search?q=javascript%20stockholm',
+        'https://jobsearch.api.jobtechdev.se/search?q=react%20stockholm&limit=100',
         parseAFJobs
       );
 
@@ -61,11 +72,12 @@ export default function App() {
       }
       setIsLoading(false);
     };
+
     searchJobs();
   }, []); // empty deps array means this runs once on mount
 
   return (
-    <main className="p-4 md:max-w-5xl md:mx-auto">
+    <main className="p-4 md:max-w-3xl md:mx-auto">
       <header className="my-6 grid gap-4">
         <h1 className="text-3xl font-bold text-neutral-300 mb-3">
           Job<span className="text-indigo-700">Chaser.</span>

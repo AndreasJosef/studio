@@ -8,6 +8,8 @@ export interface Job {
   employer: string;
   description: string;
   logoUrl: string;
+  contactName: string;
+  contactEmail: string;
 }
 
 export interface JobOld {

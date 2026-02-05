@@ -22,12 +22,17 @@ export default function JobListItem({ job }: JobListItemProbs) {
           <div className="flex gap-2.5 text-neutral-400">
             {job.description.substring(0, 200)}...
           </div>
+          <p>{job.contactName}</p>
+          <p>{job.contactEmail}</p>
+          <div className="flex"></div>
         </div>
-        <img
-          className="w-24 rounded-full"
-          src={job.logoUrl}
-          alt={job.employer}
-        />
+        <div className="w-36">
+          <img
+            className="w-full rounded-full"
+            src={job.logoUrl}
+            alt={job.employer}
+          />
+        </div>
       </article>
     </li>
   );
