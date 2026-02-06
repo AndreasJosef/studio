@@ -50,4 +50,4 @@
 7. History Navigation – Lägg till "Tillbaka"-knapp som använder browser history API
 8. Skapa ett Context för toast-meddelanden (t.ex. "Jobb tillagt!" när man lägger till ett jobb)
 
-## Bra att veta: Authentisering kommer att göras i vecka 10 med JWT.
+Bra att veta: Authentisering kommer att göras i vecka 10 med JWT.

@@ -5,7 +5,6 @@ import JobListItem from './JobListItem';
 interface JobListProps {
   jobs: Job[];
   filter: string;
-  mode: 'search' | 'filter';
 }
 
 export default function JobList({ jobs, filter }: JobListProps) {
