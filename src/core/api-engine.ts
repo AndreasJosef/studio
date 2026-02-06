@@ -1,32 +1,39 @@
 import { type Result, ok, fail } from './result';
 
+interface FetchSafeListOptions extends RequestInit {
+  // eslint-disable-next-line
+  extractArray?: (data: any) => unknown[];
+}
+
 /**
  * A reusable fetcher that handles the network, JSON parsing,
  * and data cleaning for a LIST of items.
  * * @param url - The endpoint to hit
  * @param parser - A function that converts 'unknown' input into 'Result<T>'
  */
-
 export async function fetchSafeList<T>(
   url: string,
   parser: (input: unknown) => Result<T>,
-  config: RequestInit = {}
+  options: FetchSafeListOptions = {}
 ): Promise<Result<T[]>> {
   try {
+    const { extractArray, ...fetchConfig } = options;
+
     // Prepare the headers
     const headers = new Headers({
       'Content-Type': 'application/json',
     });
 
-    // merge user headers
-    if (config.headers) {
-      const userHeaders = new Headers(config.headers);
-      userHeaders.forEach((value, key) => headers.set(key, value));
+    // Merge user option headers
+    if (fetchConfig.headers) {
+      new Headers(fetchConfig.headers).forEach((value, key) =>
+        headers.set(key, value)
+      );
     }
 
-    // then spread the whole config and add the fixed headers.
+    // then spread the whole config and add the fixed headers
     const response = await fetch(url, {
-      ...config,
+      ...fetchConfig,
       headers,
     });
 
@@ -36,28 +43,25 @@ export async function fetchSafeList<T>(
 
     // Unknown: We don't know what this is yet.
     const rawData: unknown = await response.json();
-    let list: unknown[] = [];
 
-    // Extraction: Handle common API patterns ({ results: [] } vs [])
-    if (Array.isArray(rawData)) {
-      list = rawData;
-    } else if (rawData && typeof rawData === 'object') {
-      // Safely check if it has a .results property
-      const wrapper = rawData as Record<string, unknown>;
-      if (Array.isArray(wrapper.hits)) {
-        list = wrapper.hits;
-      }
-    }
+    // eslint-disable-next-line
+    const resolveList = (data: any): unknown => {
+      if (options.extractArray) return options.extractArray(data);
+
+      if (Array.isArray(data)) return data;
+
+      if (data?.results && Array.isArray(data.results)) return data.results;
+
+      return undefined;
+    };
+
+    const list = resolveList(rawData);
 
     // If we still don't have an array, the API shape is wrong for a List fetch.
-    if (
-      list.length === 0 &&
-      !Array.isArray(rawData) &&
-      (!rawData || typeof rawData !== 'object')
-    ) {
+    if (!Array.isArray(list)) {
       // Note: Empty lists are fine, but "not a list" is an error.
-      // We are lenient here: if we couldn't find a list, we just return empty
-      // to prevent crashes, but logging it is wise.
+      // if we couldn't get a list, we just return empty array
+      // to prevent crashes, but logging the issue.
       console.warn(
         `safeFetchList expected an array at ${url} but got`,
         rawData
@@ -65,26 +69,18 @@ export async function fetchSafeList<T>(
       return ok([]);
     }
 
-    // The Railway Logic (Map & Filter)
-    // Run the parser on every single item.
-    const results = list.map((item) => parser(item));
-
     // Keep the good ones
     // The is here is called Type Predicate
-    const successes = results
-      // If r.ok is true we predicate it as success type
-      .filter((r): r is { ok: true; value: T } => r.ok)
-      // then we create an array of just the values: T
-      .map((r) => r.value);
+    const successes = list.reduce<T[]>((acc, item) => {
+      const result = parser(item);
+      if (result.ok) {
+        acc.push(result.value);
+      } else {
+        console.warn('Item failed', result.error);
+      }
+      return acc;
+    }, []);
 
-    // Logging the failures so we know if the parser failed
-    const failures = results.filter((r) => !r.ok);
-    if (failures.length > 0) {
-      console.warn(
-        `Dropped ${failures.length} bad items from ${url}:`,
-        failures
-      );
-    }
     return ok(successes);
   } catch (e) {
     // Network failures
