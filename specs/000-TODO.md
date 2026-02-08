@@ -4,6 +4,9 @@
 - [x] Filtrera jobblistan baserat på söktermen
 - [x] Använda ett externt API som tillhandahåller jobannsonser
 - [x] Recfacor App.tsx: actions, projections, dumbList
-- [ ] Create debounce util and functionality for filter
-- [ ] Implementera autocomplete in the for the search
-- [ ] Replace useEffect with TanStack Query
+- [x] Create debounce util and functionality for filter
+- [x] Implement suggetions for the search using typeahead endpoint
+- [ ] Ghost text autocomplete in search bar component
+- [ ] Improve Suggestions UI -> Popup with keyboard navigation
+- [ ] Replace useEffect with TanStack Query 
+- [ ] Detail View for Job in split view (like indeed)

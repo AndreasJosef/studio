@@ -29,4 +29,7 @@ N.B. The number you get in "occurences" is an approximate value, it will differ 
 
 ## Steps
 - [x] Figure out how the api endpoint for this works
-- [ ] Test the type ahead feature of the api 
+- [x] Test the type ahead feature of the api 
+
+## Logs 
+- Made use of a custom hook. Makes it much cleaner.
