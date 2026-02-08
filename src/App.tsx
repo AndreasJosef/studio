@@ -3,6 +3,7 @@ import { type Job } from './shared/types';
 import { useDeferredValue, useEffect, useState } from 'react';
 import { searchJobs } from './features/jobs/actions';
 import { jobSearchProjection } from './features/jobs/projection';
+import { useJobSuggestions } from './features/jobs/hooks';
 
 import SearchBar from './SearchBar';
 import JobList from './JobList';
@@ -16,10 +17,12 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Makes sure the list filters smoothly
+  // Makes sure the list filters render effecient
   const deferredSearch = useDeferredValue(searchTerm);
 
-  // Syncing the list view with AF API
+  const suggestions = useJobSuggestions(searchTerm);
+
+  // Syncing the list view with AF API once on mount
   useEffect(() => {
     searchJobs('stockholm typescript', setJobs, setIsLoading, setError);
   }, []);
@@ -42,6 +45,12 @@ export default function App() {
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
         />
+        {/* TODO: Improve suggestions UI */}
+        <ul>
+          {suggestions.map((suggestion) => (
+            <li>{suggestion.value}</li>
+          ))}
+        </ul>
       </header>
       <section>
         {isLoading && <p>Finding work for you...</p>}

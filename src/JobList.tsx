@@ -19,7 +19,6 @@ export default function JobList({ jobs, filter }: JobListProps) {
 
   return (
     <ul className="">
-      <h3 className="text-orange-200">{filter}</h3>
       {filteredList.map((job) => (
         <JobListItem job={job} />
       ))}

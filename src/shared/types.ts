@@ -12,6 +12,11 @@ export interface Job {
   contactEmail: string;
 }
 
+export interface SearchCompletion {
+  value: string;
+  occurrences: number;
+}
+
 export interface JobOld {
   id: number;
   company: string;
