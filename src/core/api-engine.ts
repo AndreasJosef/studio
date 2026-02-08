@@ -1,15 +1,34 @@
 import { type Result, ok, fail } from './result';
-
+/**
+ * Configuration options for `fetchSafeList`.
+ * Extends standard `RequestInit` to allow passing custom headers, etc
+ **/
 interface FetchSafeListOptions extends RequestInit {
+  /**
+   * A strategy to extract the target array from a wrapped API response.
+   * Useful when data is nested (e.g., `{ hits: [...] }` or `{ data: { items: [...] } }`).
+   *
+   * @param data The raw JSON response.
+   * @returns The array to be processed by the parser.
+   */
   // eslint-disable-next-line
   extractArray?: (data: any) => unknown[];
+  /**
+   * An inline parser to extract non-list metadata (e.g., total counts, etc...).
+   * Runs before the main list is parsed. Use this for side-effects like updating refs.
+   *
+   * @param data The raw JSON response.
+   */
+  // eslint-disable-next-line
+  parseMeta?: (data: any) => void;
 }
 
 /**
- * A reusable fetcher that handles the network, JSON parsing,
- * and data cleaning for a LIST of items.
- * * @param url - The endpoint to hit
- * @param parser - A function that converts 'unknown' input into 'Result<T>'
+ * Fetches data from an endpoint, extracts an array, and maps each item through a validator.
+ * @param url The API endpoint.
+ * @param parser A function to validate and transform each item in the list.
+ * @param options Custom fetch config, array extractors, and metadata hooks.
+ * @returns A Result containing an array of successfully parsed items.
  */
 export async function fetchSafeList<T>(
   url: string,
@@ -17,7 +36,7 @@ export async function fetchSafeList<T>(
   options: FetchSafeListOptions = {}
 ): Promise<Result<T[]>> {
   try {
-    const { extractArray, ...fetchConfig } = options;
+    const { extractArray, parseMeta, ...fetchConfig } = options;
 
     // Prepare the headers
     const headers = new Headers({
@@ -44,14 +63,15 @@ export async function fetchSafeList<T>(
     // Unknown: We don't know what this is yet.
     const rawData: unknown = await response.json();
 
+    if (parseMeta) {
+      parseMeta(rawData);
+    }
+
     // eslint-disable-next-line
     const resolveList = (data: any): unknown => {
       if (options.extractArray) return options.extractArray(data);
-
       if (Array.isArray(data)) return data;
-
       if (data?.results && Array.isArray(data.results)) return data.results;
-
       return undefined;
     };
 
@@ -59,9 +79,7 @@ export async function fetchSafeList<T>(
 
     // If we still don't have an array, the API shape is wrong for a List fetch.
     if (!Array.isArray(list)) {
-      // Note: Empty lists are fine, but "not a list" is an error.
-      // if we couldn't get a list, we just return empty array
-      // to prevent crashes, but logging the issue.
+      // Empty lists are fine, but "not a list" is an error.
       console.warn(
         `safeFetchList expected an array at ${url} but got`,
         rawData
@@ -69,8 +87,7 @@ export async function fetchSafeList<T>(
       return ok([]);
     }
 
-    // Keep the good ones
-    // The is here is called Type Predicate
+    // Try to parse each item, keep the good ones, log the failed ones
     const successes = list.reduce<T[]>((acc, item) => {
       const result = parser(item);
       if (result.ok) {
@@ -83,7 +100,7 @@ export async function fetchSafeList<T>(
 
     return ok(successes);
   } catch (e) {
-    // Network failures
+    // Log Network failures
     return fail(e instanceof Error ? e.message : 'Unknown Network Error');
   }
 }
