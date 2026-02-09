@@ -6,7 +6,10 @@
 - [x] Recfacor App.tsx: actions, projections, dumbList
 - [x] Create debounce util and functionality for filter
 - [x] Implement suggetions for the search using typeahead endpoint
-- [ ] Ghost text autocomplete in search bar component
+- [x] Ghost text autocomplete in search bar component
+    - [x] Refactor folder structure 
+- [ ] Clean up job-search folder
+- [ ] Implement new job-list feature with filter etc
 - [ ] Improve Suggestions UI -> Popup with keyboard navigation
-- [ ] Replace useEffect with TanStack Query 
 - [ ] Detail View for Job in split view (like indeed)
+- [ ] Replace useEffect with TanStack Query 

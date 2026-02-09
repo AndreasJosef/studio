@@ -17,7 +17,7 @@ export function useJobSuggestions(searchTerm: string) {
       if (isActive) {
         setSuggestions(results);
       }
-    }, 300);
+    }, 100);
 
     return () => {
       clearTimeout(debounce);

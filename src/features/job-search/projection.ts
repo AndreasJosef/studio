@@ -3,6 +3,8 @@ import type { Job } from '@/shared/types';
 /**
  * Filters the Joblist based on user input
  *
+ * @param jobs an array of Jobs
+ * @param searchTerm the string to filter list (searches job.employer and job.headline)
  * @returns The filterd list if a searchTerm is given otherwise the whole list
  */
 export const jobSearchProjection = (jobs: Job[], searchTerm: string) => {

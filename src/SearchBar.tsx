@@ -1,4 +1,5 @@
 import React from 'react';
+import { SearchCompletion } from './shared/types';
 
 /**
  * Configuration for the SeachrBar Component
@@ -7,6 +8,7 @@ export interface SearchBarProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   onSearch: () => void;
+  autocomplete: SearchCompletion[];
   placeholder?: string;
 }
 
@@ -19,10 +21,20 @@ export default function SearchBar({
   onSearch,
   placeholder,
 }: SearchBarProps) {
+  // Handling User Intent
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSearch();
     setSearchTerm('');
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Tab') {
+      setSearchTerm('To the value of suggestions[0].. I think');
+    }
+    if (e.key === 'Escape') {
+      setSearchTerm('');
+    }
   };
 
   return (
@@ -30,12 +42,13 @@ export default function SearchBar({
       <input
         type="text"
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)} // TODO: debounce this update
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={handleKeyDown}
         className="grow bg-neutral-600 px-4 py-2 rounded"
         placeholder={placeholder || 'Search a Job!'}
       />
       <button type="submit" className="px-6 bg-indigo-800 rounded">
-        Find Job
+        Find Jobs!
       </button>
     </form>
   );
