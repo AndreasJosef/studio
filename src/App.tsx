@@ -1,7 +1,7 @@
 import { Job } from './shared/types';
 import { useState } from 'react';
 
-import JobSearch from './features/job-search/JobSearch';
+import JobSearch from './features/job-search/index';
 
 /**
  * The main component containing the JobChaser App
@@ -16,7 +16,7 @@ export default function App() {
 
   return (
     <div className="p-4 md:max-w-3xl md:mx-auto">
-      <header className="my-6 mt-40 grid gap-4">
+      <header className="my-6 grid gap-4">
         <h1 className="text-3xl font-bold text-neutral-300 mb-3">
           Job<span className="text-indigo-700">Chaser</span>
         </h1>
@@ -31,7 +31,7 @@ export default function App() {
         {error && <p className="text-red-500 text-2xl">{error}</p>}
         {/*<JobList jobs={jobs} filter={queryDraft} /> */}
         {jobs.map((job) => (
-          <li>{job.headline}</li>
+          <li key={job.id}>{job.headline}</li>
         ))}
       </main>
     </div>

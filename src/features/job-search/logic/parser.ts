@@ -1,8 +1,11 @@
-import { type Result, ok, fail } from '../../core/result';
+import { type Result, ok, fail } from '../../../core/result';
 import { type Job, SearchCompletion } from '@/shared/types';
 
 /**
- * A function that safely parses the response from AF API as the Job type. Wraps the response into a Railway Result
+ * A function that safely parses the response from AF API as the Job type. Wraps the response into a Railway Result. Intended to be used with as the parser for the fetchSafe function
+ *
+ * @param input the raw input from the response
+ * @returns Result<Job>
  */
 export function parseAFJobs(input: unknown): Result<Job> {
   if (!input || typeof input !== 'object') {
@@ -39,6 +42,12 @@ export function parseAFJobs(input: unknown): Result<Job> {
   });
 }
 
+/**
+ * A function that safely parses the response from AF typeahed endpoint. Wraps the response into a Railway Result
+ *
+ * @param input the raw input from the response
+ * @returns Result<SearchCompletion>
+ */
 export function parseAFCompletions(input: unknown): Result<SearchCompletion> {
   if (!input || typeof input !== 'object') {
     return fail('Invalid data: Not an object');

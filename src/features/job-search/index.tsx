@@ -1,11 +1,13 @@
 import { Job } from '@/shared/types';
+
 import { useState } from 'react';
 import { useJobsData } from './providers/useJobSearch';
 import { useSearchActions } from './actions/useSearchActions';
 
-import AutoCompleteSearchBar from './components/AutoCompleteSearch';
 import { projectCompletionSuffix } from './logic/projectCompletionSuffix';
 import { useJobSuggestions } from './providers/useSearchSuggestins';
+
+import AutoCompleteSearchBar from './components/AutoCompleteSearch';
 
 interface JobSearchProps {
   setJobs: (jobs: Job[]) => void;
@@ -21,7 +23,7 @@ export default function JobSearch({
   const [queryDraft, setQueryDraft] = useState('');
   const [searchTerm, setSearchTerm] = useState(queryDraft);
 
-  // Providers
+  // Data Providers
   useJobsData(searchTerm, { setJobs, setIsLoading, setError });
   const suggestions = useJobSuggestions(queryDraft);
 
@@ -38,7 +40,7 @@ export default function JobSearch({
 
   // UI
   return (
-    <>
+    <div className="relative">
       <AutoCompleteSearchBar
         value={queryDraft}
         completion={completionSuffix}
@@ -46,13 +48,16 @@ export default function JobSearch({
         onCommit={() => onCommit(queryDraft)}
         onTab={(e) => onTab(e, completionSuffix, queryDraft)}
       />
-      <ul>
+      <ul className="bg-neutral-600 absolute z-20 rounded mt-2">
         {suggestions.map((suggestion) => (
-          <li>
+          <li
+            key={crypto.randomUUID()}
+            className="py-1 px-2 border-b-neutral-700 border-b"
+          >
             {suggestion.value} <span>({suggestion.occurrences})</span>
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }

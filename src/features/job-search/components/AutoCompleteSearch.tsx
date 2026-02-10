@@ -25,6 +25,7 @@ export default function AutoCompleteSearchBar({
           onKeyDown={(e) => {
             if (e.key === 'Enter') onCommit();
             if (e.key === 'Tab') onTab(e);
+            if (e.key === 'Escape') onChange('');
           }}
         />
         <div className="absolute text-lg font-semibold flex items-center inset-0 pointer-events-none px-4 py-2 rounded bg-neutral-700">

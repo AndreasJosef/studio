@@ -1,8 +1,9 @@
 import { Job } from '@/shared/types';
 
 import { useEffect } from 'react';
+
 import { fetchSafeList } from '../../../core/api-engine';
-import { parseAFJobs } from '../parser';
+import { parseAFJobs } from '../logic/parser';
 
 const BASE_URL = 'https://jobsearch.api.jobtechdev.se/search';
 
@@ -45,7 +46,7 @@ export const useJobsData = (
 
     fetchJobData();
 
-    // Clean up -> finish the query
+    // Now we can accept new queries  -> finish the query
     return () => {
       searchActive = false;
     };

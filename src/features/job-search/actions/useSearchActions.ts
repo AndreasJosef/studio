@@ -19,6 +19,7 @@ export const useSearchActions = ({
     setJobs([]);
     setIsLoading(true);
     setTrigger(currentDraft);
+    setDraft('');
   };
 
   return {

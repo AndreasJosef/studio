@@ -1,10 +1,12 @@
 import { SearchCompletion } from '@/shared/types';
 
 import { useEffect, useState } from 'react';
-import { fetchSafeList } from '../../../core/api-engine';
-import { parseAFCompletions } from '../parser';
 
-const COMPLETE_URL = 'https://jobsearch.api.jobtechdev.se/complete';
+import { fetchSafeList } from '../../../core/api-engine';
+import { parseAFCompletions } from '../logic/parser';
+
+const TYPEAHEAD_URL = 'https://jobsearch.api.jobtechdev.se/complete';
+const DEBOUNCE_MS = 200;
 
 export function useJobSuggestions(searchTerm: string) {
   const [suggestions, setSuggestions] = useState<SearchCompletion[]>([]);
@@ -21,7 +23,7 @@ export function useJobSuggestions(searchTerm: string) {
       if (isActive) {
         setSuggestions(results);
       }
-    }, 300);
+    }, DEBOUNCE_MS);
 
     return () => {
       clearTimeout(debounce);
@@ -40,7 +42,7 @@ export function useJobSuggestions(searchTerm: string) {
 export async function getSuggestions(
   query: string
 ): Promise<SearchCompletion[]> {
-  const url = `${COMPLETE_URL}?q=${query}`;
+  const url = `${TYPEAHEAD_URL}?q=${query}`;
 
   const result = await fetchSafeList(url, parseAFCompletions, {
     extractArray: (data) => data.typeahead,
