@@ -10,6 +10,10 @@
     - [x] Refactor folder structure 
 - [x] Clean up job-search folder
 - [ ] Implement new job-list feature with filter etc
-- [ ] Replace useEffect with TanStack Query 
-- [ ] Setup Tanstack Router
+- [ ] Add pagination functionality in JobList
+- [ ] Add keyboard nav to suggestion pop up
 - [ ] Detail View for Job in split view (like indeed)
+- [ ] Setup Tanstack Router
+- [ ] Replace useEffect with TanStack Query 
+- [ ] Create functionality in job-search to always break preview text on space.
+- [ ] Create Dashboard(Explorer), SignIn and SignUp routes

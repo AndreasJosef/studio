@@ -7,15 +7,20 @@ import { parseAFJobs } from '../logic/parser';
 
 const BASE_URL = 'https://jobsearch.api.jobtechdev.se/search';
 
+export interface JobResponseMeta {
+  total: number;
+}
+
 interface JobSearchControls {
-  setJobs: (jobs: Job[]) => void;
+  onJobs: (jobs: Job[]) => void;
   setIsLoading: (loading: boolean) => void;
   setError: (error: string) => void;
+  setMeta: (data: JobResponseMeta) => void;
 }
 
 export const useJobsData = (
   query: string,
-  { setJobs, setIsLoading, setError }: JobSearchControls
+  { onJobs, setIsLoading, setError, setMeta }: JobSearchControls
 ) => {
   useEffect(() => {
     if (!query.trim()) return;
@@ -27,15 +32,18 @@ export const useJobsData = (
       const encodedQuery = encodeURIComponent(query);
       const url = `${BASE_URL}?q=${encodedQuery}&limit=100`;
 
+      const responseMeta: JobResponseMeta = { total: 0 };
+
       const result = await fetchSafeList(url, parseAFJobs, {
         extractArray: (data) => data.hits,
         parseMeta: (data) => {
-          console.log('Exract Meta from his reponse: ', data);
+          responseMeta.total = data.total?.value || 0;
         },
       });
 
       if (result.ok) {
-        setJobs(result.value);
+        onJobs(result.value);
+        setMeta(responseMeta);
       } else {
         setError('Could not load jobs. Try again!');
         console.error('Error fetching Jobs: ', result.error);
@@ -50,5 +58,5 @@ export const useJobsData = (
     return () => {
       searchActive = false;
     };
-  }, [query, setJobs, setError, setIsLoading]);
+  }, [query, onJobs, setError, setIsLoading, setMeta]);
 };

@@ -1,4 +1,4 @@
-import { type Job } from './shared/types';
+import { Job } from '@/shared/types';
 
 import JobListItem from './JobListItem';
 
@@ -7,7 +7,7 @@ interface JobListProps {
   filter: string;
 }
 
-export default function JobList({ jobs, filter }: JobListProps) {
+export default function JobListContainer({ jobs, filter }: JobListProps) {
   // calculating the list list to show this should happen in a projection
   const filteredList = jobs.filter((job) => {
     const searchTerm = filter.toLowerCase();
@@ -18,7 +18,7 @@ export default function JobList({ jobs, filter }: JobListProps) {
   });
 
   return (
-    <ul className="">
+    <ul>
       {filteredList.map((job) => (
         <JobListItem job={job} />
       ))}

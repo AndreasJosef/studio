@@ -1,7 +1,7 @@
 import { Job } from '@/shared/types';
 
 import { useState } from 'react';
-import { useJobsData } from './providers/useJobSearch';
+import { JobResponseMeta, useJobsData } from './providers/useJobSearch';
 import { useSearchActions } from './actions/useSearchActions';
 
 import { projectCompletionSuffix } from './logic/projectCompletionSuffix';
@@ -10,21 +10,26 @@ import { useJobSuggestions } from './providers/useSearchSuggestins';
 import AutoCompleteSearchBar from './components/AutoCompleteSearch';
 
 interface JobSearchProps {
-  setJobs: (jobs: Job[]) => void;
+  onJobs: (jobs: Job[]) => void;
   setIsLoading: (state: boolean) => void;
   setError: (message: string) => void;
+  setSearchTerm: (term: string) => void;
+  setMeta: (data: JobResponseMeta) => void;
+  searchTerm: string;
 }
 
 export default function JobSearch({
-  setJobs,
+  onJobs,
   setIsLoading,
   setError,
+  setSearchTerm,
+  setMeta,
+  searchTerm,
 }: JobSearchProps) {
   const [queryDraft, setQueryDraft] = useState('');
-  const [searchTerm, setSearchTerm] = useState(queryDraft);
 
   // Data Providers
-  useJobsData(searchTerm, { setJobs, setIsLoading, setError });
+  useJobsData(searchTerm, { onJobs, setIsLoading, setError, setMeta });
   const suggestions = useJobSuggestions(queryDraft);
 
   // Projections
@@ -34,13 +39,13 @@ export default function JobSearch({
   const { onCommit, onTab } = useSearchActions({
     setTrigger: setSearchTerm,
     setDraft: setQueryDraft,
-    setJobs,
+    setJobs: onJobs,
     setIsLoading,
   });
 
   // UI
   return (
-    <div className="relative">
+    <div className="relative mb-4">
       <AutoCompleteSearchBar
         value={queryDraft}
         completion={completionSuffix}

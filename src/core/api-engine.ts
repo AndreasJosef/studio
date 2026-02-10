@@ -112,7 +112,7 @@ export async function fetchSafeList<T>(
 export async function fetchSafeItem<T>(
   url: string,
   parser: (input: unknown) => Result<T>,
-  config: RequestInit
+  config: RequestInit = {}
 ): Promise<Result<T>> {
   try {
     const response = await fetch(url, config);

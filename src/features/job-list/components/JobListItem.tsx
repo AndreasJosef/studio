@@ -1,4 +1,4 @@
-import type { Job } from './shared/types';
+import { Job } from '@/shared/types';
 
 interface JobListItemProbs {
   job: Job;
@@ -7,7 +7,7 @@ interface JobListItemProbs {
 export default function JobListItem({ job }: JobListItemProbs) {
   return (
     <li
-      key={job.id}
+      key={crypto.randomUUID()}
       className="mb-4 p-4 bg-zinc-800 rounded hover:cursor-pointer"
     >
       <article className="mb-2 flex items-center flex-row-reverse gap-4">
