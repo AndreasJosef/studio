@@ -8,8 +8,8 @@
 - [x] Implement suggetions for the search using typeahead endpoint
 - [x] Ghost text autocomplete in search bar component
     - [x] Refactor folder structure 
-- [ ] Clean up job-search folder
+- [x] Clean up job-search folder
 - [ ] Implement new job-list feature with filter etc
-- [ ] Improve Suggestions UI -> Popup with keyboard navigation
-- [ ] Detail View for Job in split view (like indeed)
 - [ ] Replace useEffect with TanStack Query 
+- [ ] Setup Tanstack Router
+- [ ] Detail View for Job in split view (like indeed)
