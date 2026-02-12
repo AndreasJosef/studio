@@ -1,4 +1,4 @@
-import { Job } from '@/shared/types';
+import { Job, JobResponseMeta } from '@/shared/types';
 
 import { useEffect } from 'react';
 
@@ -6,10 +6,6 @@ import { fetchSafeList } from '../../../core/api-engine';
 import { parseAFJobs } from '../logic/parser';
 
 const BASE_URL = 'https://jobsearch.api.jobtechdev.se/search';
-
-export interface JobResponseMeta {
-  total: number;
-}
 
 interface JobSearchControls {
   onJobs: (jobs: Job[]) => void;

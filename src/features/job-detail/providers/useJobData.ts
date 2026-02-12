@@ -6,7 +6,7 @@ import { fetchSafeItem } from '../../../core/api-engine';
 import { parseAFJobs } from '../../job-search/logic/parser';
 
 interface JobDetailsControls {
-  id: number;
+  id: string | undefined;
 }
 
 const BASE_URL = 'https://jobsearch.api.jobtechdev.se/';
@@ -18,8 +18,11 @@ export function useJobDetails({ id }: JobDetailsControls) {
 
   useEffect(() => {
     let searchActive = true;
-
     const getJobDetails = async () => {
+      if (!id) {
+        setJob(null);
+        return;
+      }
       setIsLoading(true);
       const url = `${BASE_URL}ad/${id}`;
 

@@ -1,7 +1,7 @@
-import { Job } from '@/shared/types';
+import { Job, JobResponseMeta } from '@/shared/types';
 
 import { useState } from 'react';
-import { JobResponseMeta, useJobsData } from './providers/useJobSearch';
+import { useJobsData } from './providers/useJobSearch';
 import { useSearchActions } from './actions/useSearchActions';
 
 import { projectCompletionSuffix } from './logic/projectCompletionSuffix';
@@ -16,6 +16,7 @@ interface JobSearchProps {
   setSearchTerm: (term: string) => void;
   setMeta: (data: JobResponseMeta) => void;
   searchTerm: string;
+  onNewSearch: () => void;
 }
 
 export default function JobSearch({
@@ -25,6 +26,7 @@ export default function JobSearch({
   setSearchTerm,
   setMeta,
   searchTerm,
+  onNewSearch,
 }: JobSearchProps) {
   const [queryDraft, setQueryDraft] = useState('');
 
@@ -41,6 +43,7 @@ export default function JobSearch({
     setDraft: setQueryDraft,
     setJobs: onJobs,
     setIsLoading,
+    onNewSearch,
   });
 
   // UI

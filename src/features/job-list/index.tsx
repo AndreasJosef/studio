@@ -3,6 +3,8 @@ import { Job } from '@/shared/types';
 import JobListItem from './components/JobListItem';
 import ListControls from './components/ListControls';
 import { useState } from 'react';
+import { selectableJobsProjection } from './logic/selectableJobsProjection';
+import { useListActions } from './actions/useListActions';
 
 interface JobListProps {
   jobs: Job[];
@@ -10,6 +12,8 @@ interface JobListProps {
   error: string | null;
   isLoading: boolean;
   jobsTotal: number;
+  selected: string | undefined;
+  onSelected: (id: string) => void;
 }
 
 export default function JobList({
@@ -18,33 +22,41 @@ export default function JobList({
   isLoading,
   query,
   jobsTotal,
+  onSelected,
+  selected,
 }: JobListProps) {
   // TODO: use a projected List based on filters
   const [filter, setFilter] = useState('');
-  const filteredJobs = jobs;
 
-  const showHeading = jobs.length > 0;
+  const { handleItemClick } = useListActions({ onSelect: onSelected });
+
+  const displayJobs = selectableJobsProjection(jobs, selected);
 
   return (
-    <>
+    <div>
       {/* TODO: Better solution for messagin of loading states and error messages */}
       {isLoading && <p>Finding work for you...</p>}
       {error && <p className="text-red-500 text-2xl">{error}</p>}
 
-      {showHeading && (
+      {jobs.length > 0 && (
         <h2>
           {jobsTotal} Results for: <span>{query}</span>
         </h2>
       )}
 
-      {filteredJobs.length > 0 && (
+      {displayJobs.length > 0 && (
         <ListControls currentFilter={filter} setFilter={setFilter} />
       )}
+
       <ul>
-        {filteredJobs.map((job) => (
-          <JobListItem job={job} />
+        {displayJobs.map((job) => (
+          <JobListItem
+            job={job}
+            onClick={handleItemClick}
+            isSelected={job.isSelected}
+          />
         ))}
       </ul>
-    </>
+    </div>
   );
 }

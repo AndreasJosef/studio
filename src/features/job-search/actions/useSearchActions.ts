@@ -5,6 +5,7 @@ interface SearchActionControls {
   setTrigger: (value: string) => void;
   setJobs: (jobs: Job[]) => void;
   setIsLoading: (state: boolean) => void;
+  onNewSearch: () => void;
 }
 
 export const useSearchActions = ({
@@ -12,10 +13,12 @@ export const useSearchActions = ({
   setTrigger,
   setJobs,
   setIsLoading,
+  onNewSearch,
 }: SearchActionControls) => {
   const commit = (currentDraft: string) => {
     if (!currentDraft.trim()) return;
 
+    onNewSearch();
     setJobs([]);
     setIsLoading(true);
     setTrigger(currentDraft);

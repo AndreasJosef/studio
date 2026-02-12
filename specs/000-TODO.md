@@ -9,10 +9,11 @@
 - [x] Ghost text autocomplete in search bar component
     - [x] Refactor folder structure 
 - [x] Clean up job-search folder
-- [ ] Implement new job-list feature with filter etc
+- [x] Implement new job-list feature
+- [ ] Detail View for Job in split view
+- [ ] Implement filter functionality in Joblist
 - [ ] Add pagination functionality in JobList
 - [ ] Add keyboard nav to suggestion pop up
-- [ ] Detail View for Job in split view (like indeed)
 - [ ] Setup Tanstack Router
 - [ ] Replace useEffect with TanStack Query 
 - [ ] Create functionality in job-search to always break preview text on space.

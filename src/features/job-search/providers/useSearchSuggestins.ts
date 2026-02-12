@@ -21,6 +21,7 @@ export function useJobSuggestions(searchTerm: string) {
       const results = await getSuggestions(searchTerm);
 
       if (isActive) {
+        console.log(results);
         setSuggestions(results);
       }
     }, DEBOUNCE_MS);
