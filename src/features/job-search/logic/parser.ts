@@ -26,7 +26,7 @@ export function parseAFJobs(input: unknown): Result<Job> {
   return ok({
     id: data.id || '',
     headline: data.headline || '',
-    description: data.description.text || '',
+    description: data.description.text_formatted || '',
     employer: data.employer.name || '',
     logoUrl: data.logo_url || 'No Logo',
     contactName:

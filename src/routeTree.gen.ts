@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as AuthSignupRouteImport } from './routes/auth.signup'
+import { Route as AuthSigninRouteImport } from './routes/auth.signin'
 
 const ExploreRoute = ExploreRouteImport.update({
   id: '/explore',
   path: '/explore',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthSignupRoute = AuthSignupRouteImport.update({
+  id: '/auth/signup',
+  path: '/auth/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthSigninRoute = AuthSigninRouteImport.update({
+  id: '/auth/signin',
+  path: '/auth/signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/explore': typeof ExploreRoute
+  '/auth/signin': typeof AuthSigninRoute
+  '/auth/signup': typeof AuthSignupRoute
 }
 export interface FileRoutesByTo {
   '/explore': typeof ExploreRoute
+  '/auth/signin': typeof AuthSigninRoute
+  '/auth/signup': typeof AuthSignupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/explore': typeof ExploreRoute
+  '/auth/signin': typeof AuthSigninRoute
+  '/auth/signup': typeof AuthSignupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/explore'
+  fullPaths: '/explore' | '/auth/signin' | '/auth/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/explore'
-  id: '__root__' | '/explore'
+  to: '/explore' | '/auth/signin' | '/auth/signup'
+  id: '__root__' | '/explore' | '/auth/signin' | '/auth/signup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   ExploreRoute: typeof ExploreRoute
+  AuthSigninRoute: typeof AuthSigninRoute
+  AuthSignupRoute: typeof AuthSignupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExploreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/auth/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/signin': {
+      id: '/auth/signin'
+      path: '/auth/signin'
+      fullPath: '/auth/signin'
+      preLoaderRoute: typeof AuthSigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   ExploreRoute: ExploreRoute,
+  AuthSigninRoute: AuthSigninRoute,
+  AuthSignupRoute: AuthSignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

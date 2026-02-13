@@ -5,6 +5,8 @@ import ExplorerLayout from './components/ExplorerLayout';
 import JobSearch from '../job-search';
 import JobList from '../job-list';
 import JobDetails from '../job-detail';
+import { Route } from '../../routes/explore';
+import { useNavigate } from '@tanstack/react-router';
 
 /**
  * The JobExplorer features is the central hub composing search, list and details features.
@@ -13,11 +15,22 @@ export default function JobExplorer() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [meta, setMeta] = useState<JobResponseMeta>({ total: 0 });
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedJob, setSelectedJob] = useState<string | undefined>();
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const { q, id } = Route.useSearch();
+
+  const navigate = useNavigate({ from: Route.fullPath });
+
+  const updateUrl = (params: { q?: string; id?: string | undefined }) => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        ...params,
+        id: params.id === undefined ? undefined : params.id,
+      }),
+    });
+  };
 
   return (
     <ExplorerLayout>
@@ -25,21 +38,20 @@ export default function JobExplorer() {
         onJobs={setJobs}
         setError={setError}
         setIsLoading={setIsLoading}
-        setSearchTerm={setSearchTerm}
-        searchTerm={searchTerm}
         setMeta={setMeta}
-        onNewSearch={() => setSelectedJob(undefined)}
+        searchTerm={q}
+        onSearch={(newQuery) => updateUrl({ q: newQuery, id: undefined })}
       />
       <JobList
-        query={searchTerm}
+        query={q}
         jobs={jobs}
         error={error}
         isLoading={isLoading}
         jobsTotal={meta.total}
-        selected={selectedJob}
-        onSelected={setSelectedJob}
+        selected={id}
+        onSelected={(newId) => updateUrl({ id: newId })}
       />
-      <JobDetails id={selectedJob} />
+      <JobDetails id={id} />
     </ExplorerLayout>
   );
 }

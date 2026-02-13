@@ -44,9 +44,11 @@ export default function JobList({
         </h2>
       )}
 
+      {/*
       {displayJobs.length > 0 && (
         <ListControls currentFilter={filter} setFilter={setFilter} />
       )}
+      */}
 
       <ul>
         {displayJobs.map((job) => (

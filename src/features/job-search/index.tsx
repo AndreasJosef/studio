@@ -10,40 +10,35 @@ import { useJobSuggestions } from './providers/useSearchSuggestins';
 import AutoCompleteSearchBar from './components/AutoCompleteSearch';
 
 interface JobSearchProps {
+  searchTerm: string;
+  onSearch: (query: string) => void;
   onJobs: (jobs: Job[]) => void;
   setIsLoading: (state: boolean) => void;
   setError: (message: string) => void;
-  setSearchTerm: (term: string) => void;
   setMeta: (data: JobResponseMeta) => void;
-  searchTerm: string;
-  onNewSearch: () => void;
 }
 
 export default function JobSearch({
+  searchTerm,
+  onSearch,
   onJobs,
   setIsLoading,
   setError,
-  setSearchTerm,
   setMeta,
-  searchTerm,
-  onNewSearch,
 }: JobSearchProps) {
   const [queryDraft, setQueryDraft] = useState('');
 
-  // Data Providers
+  // Loaders
   useJobsData(searchTerm, { onJobs, setIsLoading, setError, setMeta });
-  const suggestions = useJobSuggestions(queryDraft);
 
   // Projections
+  const suggestions = useJobSuggestions(queryDraft);
   const completionSuffix = projectCompletionSuffix(queryDraft, suggestions);
 
   // Actions
   const { onCommit, onTab } = useSearchActions({
-    setTrigger: setSearchTerm,
+    setTrigger: onSearch,
     setDraft: setQueryDraft,
-    setJobs: onJobs,
-    setIsLoading,
-    onNewSearch,
   });
 
   // UI

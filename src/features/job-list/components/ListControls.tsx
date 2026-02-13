@@ -11,6 +11,7 @@ export default function ListControls({
     <>
       <input
         value={currentFilter}
+        className="bg-neutral-100"
         onChange={(e) => {
           setFilter(e.target.value);
         }}
