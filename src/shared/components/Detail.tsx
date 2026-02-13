@@ -1,0 +1,48 @@
+import { HTMLTreeNode } from '../../core/html-parse';
+import React from 'react';
+
+interface DetailProps {
+  nodes: HTMLTreeNode[];
+}
+
+/**
+ * Standard Function syntax.
+ * TypeScript infers the return type as JSX.Element | null.
+ */
+export function Detail({ nodes }: DetailProps) {
+  return (
+    <>
+      {nodes.map((node, index) => {
+        // Render Text
+        if (node.type === 'text') {
+          return (
+            <React.Fragment key={`text-${index}`}>{node.value}</React.Fragment>
+          );
+        }
+
+        // Render Elements
+        if (node.type === 'element' && node.tagName) {
+          const Tag = node.tagName as keyof React.JSX.IntrinsicElements;
+
+          // Handle attribute naming differences (e.g., class -> className)
+          const { class: className, ...restAttributes } = node.attributes || {};
+
+          return (
+            <Tag
+              key={`${node.tagName}-${index}`}
+              className={className}
+              {...restAttributes}
+            >
+              {/* Recursive call */}
+              {node.children && node.children.length > 0 && (
+                <Detail nodes={node.children} />
+              )}
+            </Tag>
+          );
+        }
+
+        return null;
+      })}
+    </>
+  );
+}

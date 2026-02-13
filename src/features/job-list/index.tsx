@@ -20,8 +20,6 @@ export default function JobList({
   jobs,
   error,
   isLoading,
-  query,
-  jobsTotal,
   onSelected,
   selected,
 }: JobListProps) {
@@ -38,11 +36,13 @@ export default function JobList({
       {isLoading && <p>Finding work for you...</p>}
       {error && <p className="text-red-500 text-2xl">{error}</p>}
 
+      {/* 
       {jobs.length > 0 && (
         <h2>
           {jobsTotal} Results for: <span>{query}</span>
         </h2>
       )}
+      */}
 
       {/*
       {displayJobs.length > 0 && (

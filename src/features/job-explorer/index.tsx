@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 
 import { Job, JobResponseMeta } from '../../shared/types';
+
+import { Route } from '../../routes/explore';
+
 import ExplorerLayout from './components/ExplorerLayout';
 import JobSearch from '../job-search';
 import JobList from '../job-list';
 import JobDetails from '../job-detail';
-import { Route } from '../../routes/explore';
-import { useNavigate } from '@tanstack/react-router';
 
 /**
  * The JobExplorer features is the central hub composing search, list and details features.
@@ -33,7 +35,7 @@ export default function JobExplorer() {
   };
 
   return (
-    <ExplorerLayout>
+    <ExplorerLayout isDetailActive={!!id}>
       <JobSearch
         onJobs={setJobs}
         setError={setError}
@@ -51,7 +53,7 @@ export default function JobExplorer() {
         selected={id}
         onSelected={(newId) => updateUrl({ id: newId })}
       />
-      <JobDetails id={id} />
+      <JobDetails id={id} onBack={() => updateUrl({ id: undefined })} />
     </ExplorerLayout>
   );
 }

@@ -1,10 +1,12 @@
 import { useJobDetails } from './loaders/useJobDetails';
+import { Detail } from '../../shared/components/Detail';
 
 interface JobDetailProps {
   id: string | undefined;
+  onBack: () => void;
 }
 
-export default function JobDetails({ id }: JobDetailProps) {
+export default function JobDetails({ id, onBack }: JobDetailProps) {
   const { job, isLoading, error } = useJobDetails({ id });
 
   if (error)
@@ -18,17 +20,20 @@ export default function JobDetails({ id }: JobDetailProps) {
     );
 
   return (
-    <div className={`p-4 ${isLoading ? 'animate-pulse' : ''}`}>
+    <div className={`bg-indigo-500/10 p-4 ${isLoading ? 'animate-pulse' : ''}`}>
       <header className="gap-4 font-bold mb-4">
+        <button
+          className="md:hidden mb-4 text-indigo-500 cursor-pointer hover:underline"
+          onClick={() => onBack()}
+        >
+          ← Back
+        </button>
         <h2 className="text-3xl">{job.headline}</h2>
         <h3 className="text-xl text-neutral-400">{job.employer}</h3>
       </header>
-      <div
-        className="text-lg flex flex-col gap-4"
-        // Not ideal but trusting it since it comes from AF. Ideally should sanitize the
-        // formatted response text into a json object tree and create the html my self form that
-        dangerouslySetInnerHTML={{ __html: job.description }}
-      ></div>
+      <div className="prose prose-indigo prose-invert prose-lg">
+        <Detail nodes={job.description} />
+      </div>
     </div>
   );
 }

@@ -1,9 +1,9 @@
-import { Job } from '@/shared/types';
+import { JobDetail } from '@/shared/types';
 
 import { useEffect, useState } from 'react';
 
 import { fetchSafeItem } from '../../../core/api-engine';
-import { parseAFJobs } from '../../job-search/logic/parser';
+import { parseAFJobDetail } from '../../job-search/logic/parser';
 
 interface JobDetailsControls {
   id: string | undefined;
@@ -12,7 +12,7 @@ interface JobDetailsControls {
 const BASE_URL = 'https://jobsearch.api.jobtechdev.se/';
 
 export function useJobDetails({ id }: JobDetailsControls) {
-  const [job, setJob] = useState<Job | null>(null);
+  const [job, setJob] = useState<JobDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,13 +26,12 @@ export function useJobDetails({ id }: JobDetailsControls) {
       setIsLoading(true);
       const url = `${BASE_URL}ad/${id}`;
 
-      const result = await fetchSafeItem(url, parseAFJobs);
+      const result = await fetchSafeItem(url, parseAFJobDetail);
 
       if (!searchActive) return;
 
       if (result.ok) {
         setJob(result.value);
-        console.log('Job Ad Detais: ', result.value);
       } else {
         setError('Could not load Job Ad');
       }

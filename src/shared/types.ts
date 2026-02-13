@@ -1,3 +1,5 @@
+import { HTMLTreeNode } from '../core/html-parse';
+
 /**
  * The main type in JobChasers domain representing
  * a single Job as it exist in the App
@@ -7,6 +9,16 @@ export interface Job {
   headline: string;
   employer: string;
   description: string;
+  logoUrl: string;
+  contactName: string;
+  contactEmail: string;
+}
+
+export interface JobDetail {
+  id: number;
+  headline: string;
+  employer: string;
+  description: HTMLTreeNode[];
   logoUrl: string;
   contactName: string;
   contactEmail: string;

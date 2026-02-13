@@ -1,5 +1,7 @@
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 @theme {
   --color-background: #131311;
+  --color-background: var(--color-zinc-900);
 }
