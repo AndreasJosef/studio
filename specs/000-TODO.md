@@ -10,7 +10,8 @@
     - [x] Refactor folder structure 
 - [x] Clean up job-search folder
 - [x] Implement new job-list feature
-- [ ] Detail View for Job in split view
+- [x] Detail View for Job in split view
+- [ ] Add SignIn and SignUp forms
 - [ ] Implement filter functionality in Joblist
 - [ ] Add pagination functionality in JobList
 - [ ] Add keyboard nav to suggestion pop up
