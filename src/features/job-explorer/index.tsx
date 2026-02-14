@@ -1,35 +1,40 @@
 import { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
+import { Job, JobResponseMeta } from '@/shared/types';
+import { Route } from '@/routes/explore';
 
-import { Job, JobResponseMeta } from '../../shared/types';
+import JobSearch from '@/features/job-search';
+import JobList from '@/features/job-list';
+import JobDetails from '@/features/job-detail';
 
-import { Route } from '../../routes/explore';
+import { useJobsSearch } from '@/features/job-search/providers/useJobSearch';
 
 import ExplorerLayout from './components/ExplorerLayout';
-import JobSearch from '../job-search';
-import JobList from '../job-list';
-import JobDetails from '../job-detail';
 
 /**
  * The JobExplorer features is the central hub composing search, list and details features.
  */
 export default function JobExplorer() {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [meta, setMeta] = useState<JobResponseMeta>({ total: 0 });
+  const { q, p, id } = Route.useSearch(); // query, page, job id
+  const navigate = useNavigate({ from: Route.fullPath });
 
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [meta, setMeta] = useState<JobResponseMeta>({ total: 0, pages: 0 });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { q, id } = Route.useSearch();
+  useJobsSearch(q, p, { onJobs: setJobs, setIsLoading, setError, setMeta });
 
-  const navigate = useNavigate({ from: Route.fullPath });
-
-  const updateUrl = (params: { q?: string; id?: string | undefined }) => {
+  const updateUrl = (params: {
+    q?: string;
+    id?: string | undefined;
+    p?: number;
+  }) => {
     navigate({
       search: (prev) => ({
         ...prev,
         ...params,
-        id: params.id === undefined ? undefined : params.id,
+        id: params.id === undefined ? undefined : params.id, // Make sure id really is undefinded so it dissapears form url
       }),
     });
   };
@@ -37,16 +42,12 @@ export default function JobExplorer() {
   return (
     <ExplorerLayout isDetailActive={!!id}>
       <JobSearch
-        onJobs={setJobs}
-        setError={setError}
-        setIsLoading={setIsLoading}
-        setMeta={setMeta}
-        searchTerm={q}
-        onSearch={(newQuery) => updateUrl({ q: newQuery, id: undefined })}
+        onSearch={(newQuery) => updateUrl({ q: newQuery, id: undefined, p: 1 })}
       />
       <JobList
         query={q}
         jobs={jobs}
+        pages={meta.pages}
         error={error}
         isLoading={isLoading}
         jobsTotal={meta.total}

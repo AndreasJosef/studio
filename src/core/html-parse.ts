@@ -26,23 +26,18 @@ export type HTMLTreeNode = ElementNode | TextNode;
  * @returns an array of @HTMlTreeNodes
  */
 export const parseHTMLToTree = (htmlString: string): HTMLTreeNode[] => {
-  // 1. Create a parser instance (Standard Browser API)
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, 'text/html');
 
   const nodeToJSON = (node: Node): HTMLTreeNode | null => {
-    // Handle Text Nodes (nodeType 3)
     if (node.nodeType === Node.TEXT_NODE) {
       const text = node.textContent?.trim();
       return text ? { type: 'text', value: text } : null;
     }
-
-    // Handle Element Nodes (nodeType 1)
     if (node.nodeType === Node.ELEMENT_NODE) {
       const element = node as HTMLElement;
       const tagName = element.tagName.toLowerCase();
 
-      // Security: Block list for dangerous tags
       const forbiddenTags = [
         'script',
         'iframe',
@@ -53,10 +48,9 @@ export const parseHTMLToTree = (htmlString: string): HTMLTreeNode[] => {
       ];
       if (forbiddenTags.includes(tagName)) return null;
 
-      // Extract and filter attributes
+      // removing possible script injection points from attributes before adding them
       const attributes: Record<string, string> = {};
       Array.from(element.attributes).forEach((attr) => {
-        // Prevent inline JS handlers (onmouseover, onclick, etc.)
         if (!attr.name.toLowerCase().startsWith('on')) {
           attributes[attr.name] = attr.value;
         }
@@ -75,7 +69,6 @@ export const parseHTMLToTree = (htmlString: string): HTMLTreeNode[] => {
     return null;
   };
 
-  // We parse the children of the body tag to get the actual content
   const initialTree = Array.from(doc.body.childNodes)
     .map(nodeToJSON)
     .filter((node): node is HTMLTreeNode => node !== null);
@@ -87,11 +80,9 @@ export const parseHTMLToTree = (htmlString: string): HTMLTreeNode[] => {
  * Promotes plain text with line breaks into paragraph elements
  */
 const promoteLineBreaks = (nodes: HTMLTreeNode[]): HTMLTreeNode[] => {
-  // Scenario: Only one node, and it's a text node containing line breaks
   if (nodes.length === 1 && nodes[0].type === 'text' && nodes[0].value) {
     const text = nodes[0].value;
 
-    // Split by one or more newline characters
     return text
       .split(/\n+/)
       .map((part) => part.trim())

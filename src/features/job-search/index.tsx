@@ -1,47 +1,26 @@
-import { Job, JobResponseMeta } from '@/shared/types';
-
 import { useState } from 'react';
-import { useJobsData } from './providers/useJobSearch';
-import { useSearchActions } from './actions/useSearchActions';
 
-import { projectCompletionSuffix } from './logic/projectCompletionSuffix';
 import { useJobSuggestions } from './providers/useSearchSuggestins';
+import { useSearchActions } from './actions/useSearchActions';
+import { projectCompletionSuffix } from './logic/projectCompletionSuffix';
 
 import AutoCompleteSearchBar from './components/AutoCompleteSearch';
 
 interface JobSearchProps {
-  searchTerm: string;
   onSearch: (query: string) => void;
-  onJobs: (jobs: Job[]) => void;
-  setIsLoading: (state: boolean) => void;
-  setError: (message: string) => void;
-  setMeta: (data: JobResponseMeta) => void;
 }
 
-export default function JobSearch({
-  searchTerm,
-  onSearch,
-  onJobs,
-  setIsLoading,
-  setError,
-  setMeta,
-}: JobSearchProps) {
+export default function JobSearch({ onSearch }: JobSearchProps) {
   const [queryDraft, setQueryDraft] = useState('');
 
-  // Loaders
-  useJobsData(searchTerm, { onJobs, setIsLoading, setError, setMeta });
-
-  // Projections
   const suggestions = useJobSuggestions(queryDraft);
   const completionSuffix = projectCompletionSuffix(queryDraft, suggestions);
 
-  // Actions
   const { onCommit, onTab } = useSearchActions({
     setTrigger: onSearch,
     setDraft: setQueryDraft,
   });
 
-  // UI
   return (
     <div className="relative mb-4">
       <AutoCompleteSearchBar

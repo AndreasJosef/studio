@@ -6,25 +6,23 @@ interface DetailProps {
 }
 
 /**
- * Standard Function syntax.
- * TypeScript infers the return type as JSX.Element | null.
- */
+ * Recursivley renders the the content of the nodes in an HTMLNodeTree
+ *
+ * @param { nodes }
+ **/
 export function Detail({ nodes }: DetailProps) {
   return (
     <>
       {nodes.map((node, index) => {
-        // Render Text
         if (node.type === 'text') {
           return (
             <React.Fragment key={`text-${index}`}>{node.value}</React.Fragment>
           );
         }
 
-        // Render Elements
         if (node.type === 'element' && node.tagName) {
           const Tag = node.tagName as keyof React.JSX.IntrinsicElements;
 
-          // Handle attribute naming differences (e.g., class -> className)
           const { class: className, ...restAttributes } = node.attributes || {};
 
           return (

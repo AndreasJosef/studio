@@ -2,10 +2,7 @@ import { Job, JobResponseMeta } from '@/shared/types';
 
 import { useEffect } from 'react';
 
-import { fetchSafeList } from '../../../core/api-engine';
-import { parseAFJobs } from '../logic/parser';
-
-const BASE_URL = 'https://jobsearch.api.jobtechdev.se/search';
+import { fetchJobs } from '../../../core/api/jobs.api';
 
 interface JobSearchControls {
   onJobs: (jobs: Job[]) => void;
@@ -14,45 +11,37 @@ interface JobSearchControls {
   setMeta: (data: JobResponseMeta) => void;
 }
 
-export const useJobsData = (
+export const useJobsSearch = (
   query: string,
+  page: number,
   { onJobs, setIsLoading, setError, setMeta }: JobSearchControls
 ) => {
   useEffect(() => {
     if (!query.trim()) return;
 
-    // make sure no new query races this one
-    let searchActive = true;
+    // prevents this query to be raced
+    let active = true;
 
-    const fetchJobData = async () => {
-      const encodedQuery = encodeURIComponent(query);
-      const url = `${BASE_URL}?q=${encodedQuery}&limit=100`;
+    setIsLoading(true);
 
-      const responseMeta: JobResponseMeta = { total: 0 };
+    const pull = async () => {
+      const result = await fetchJobs(query, page);
 
-      const result = await fetchSafeList(url, parseAFJobs, {
-        extractArray: (data) => data.hits,
-        parseMeta: (data) => {
-          responseMeta.total = data.total?.value || 0;
-        },
-      });
+      if (!active) return;
 
       if (result.ok) {
-        onJobs(result.value);
-        setMeta(responseMeta);
+        onJobs(result.value.jobs);
+        setMeta(result.value.meta);
       } else {
-        setError('Could not load jobs. Try again!');
-        console.error('Error fetching Jobs: ', result.error);
+        setError('Could not load jobs!');
       }
-
       setIsLoading(false);
     };
 
-    fetchJobData();
+    pull();
 
-    // Now we can accept new queries  -> finish the query
     return () => {
-      searchActive = false;
+      active = false;
     };
-  }, [query, onJobs, setError, setIsLoading, setMeta]);
+  }, [query, page, onJobs, setMeta, setIsLoading, setError]);
 };

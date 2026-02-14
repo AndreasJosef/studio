@@ -30,9 +30,7 @@ export default function ExplorerLayout({
           {List}
         </aside>
         <main className="col-span-12 md:col-span-7 sticky top-6 h-[calc(100vh-3rem)]">
-          <div className="h-full overflow-y-auto rounded-lg bg-neutral-900/50">
-            {Detail}
-          </div>
+          {Detail}
         </main>
       </div>
     </div>

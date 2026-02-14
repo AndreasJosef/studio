@@ -26,6 +26,7 @@ export interface JobDetail {
 
 export interface JobResponseMeta {
   total: number;
+  pages: number;
 }
 
 export interface SearchCompletion {

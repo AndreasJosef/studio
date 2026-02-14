@@ -8,6 +8,7 @@ export const Route = createFileRoute('/explore')({
     return {
       q: (search.q as string) || '',
       id: (search.id as string) || undefined,
+      p: Number(search.p) || 1,
     };
   },
 });

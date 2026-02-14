@@ -1,8 +1,8 @@
 import { Job } from '@/shared/types';
 
 import JobListItem from './components/JobListItem';
-import ListControls from './components/ListControls';
-import { useState } from 'react';
+//import ListControls from './components/ListControls';
+//import { useState } from 'react';
 import { selectableJobsProjection } from './logic/selectableJobsProjection';
 import { useListActions } from './actions/useListActions';
 
@@ -12,19 +12,23 @@ interface JobListProps {
   error: string | null;
   isLoading: boolean;
   jobsTotal: number;
+  pages: number;
   selected: string | undefined;
   onSelected: (id: string) => void;
 }
 
 export default function JobList({
   jobs,
+  pages,
   error,
   isLoading,
   onSelected,
   selected,
+  jobsTotal,
+  query,
 }: JobListProps) {
   // TODO: use a projected List based on filters
-  const [filter, setFilter] = useState('');
+  //const [filter, setFilter] = useState('');
 
   const { handleItemClick } = useListActions({ onSelect: onSelected });
 
@@ -36,13 +40,11 @@ export default function JobList({
       {isLoading && <p>Finding work for you...</p>}
       {error && <p className="text-red-500 text-2xl">{error}</p>}
 
-      {/* 
       {jobs.length > 0 && (
         <h2>
           {jobsTotal} Results for: <span>{query}</span>
         </h2>
       )}
-      */}
 
       {/*
       {displayJobs.length > 0 && (
@@ -59,6 +61,7 @@ export default function JobList({
           />
         ))}
       </ul>
+      {pages > 1 && <button>Next</button>}
     </div>
   );
 }
