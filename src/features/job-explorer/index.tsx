@@ -6,6 +6,7 @@ import { Route } from '@/routes/explore';
 import JobSearch from '@/features/job-search';
 import JobList from '@/features/job-list';
 import JobDetails from '@/features/job-detail';
+import { PaginationControls } from '@/shared/components/Pagination';
 
 import { useJobsSearch } from '@/features/job-search/providers/useJobSearch';
 
@@ -39,21 +40,32 @@ export default function JobExplorer() {
     });
   };
 
+  const handlePageChange = (newPage: number) => {
+    navigate({ search: (prev) => ({ ...prev, p: newPage }) });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <ExplorerLayout isDetailActive={!!id}>
       <JobSearch
         onSearch={(newQuery) => updateUrl({ q: newQuery, id: undefined, p: 1 })}
       />
-      <JobList
-        query={q}
-        jobs={jobs}
-        pages={meta.pages}
-        error={error}
-        isLoading={isLoading}
-        jobsTotal={meta.total}
-        selected={id}
-        onSelected={(newId) => updateUrl({ id: newId })}
-      />
+      <>
+        <JobList
+          query={q}
+          jobs={jobs}
+          error={error}
+          isLoading={isLoading}
+          jobsTotal={meta.total}
+          selected={id}
+          onSelected={(newId) => updateUrl({ id: newId })}
+        />
+        <PaginationControls
+          currentPage={p}
+          totalPages={meta.pages}
+          onPageChange={handlePageChange}
+        />
+      </>
       <JobDetails id={id} onBack={() => updateUrl({ id: undefined })} />
     </ExplorerLayout>
   );
