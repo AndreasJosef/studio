@@ -23,7 +23,7 @@ export default function JobDetails({ id, onBack }: JobDetailProps) {
 
   if (!job)
     return (
-      <h2 className="text-neutral-500 text-center mt-10">
+      <h2 className="text-lg text-neutral-500 text-center mt-10">
         Selected a job to view details
       </h2>
     );

@@ -1,21 +1,21 @@
-import { Job, JobResponseMeta } from '../../shared/types';
-import { Result } from '../result';
+import { Job, JobResponseMeta } from '@/shared/types';
+import { Result } from '@/core/result';
 
 interface JobApiResult {
   jobs: Job[];
   meta: JobResponseMeta;
 }
 
-import { fetchSafeList } from '../api-engine';
-import { parseAFJobs } from '../../features/job-search/logic/parser';
+import { fetchSafeList } from '@/core/api-engine';
+import { parseAFJobs } from '@/features/job-search/logic/parser';
 
 const BASE_URL = 'https://jobsearch.api.jobtechdev.se/';
-const LIMIT = 10;
+const LIMIT = 5;
 
 /**
  * Fetches and refines job data from the JobTech API based on a search signal.
  *
- *  1. Calculates the API 'offset' based on a fixed LIMIT of 20 items per page.
+ *  1. Calculates the API 'offset' based on a fixed LIMIT of items per page.
  *  2. Executes a type-safe fetch using the core 'api-engine'.
  *  3. Extracts and projects both the raw Job array and the Response Metadata (Total/Pages).
  *
