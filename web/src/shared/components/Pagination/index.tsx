@@ -14,7 +14,7 @@ export default function PaginationControls({
   const pages = projectPaginationRange(currentPage, totalPages);
 
   return (
-    <nav className="flex items-center justify-center gap-2 mt-8 py-4 border-t border-neutral-800">
+    <nav className="flex items-center justify-center rounded gap-2 mt-4 py-4">
       {pages.map((page, idx) => {
         if (page === '...') {
           return (
