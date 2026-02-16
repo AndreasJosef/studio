@@ -15,7 +15,7 @@ const LIMIT = 5;
 /**
  * Fetches and refines job data from the JobTech API based on a search signal.
  *
- *  1. Calculates the API 'offset' based on a fixed LIMIT of 20 items per page.
+ *  1. Calculates the API 'offset' based on a fixed LIMIT items per page.
  *  2. Executes a type-safe fetch using the core 'api-engine'.
  *  3. Extracts and projects both the raw Job array and the Response Metadata (Total/Pages).
  *
