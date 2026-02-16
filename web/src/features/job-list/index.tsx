@@ -5,6 +5,7 @@ import JobListItem from './components/JobListItem';
 //import { useState } from 'react';
 import { selectableJobsProjection } from './logic/selectableJobsProjection';
 import { useListActions } from './actions/useListActions';
+import { JobListItemSkeleton } from './components/JobListItemSkeleton';
 
 interface JobListProps {
   jobs: Job[];
@@ -22,8 +23,6 @@ export default function JobList({
   isLoading,
   onSelected,
   selected,
-  jobsTotal,
-  query,
 }: JobListProps) {
   // TODO: use a projected List based on filters
   //const [filter, setFilter] = useState('');
@@ -35,16 +34,12 @@ export default function JobList({
   return (
     <div>
       {/* TODO: Better solution for messagin of loading states and error messages */}
-      {isLoading && <p>Finding work for you...</p>}
       {error && <p className="text-red-500 text-2xl">{error}</p>}
 
-      {/*
-      {jobs.length > 0 && (
-        <h2>
-          {jobsTotal} Results for: <span>{query}</span>
-        </h2>
-      )}
-      */}
+      {isLoading &&
+        Array.from({ length: 5 }).map((_, i) => (
+          <JobListItemSkeleton key={`skeleton-${i}`} />
+        ))}
 
       {/*
       {displayJobs.length > 0 && (
