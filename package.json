@@ -1,14 +1,8 @@
 {
-  "name": "@jobchaser",
-  "private": true,
-  "workspaces": [
-    "web",
-    "api",
-    "shared"
-  ],
+  "name": "@jobchaser/root",
   "scripts": {
-    "dev:web": "pnpm run dev -w web",
-    "dev:api": "pnpm run dev -w api",
-    "dev": "pnpm run dev --workspaces --if-present"
+    "dev:web": "pnpm --filter @jobchaser/web --dir . dev",
+    "dev:api": "pnpm --filter @jobchaser/api --dir . dev",
+    "dev": "pnpm --filter \"@jobchaser/*\" --dir . --parallel dev"
   }
 }
