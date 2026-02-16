@@ -1,8 +1,7 @@
+import { fetchJobs } from '@/services/jobtech/jobtech.api';
 import { Job, JobResponseMeta } from '@/shared/types';
 
 import { useEffect } from 'react';
-
-import { fetchJobs } from '../../../core/api/jobs.api';
 
 interface JobSearchControls {
   onJobs: (jobs: Job[]) => void;

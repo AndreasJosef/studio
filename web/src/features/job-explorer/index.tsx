@@ -8,7 +8,7 @@ import JobList from '@/features/job-list';
 import JobDetails from '@/features/job-detail';
 import { PaginationControls } from '@/shared/components/Pagination';
 
-import { useJobsSearch } from '@/features/job-search/providers/useJobSearch';
+import { useJobsSearch } from '@/features/job-search/loaders/useJobSearch';
 
 import ExplorerLayout from './components/ExplorerLayout';
 

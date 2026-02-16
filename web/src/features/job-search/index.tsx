@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useJobSuggestions } from './providers/useSearchSuggestins';
+import { useJobSuggestions } from './loaders/useSearchSuggestins';
 import { useSearchActions } from './actions/useSearchActions';
 import { projectCompletionSuffix } from './logic/projectCompletionSuffix';
 

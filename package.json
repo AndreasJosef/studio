@@ -1,25 +1,14 @@
 {
-  "name": "@studio/job-chaser",
+  "name": "@jobchaser",
   "private": true,
-  "version": "0.1.0",
-  "type": "module",
+  "workspaces": [
+    "web",
+    "api",
+    "shared"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@tanstack/react-router": "^1.159.5",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-hook-form": "^7.71.1",
-    "tailwindcss": "^4.1.18"
-  },
-  "devDependencies": {
-    "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.1.18",
-    "@tanstack/router-plugin": "^1.159.5",
-    "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^7.2.4"
+    "dev:web": "pnpm run dev -w web",
+    "dev:api": "pnpm run dev -w api",
+    "dev": "pnpm run dev --workspaces --if-present"
   }
 }

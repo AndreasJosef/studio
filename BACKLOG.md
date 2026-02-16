@@ -11,11 +11,12 @@
 - [x] Clean up job-search folder
 - [x] Implement new job-list feature
 - [x] Detail View for Job in split view
+- [x] Setup Tanstack Router
+- [x] Add pagination functionality in JobList
 - [ ] Add SignIn and SignUp forms
 - [ ] Implement filter functionality in Joblist
-- [ ] Add pagination functionality in JobList
 - [ ] Add keyboard nav to suggestion pop up
-- [ ] Setup Tanstack Router
 - [ ] Replace useEffect with TanStack Query 
-- [ ] Create functionality in job-search to always break preview text on space.
 - [ ] Create Dashboard(Explorer), SignIn and SignUp routes
+- [ ] Close detail view with Escape
+
