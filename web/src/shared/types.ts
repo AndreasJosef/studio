@@ -1,5 +1,4 @@
-import { HTMLTreeNode } from '../core/html-parse';
-
+import { HTMLTreeNode } from '@/lib/html-parse';
 /**
  * The main type in JobChasers domain representing
  * a single Job as it exist in the App

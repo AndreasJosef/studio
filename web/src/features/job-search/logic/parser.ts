@@ -1,7 +1,7 @@
-import { type Result, ok, fail } from '../../../core/result';
-import { type Job, JobDetail, SearchCompletion } from '@/shared/types';
+import { Result, ok, fail } from '@/lib/result';
+import { parseHTMLToTree } from '@/lib/html-parse';
 
-import { parseHTMLToTree } from '../../../core/html-parse';
+import { type Job, JobDetail, SearchCompletion } from '@/shared/types';
 
 /**
  * A function that safely parses the response from AF API as the Job type. Wraps the response into a Railway Result. Intended to be used with as the parser for the fetchSafe function

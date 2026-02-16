@@ -2,8 +2,8 @@ import { JobDetail } from '@/shared/types';
 
 import { useEffect, useState } from 'react';
 
-import { fetchSafeItem } from '../../../core/api-engine';
-import { parseAFJobDetail } from '../../job-search/logic/parser';
+import { fetchSafeItem } from '@/lib/api-engine';
+import { parseAFJobDetail } from '@/features/job-search/logic/parser';
 
 interface JobDetailsControls {
   id: string | undefined;

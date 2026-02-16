@@ -2,7 +2,7 @@ import { SearchCompletion } from '@/shared/types';
 
 import { useEffect, useState } from 'react';
 
-import { fetchSafeList } from '../../../core/api-engine';
+import { fetchSafeList } from '@/lib/api-engine';
 import { parseAFCompletions } from '../logic/parser';
 
 const TYPEAHEAD_URL = 'https://jobsearch.api.jobtechdev.se/complete';

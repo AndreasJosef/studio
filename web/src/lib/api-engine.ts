@@ -1,4 +1,4 @@
-import { type Result, ok, fail } from './result';
+import { Result, ok, fail } from './result';
 /**
  * Configuration options for `fetchSafeList`.
  * Extends standard `RequestInit` to allow passing custom headers, etc

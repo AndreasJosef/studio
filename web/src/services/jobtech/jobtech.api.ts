@@ -1,16 +1,16 @@
 import { Job, JobResponseMeta } from '@/shared/types';
-import { Result } from '@/core/result';
+import { Result } from '@/lib/result';
 
 interface JobApiResult {
   jobs: Job[];
   meta: JobResponseMeta;
 }
 
-import { fetchSafeList } from '@/core/api-engine';
-import { parseAFJobs } from '../../features/job-search/logic/parser';
+import { parseAFJobs } from '@/features/job-search/logic/parser';
+import { fetchSafeList } from '@/lib/api-engine';
 
 const BASE_URL = 'https://jobsearch.api.jobtechdev.se/';
-const LIMIT = 10;
+const LIMIT = 5;
 
 /**
  * Fetches and refines job data from the JobTech API based on a search signal.
