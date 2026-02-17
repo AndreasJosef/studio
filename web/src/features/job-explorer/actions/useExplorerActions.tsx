@@ -1,4 +1,4 @@
-import { Route } from '@/routes/explore';
+import { Route } from '@/routes/_app-root.explore';
 import { useNavigate } from '@tanstack/react-router';
 
 /**

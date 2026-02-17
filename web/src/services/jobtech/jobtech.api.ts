@@ -8,6 +8,7 @@ interface JobApiResult {
 
 import { parseAFJobs } from '@/features/job-search/logic/parser';
 import { fetchSafeList } from '@/lib/api-engine';
+import { delay } from '@/lib/utils';
 
 const BASE_URL = 'https://jobsearch.api.jobtechdev.se/';
 const LIMIT = 5;
@@ -39,6 +40,9 @@ export const fetchJobs = async (
   const url = `${BASE_URL}/search?q=${encodeURIComponent(query)}&limit=${LIMIT}&offset=${offset}`;
 
   const parsedMeta: JobResponseMeta = { total: 0, pages: 0 };
+
+  // DEV: DELAY
+  await delay(500);
 
   const result = await fetchSafeList(url, parseAFJobs, {
     extractArray: (data) => data.hits,

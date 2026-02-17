@@ -1,11 +1,12 @@
 import { Job } from '@/shared/types';
 
-import JobListItem from './components/JobListItem';
-//import ListControls from './components/ListControls';
-//import { useState } from 'react';
 import { selectableJobsProjection } from './logic/selectableJobsProjection';
 import { useListActions } from './actions/useListActions';
-import { JobListItemSkeleton } from './components/JobListItemSkeleton';
+
+import { useDelayedLoading } from '@/shared/hooks/useDelayedLoading';
+
+import JobListItem from './components/JobListItem';
+import JobListItemSkeleton from './components/JobListItemSkeleton';
 
 interface JobListProps {
   jobs: Job[];
@@ -20,15 +21,14 @@ interface JobListProps {
 export default function JobList({
   jobs,
   error,
-  isLoading,
+  isLoading: rawLoading,
   onSelected,
   selected,
 }: JobListProps) {
   // TODO: use a projected List based on filters
-  //const [filter, setFilter] = useState('');
-
   const { handleItemClick } = useListActions({ onSelect: onSelected });
 
+  const isLoading = useDelayedLoading(rawLoading);
   const displayJobs = selectableJobsProjection(jobs, selected);
 
   return (
@@ -41,22 +41,18 @@ export default function JobList({
           <JobListItemSkeleton key={`skeleton-${i}`} />
         ))}
 
-      {/*
-      {displayJobs.length > 0 && (
-        <ListControls currentFilter={filter} setFilter={setFilter} />
+      {!isLoading && (
+        <ul>
+          {displayJobs.map((job) => (
+            <JobListItem
+              key={job.id}
+              job={job}
+              onClick={handleItemClick}
+              isSelected={job.isSelected}
+            />
+          ))}
+        </ul>
       )}
-      */}
-
-      <ul>
-        {displayJobs.map((job) => (
-          <JobListItem
-            key={job.id}
-            job={job}
-            onClick={handleItemClick}
-            isSelected={job.isSelected}
-          />
-        ))}
-      </ul>
     </div>
   );
 }

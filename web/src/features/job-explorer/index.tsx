@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Job, JobResponseMeta } from '@/shared/types';
-import { Route } from '@/routes/explore';
+import { Route } from '@/routes/_app-root.explore';
 
 import ExplorerLayout from './components/ExplorerLayout';
 import JobSearch from '@/features/job-search';
