@@ -10,13 +10,17 @@
     "predev": "pnpm run db:up",
     "dev": "node --watch --env-file=.env src/index.ts",
     "db:shell": "psql -h localhost -U jcadmin job_chaser_dev",
-    "clean": "podman-compose down && rm -rf ./pgdata ./node_modules pnpm-lock.yaml"
+    "clean": "podman-compose down && rm -rf ./pgdata ./node_modules pnpm-lock.yaml",
+    "test:api": "./scripts/test.api.sh"
   },
   "dependencies": {
+    "drizzle-orm": "^0.45.1",
     "express": "^5.2.1",
     "pg": "^8.18.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6"
+    "@types/express": "^5.0.6",
+    "@types/pg": "^8.16.0",
+    "drizzle-kit": "^0.31.9"
   }
 }
