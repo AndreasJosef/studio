@@ -1,0 +1,22 @@
+{
+  "name": "@jobchaser/api",
+  "version": "1.0.0",
+  "type": "module",
+  "packageManager": "pnpm@10.29.3",
+  "scripts": {
+    "db:up": "podman-compose up -d",
+    "db:stop": "podman-compose stop",
+    "db:logs": "podman logs -f jc_postgres",
+    "predev": "pnpm run db:up",
+    "dev": "node --watch --env-file=.env src/index.ts",
+    "db:shell": "psql -h localhost -U jcadmin job_chaser_dev",
+    "clean": "podman-compose down && rm -rf ./pgdata ./node_modules pnpm-lock.yaml"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "pg": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6"
+  }
+}
