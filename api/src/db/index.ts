@@ -1,10 +1,10 @@
+import { drizzle } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
+
+import * as schema from './schema.ts';
 
 export const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-// TODO: Figure out how to handle params typing for the query function
-export const query = (text: string, params?: unknown[]) => {
-  return pool.query(text, params);
-};
+export const db = drizzle(pool, { schema });
