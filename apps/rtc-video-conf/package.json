@@ -1,0 +1,8 @@
+{
+  "name": "@studio/rtc-video-conf",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "live-server"
+  }
+}

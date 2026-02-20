@@ -1,0 +1,11 @@
+{
+  "name": "@studio/create-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "studio-gen": "./bin.js"
+  },
+  "dependencies": {
+    "chalk": "^5.0.0"
+  }
+}

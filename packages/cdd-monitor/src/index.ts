@@ -1,4 +1,5 @@
-#!/usr/bin/env bun
+#!/usr/node/env node
+
 import { createInterface } from 'node:readline';
 import { stdin, stdout } from 'node:process';
 import { parseLine } from './parser';

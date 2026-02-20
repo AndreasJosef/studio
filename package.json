@@ -7,7 +7,11 @@
     "format": "prettier --write .",
     "lint": "eslint .",
     "check": "pnpm format && pnpm lint && pnpm -r exec tsc --noEmit",
-    "serve": "live-server"
+    "serve": "live-server",
+    "create:backend": "pnpm --filter @studio/create-backend studio-gen",
+    "db:root": "podman exec -it studio_db_central psql -U studio_root -d postgres",
+    "db:list": "podman exec studio_db_central psql -U studio_root -d postgres -c '\\l'",
+    "db:usage": "podman exec studio_db_central psql -U studio_root -d postgres -c 'SELECT datname, pg_size_pretty(pg_database_size(datname)) FROM pg_database'"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -23,5 +27,6 @@
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.54.0"
-  }
+  },
+  "packageManager": "pnpm@10.30.0+sha512.2b5753de015d480eeb88f5b5b61e0051f05b4301808a82ec8b840c9d2adf7748eb352c83f5c1593ca703ff1017295bc3fdd3119abb9686efc96b9fcb18200937"
 }
