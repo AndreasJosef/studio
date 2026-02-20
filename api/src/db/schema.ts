@@ -27,6 +27,8 @@ export const userSchema = createSelectSchema(users);
 export type User = z.infer<typeof userSchema>;
 export type newUser = z.infer<typeof insertUserSchema>;
 
+export type SafeUser = Omit<User, 'passwordHash'>;
+
 /**
  * Define Schema and types of jobs in the database
  **/

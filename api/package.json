@@ -13,6 +13,7 @@
     "@jobchaser/shared": "workspace:../shared",
     "@studio/db-manager": "workspace:*",
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "drizzle-orm": "^0.45.1",
     "drizzle-zod": "^0.8.3",
     "express": "^5.2.1",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/pg": "^8.16.0",

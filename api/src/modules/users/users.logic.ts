@@ -1,10 +1,16 @@
 import bcrypt from 'bcrypt';
 
-import { type newUser } from '../../db/schema.ts';
+import type { newUser, SafeUser } from '../../db/schema.ts';
 import { userTable } from './users.data.ts';
 
-import { ok, type SignupInput } from '@jobchaser/shared';
+import { ok, type SignupInput, type Result } from '@jobchaser/shared';
 import { fail } from '@jobchaser/shared';
+import { jwtService } from '../../services/jwt.service.ts';
+
+interface LoginResponse {
+  user: SafeUser;
+  token: string;
+}
 
 export const authLogic = {
   async signup(input: SignupInput) {
@@ -32,21 +38,23 @@ export const authLogic = {
     }
   },
 
-  async login(email: string, passwordReceived: string) {
+  async login(
+    email: string,
+    passwordReceived: string
+  ): Promise<Result<LoginResponse>> {
     try {
       const user = await userTable.findByEmail(email);
-      if (!user) {
-        return fail('Invalid Credentials');
-      }
+      if (!user) return fail('Invalid Credentials');
 
       const isValid = await bcrypt.compare(passwordReceived, user.passwordHash);
-      if (!isValid) {
-        return fail('Invalid Credentials');
-      }
+      if (!isValid) return fail('Invalid Credentials');
+
+      const token = jwtService.generateToken(user.id);
 
       // strip user of passwordHash to prevent leaks
       const { passwordHash, ...safeUser } = user;
-      return ok(safeUser);
+
+      return ok({ user: safeUser as SafeUser, token });
     } catch (e) {
       console.error('[Internal Error Log]: ', e);
       return fail('Auth Service Offline');
