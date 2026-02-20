@@ -1,5 +1,6 @@
 {
-  "name": "@jobchaser/root",
+  "name": "@jobchaser/workspace",
+  "private": true,
   "scripts": {
     "dev:web": "pnpm --filter @jobchaser/web --dir . dev",
     "dev:api": "pnpm --filter @jobchaser/api --dir . dev",

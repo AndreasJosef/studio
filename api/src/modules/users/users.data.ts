@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm';
-import { db } from '../../db/index.ts';
-import { newUser, users } from '../../db/schema.ts';
+import { db, pool } from '../../db/index.ts';
+import { type newUser, users } from '../../db/schema.ts';
 
-export const userData = {
+export const userTable = {
   async createUser(data: newUser) {
     const result = await db.insert(users).values(data).returning();
 
@@ -16,18 +16,17 @@ export const userData = {
   },
 
   /**
-   * Not active anymore leaving it here for reference why to showcase how to use the pg driver directly without on ORM
+   * @note - not active anymore leaving it here for reference why to showcase how to use the pg driver directly without on ORM
+   * **/
   async createTestUser(name: string, email: string) {
-    const query = `
+    const sqlString = `
       INSERT INTO users (email, password_hash, display_name)
       VALUES ($1, $2, $3)
       RETURNING id, email, display_name as "displayName";
     `;
     const value = [email, 'dummy_pw_hash', name];
 
-    const { rows } = await pool.query(query, value);
+    const { rows } = await pool.query(sqlString, value);
     return rows[0];
   },
-
-   * **/
 };

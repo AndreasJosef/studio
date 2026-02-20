@@ -1,5 +1,8 @@
 import { pgTable, uuid, text, timestamp } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+
+import { signupSchema } from '@jobchaser/shared';
+
 import { z } from 'zod';
 
 /**
@@ -14,14 +17,19 @@ export const users = pgTable('users', {
 });
 
 export const insertUserSchema = createInsertSchema(users, {
-  email: z.email('Email not valid'),
-  displayName: z.string().min(3, 'Name must be at least 3 characters'),
+  email: signupSchema.shape.email,
+  displayName: signupSchema.shape.displayName,
+  passwordHash: z.string().min(60), // default length of bcrypt hash
 });
 
 export const userSchema = createSelectSchema(users);
+
 export type User = z.infer<typeof userSchema>;
 export type newUser = z.infer<typeof insertUserSchema>;
 
+/**
+ * Define Schema and types of jobs in the database
+ **/
 export const jobs = pgTable('jobs', {
   id: uuid('id').primaryKey().defaultRandom(),
   headline: text('title').notNull(),
