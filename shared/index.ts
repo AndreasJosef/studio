@@ -1,2 +1,2 @@
 export * from './schemas/auth.ts';
-export * from './schemas/result.ts';
+export * from './types/result.ts';

@@ -9,7 +9,7 @@ import { validateReq } from '../../middleware/validate.ts';
 import { asyncHandler } from '../../middleware/asyncHandler.ts';
 import { jwtService } from '../../services/jwt.service.ts';
 
-const router = Router();
+const router: Router = Router();
 
 // Signup
 router.post(
