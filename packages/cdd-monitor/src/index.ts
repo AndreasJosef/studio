@@ -1,77 +1,70 @@
-#!/usr/node/env node
+#!/usr/bin/env node
 
 import { createInterface } from 'node:readline';
-import { stdin, stdout } from 'node:process';
-import { parseLine } from './parser';
-import * as View from './view';
+import { stdin, argv } from 'node:process';
+import { parseLine } from './parser.ts';
+import * as View from './view.ts';
 
-const rl = createInterface({ input: stdin, output: stdout, terminal: false });
+const rl = createInterface({ input: stdin, terminal: false });
 
-// --- CONFIG ---
-// If a "Start" happens within 1.5s of the previous one,
-// we assume it is the 2nd half of the SAME save. We don't clear.
-const COMPOSITE_TIMEOUT = 1500;
+const isFastMode = argv.includes('--fast');
+const START_THRESHOLD = isFastMode ? 0 : 1500;
+const SUCCESS_DELAY = isFastMode ? 200 : 600;
 
-// --- STATE ---
-let lastClearTime = 0;
-let successTimer: ReturnType<typeof setTimeout> | null = null;
+let lastStartTime = 0;
+let successTimer: NodeJS.Timeout | null = null;
 let errorCount = 0;
-
-// THE MEMORY
-// We store the unique signature of every error we print.
-// We wipe this memory only on a "New Save" (Start).
+let isCompiling = false;
 const seenErrors = new Set<string>();
+const currentErrors: any[] = [];
 
-rl.on('line', (rawLine) => {
-  if (!rawLine) return;
+// Initial boot
+View.renderUI(0, false);
 
-  const action = parseLine(rawLine);
+rl.on('line', (line) => {
+  if (!line.trim()) return;
+
+  const action = parseLine(line);
   const now = Date.now();
 
-  // --- 1. START SIGNAL ---
   if (action.type === 'start') {
-    // Kill any pending "Success" message so it doesn't flash.
     if (successTimer) clearTimeout(successTimer);
+    isCompiling = true;
 
-    // LOGIC: Is this a NEW save? Or just the 2nd project starting?
-    if (now - lastClearTime > COMPOSITE_TIMEOUT) {
-      // It's been a while. This is a NEW USER SAVE.
-      View.clearScreen();
-      lastClearTime = now;
-
-      // Wipe the memory. We are ready for fresh errors.
+    if (now - lastStartTime > START_THRESHOLD) {
+      lastStartTime = now;
       seenErrors.clear();
+      currentErrors.length = 0;
       errorCount = 0;
+      View.renderUI(errorCount, isCompiling);
     }
-    // If it's been < 1.5s, we do NOTHING.
-    // We don't clear. We don't wipe memory.
-    // We let the errors pile up nicely.
   }
 
-  // --- 2. ERROR SIGNAL (With De-Duplication) ---
   if (action.type === 'error') {
     if (successTimer) clearTimeout(successTimer);
-
-    // Create a unique fingerprint: "App.tsx:10:5-TS2322"
     const sig = `${action.payload.file}:${action.payload.line}:${action.payload.code}`;
 
-    // THE FIX: If we have seen this error already in this cycle, ignore it.
     if (!seenErrors.has(sig)) {
       seenErrors.add(sig);
-      View.printError(action.payload);
+      currentErrors.push(action.payload);
       errorCount++;
+      // Stream error to screen immediately
+      View.printError(action.payload);
     }
   }
 
-  // --- 3. COMPLETE SIGNAL ---
   if (action.type === 'complete') {
+    isCompiling = false;
     if (successTimer) clearTimeout(successTimer);
 
-    // Wait 600ms. If silence remains, AND we found no errors, show Green.
     successTimer = setTimeout(() => {
-      if (errorCount === 0) {
-        View.printSuccess();
+      // Flip header to idle state (Clean or X Errors)
+      View.renderUI(errorCount, isCompiling);
+
+      // If there are errors, keep them visible below the new idle header
+      if (errorCount > 0) {
+        currentErrors.forEach((err) => View.printError(err));
       }
-    }, 600);
+    }, SUCCESS_DELAY);
   }
 });

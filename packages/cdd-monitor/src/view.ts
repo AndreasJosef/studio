@@ -1,25 +1,33 @@
 import { stdout } from 'node:process';
-import { type CompilerError } from './types';
+import type { CompilerError } from './types.ts';
 
-// ANSI Codes (Level 2 Logic buried here)
 const C = {
   CYAN: '\x1b[36m',
   RED: '\x1b[31m',
   GREEN: '\x1b[32m',
+  YELLOW: '\x1b[33m',
   RESET: '\x1b[0m',
   BOLD: '\x1b[1m',
+  DIM: '\x1b[2m',
   CLEAR: '\x1b[2J\x1b[3J\x1b[H',
 };
 
-export function clearScreen() {
+export function renderUI(errorCount: number, isCompiling: boolean) {
   stdout.write(C.CLEAR);
-  console.log(`${C.BOLD}TSCDD Error Tasklist${C.RESET}`);
-  console.log(`${C.CYAN}Watching...${C.RESET}\n`);
-}
+  console.log(`${C.BOLD}TSCDD Monitor${C.RESET} ${C.DIM}`);
 
-export function printSuccess() {
-  stdout.write(C.CLEAR);
-  console.log(`${C.GREEN}${C.BOLD}✔ TSC is Happy!${C.RESET}`);
+  if (isCompiling) {
+    console.log(`${C.YELLOW}${C.BOLD}Compiling..${C.RESET}\n`);
+  } else {
+    const label = errorCount === 1 ? 'Error' : 'Errors';
+    const statusText =
+      errorCount > 0
+        ? `${C.RED}${C.BOLD}${errorCount} ${label}${C.RESET}`
+        : `${C.GREEN}Clean${C.RESET}`;
+
+    // Merged: X Errors | Waiting for changes..
+    console.log(`${statusText} ${C.DIM}| Waiting for changes..${C.RESET}\n`);
+  }
 }
 
 export function printError(err: CompilerError) {
