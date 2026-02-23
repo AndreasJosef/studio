@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 
 import { ZodObject, ZodError } from 'zod';
-import { fail } from '@jobchaser/shared';
+import { fail } from '@jobchaser/utils';
 
 export const validateReq =
   (schema: ZodObject) =>

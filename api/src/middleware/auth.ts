@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { jwtService } from '../services/jwt.service.ts';
-import { fail } from '@jobchaser/shared';
+
+import { fail } from '@jobchaser/utils';
 
 /* eslint-disable @typescript-eslint/no-namespace */
 declare global {

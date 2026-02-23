@@ -2,7 +2,7 @@ import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import cookieParser from 'cookie-parser';
 
-import { fail } from '@jobchaser/shared';
+import { fail } from '@jobchaser/utils';
 
 import userRoutes from './modules/users/users.routes.ts';
 

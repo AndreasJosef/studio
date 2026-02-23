@@ -1,4 +1,4 @@
-import { HTMLTreeNode } from '../../core/html-parse';
+import { HTMLTreeNode } from '@/lib/html-parse';
 import React from 'react';
 
 interface DetailProps {

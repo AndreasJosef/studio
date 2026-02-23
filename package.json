@@ -1,9 +1,17 @@
 {
   "name": "@jobchaser/workspace",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev:web": "pnpm --filter @jobchaser/web --dir . dev",
     "dev:api": "pnpm --filter @jobchaser/api --dir . dev",
-    "dev": "pnpm --filter \"@jobchaser/*\" --dir . --parallel dev"
+    "dev": "pnpm --filter \"@jobchaser/*\" --dir . --parallel dev",
+    "cdd:api": "pnpm --filter @jobchaser/api run cdd",
+    "cdd:web": "pnpm --filter @jobchaser/web run cdd",
+    "cdd:domain": "pnpm --filter @jobchaser/domain run cdd",
+    "cdd": "pnpm -r --parallel run cdd | sed \"s/^\\([^ ]*\\) cdd:/$(printf '\\033[35m')\\1:$(printf '\\033[0m')/\""
+  },
+  "devDependencies": {
+    "@studio/cdd-monitor": "workspace:*"
   }
 }

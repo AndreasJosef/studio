@@ -1,10 +1,14 @@
 import bcrypt from 'bcrypt';
 
-import type { newUser, SafeUser } from '../../db/schema.ts';
-import { userTable } from './users.data.ts';
+import {
+  type CreateUserDB,
+  type CreateUserInput,
+  type SafeUser,
+  userActions,
+} from '@jobchaser/domain/types';
 
-import { ok, type SignupInput, type Result } from '@jobchaser/shared';
-import { fail } from '@jobchaser/shared';
+import { ok, fail, type Result } from '@jobchaser/utils';
+
 import { jwtService } from '../../services/jwt.service.ts';
 
 interface LoginResponse {
@@ -13,20 +17,20 @@ interface LoginResponse {
 }
 
 export const authLogic = {
-  async signup(input: SignupInput) {
+  async signup(input: CreateUserInput) {
     try {
-      const isExisting = await userTable.findByEmail(input.email);
+      const isExisting = await userActions.findByEmail(input.email);
       if (isExisting) return fail('Email already registered');
 
       const hashedPassword = await bcrypt.hash(input.password, 10);
 
-      const dbUser: newUser = {
+      const dbUser: CreateUserDB = {
         email: input.email,
         passwordHash: hashedPassword,
         displayName: input.displayName,
       };
 
-      const user = await userTable.createUser(dbUser);
+      const user = await userActions.createUser(dbUser);
 
       // strip user of passwordHash to prevent leaks
       const { passwordHash, ...safeUser } = user;
@@ -43,7 +47,7 @@ export const authLogic = {
     passwordReceived: string
   ): Promise<Result<LoginResponse>> {
     try {
-      const user = await userTable.findByEmail(email);
+      const user = await userActions.findByEmail(email);
       if (!user) return fail('Invalid Credentials');
 
       const isValid = await bcrypt.compare(passwordReceived, user.passwordHash);

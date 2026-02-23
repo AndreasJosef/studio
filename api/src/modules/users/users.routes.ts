@@ -1,20 +1,22 @@
 import { Router } from 'express';
-import { ok } from '@jobchaser/shared';
-import { loginSchema, signupSchema } from '@jobchaser/shared';
 
-import { userTable } from './users.data.ts';
+import { CreateUserSchema, LoginSchema, userActions } from '@jobchaser/domain';
+
 import { authLogic } from './users.logic.ts';
 import { authenticate } from '../../middleware/auth.ts';
 import { validateReq } from '../../middleware/validate.ts';
 import { asyncHandler } from '../../middleware/asyncHandler.ts';
+
 import { jwtService } from '../../services/jwt.service.ts';
+
+import { ok } from '@jobchaser/utils';
 
 const router: Router = Router();
 
 // Signup
 router.post(
   '/signup',
-  validateReq(signupSchema),
+  validateReq(CreateUserSchema),
   asyncHandler(async (req, res) => {
     const result = await authLogic.signup(req.body);
 
@@ -38,7 +40,7 @@ router.post(
 // Login
 router.post(
   '/login',
-  validateReq(loginSchema),
+  validateReq(LoginSchema),
   asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const result = await authLogic.login(email, password);
@@ -87,19 +89,5 @@ router.get(
     throw new Error('KABOOM!');
   })
 );
-
-router.post('/test', async (req, res) => {
-  try {
-    const { name, email } = req.body;
-    const user = await userTable.createTestUser(name, email);
-    res.status(201).json({
-      message: 'DB working',
-      user,
-    });
-  } catch (e) {
-    console.error('DB failed: ', e);
-    res.status(500).json({ error: 'Failed to create users' });
-  }
-});
 
 export default router;

@@ -7,11 +7,12 @@
     "dev": "node --watch --env-file=.env src/index.ts",
     "db:shell": "PGPASSFILE=.pgpass psql -h localhost -p 5432 -U jcadmin job_chaser_dev",
     "clean": "rm -rf ./node_modules pnpm-lock.yaml",
-    "cdd": "tsc --watch --preserveWatchOutput | cdd-monitor --fast",
+    "cdd": "tsc --watch --preserveWatchOutput | node ../../../packages/cdd-monitor/src/index.ts --fast",
     "test:api": "./scripts/test.api.sh"
   },
   "dependencies": {
-    "@jobchaser/shared": "workspace:../shared",
+    "@jobchaser/domain": "workspace:*",
+    "@jobchaser/utils": "workspace:../utils",
     "@studio/db-manager": "workspace:*",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
@@ -23,7 +24,6 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@studio/cdd-monitor": "workspace:*",
     "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",

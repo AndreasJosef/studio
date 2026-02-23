@@ -1,5 +1,5 @@
 import { createRouter } from '@tanstack/react-router';
-import { AuthStateValue } from './core/auth/AuthContext';
+import { AuthContextValue } from './core/auth/AuthContext';
 
 import { routeTree } from './routeTree.gen';
 
@@ -8,7 +8,7 @@ import { routeTree } from './routeTree.gen';
  * */
 
 export interface RouterContext {
-  auth: AuthStateValue;
+  auth: AuthContextValue;
 }
 
 export const router = createRouter({

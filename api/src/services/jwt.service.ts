@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { ok, fail, type Result } from '@jobchaser/shared';
+import { ok, fail, type Result } from '@jobchaser/utils';
 
 /**
  * Helper function to make sure that the environment indeed provides a valid secret.
