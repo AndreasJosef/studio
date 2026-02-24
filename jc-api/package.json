@@ -4,8 +4,7 @@
   "type": "module",
   "packageManager": "pnpm@10.30.0",
   "scripts": {
-    "dev": "node --watch --env-file=.env src/index.ts",
-    "db:shell": "PGPASSFILE=.pgpass psql -h localhost -p 5432 -U jcadmin job_chaser_dev",
+    "dev": "node --watch --env-file=../.env src/index.ts",
     "clean": "rm -rf ./node_modules pnpm-lock.yaml",
     "cdd": "tsc --watch --preserveWatchOutput | node ../../../packages/cdd-monitor/src/index.ts --fast",
     "test:api": "./scripts/test.api.sh"
@@ -13,7 +12,6 @@
   "dependencies": {
     "@jobchaser/domain": "workspace:*",
     "@jobchaser/utils": "workspace:../utils",
-    "@studio/db-manager": "workspace:*",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "drizzle-orm": "^0.45.1",

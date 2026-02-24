@@ -1,23 +1,17 @@
 import bcrypt from 'bcrypt';
-
+import { jwtService } from '../../services/jwt.service.ts';
+import { ok, fail, type Result } from '@jobchaser/utils';
 import {
   type CreateUserDB,
   type CreateUserInput,
   type SafeUser,
-  userActions,
+  type LoginResponse,
+  SafeUserSchema,
 } from '@jobchaser/domain/types';
-
-import { ok, fail, type Result } from '@jobchaser/utils';
-
-import { jwtService } from '../../services/jwt.service.ts';
-
-interface LoginResponse {
-  user: SafeUser;
-  token: string;
-}
+import { userActions } from '@jobchaser/domain/actions';
 
 export const authLogic = {
-  async signup(input: CreateUserInput) {
+  async signup(input: CreateUserInput): Promise<Result<SafeUser>> {
     try {
       const isExisting = await userActions.findByEmail(input.email);
       if (isExisting) return fail('Email already registered');
@@ -33,8 +27,8 @@ export const authLogic = {
       const user = await userActions.createUser(dbUser);
 
       // strip user of passwordHash to prevent leaks
-      const { passwordHash, ...safeUser } = user;
-      // TODO: Make safeUser an actual type
+      const safeUser = SafeUserSchema.parse(user);
+
       return ok(safeUser);
     } catch (e) {
       console.error('[Internal Error Log]: ', e);
@@ -50,15 +44,18 @@ export const authLogic = {
       const user = await userActions.findByEmail(email);
       if (!user) return fail('Invalid Credentials');
 
-      const isValid = await bcrypt.compare(passwordReceived, user.passwordHash);
-      if (!isValid) return fail('Invalid Credentials');
+      const isValidPassword = await bcrypt.compare(
+        passwordReceived,
+        user.passwordHash
+      );
+      if (!isValidPassword) return fail('Invalid Credentials');
 
       const token = jwtService.generateToken(user.id);
 
-      // strip user of passwordHash to prevent leaks
-      const { passwordHash, ...safeUser } = user;
+      // strip user of passwordHash
+      const safeUser = SafeUserSchema.parse(user);
 
-      return ok({ user: safeUser as SafeUser, token });
+      return ok({ user: safeUser, token });
     } catch (e) {
       console.error('[Internal Error Log]: ', e);
       return fail('Auth Service Offline');

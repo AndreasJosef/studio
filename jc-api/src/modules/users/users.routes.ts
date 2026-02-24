@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { CreateUserSchema, LoginSchema, userActions } from '@jobchaser/domain';
+import { CreateUserSchema, LoginSchema } from '@jobchaser/domain';
 
 import { authLogic } from './users.logic.ts';
 import { authenticate } from '../../middleware/auth.ts';
@@ -78,15 +78,6 @@ router.get(
   authenticate,
   asyncHandler(async (req, res) => {
     res.status(200).json(ok({ userId: req.userId }));
-  })
-);
-
-// TEST AREA
-// Simulating an unhandled error to test global error handler middleware
-router.get(
-  '/detonate',
-  asyncHandler(async (req, res) => {
-    throw new Error('KABOOM!');
   })
 );
 

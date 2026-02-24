@@ -9,7 +9,8 @@
     "cdd:api": "pnpm --filter @jobchaser/api run cdd",
     "cdd:web": "pnpm --filter @jobchaser/web run cdd",
     "cdd:domain": "pnpm --filter @jobchaser/domain run cdd",
-    "cdd": "pnpm -r --parallel run cdd | sed \"s/^\\([^ ]*\\) cdd:/$(printf '\\033[35m')\\1:$(printf '\\033[0m')/\""
+    "cdd": "pnpm -r --parallel run cdd | sed \"s/^\\([^ ]*\\) cdd:/$(printf '\\033[35m')\\1:$(printf '\\033[0m')/\"",
+    "db:shell": "PGPASSFILE=.pgpass psql -h localhost -p 5432 -U jcadmin job_chaser_dev"
   },
   "devDependencies": {
     "@studio/cdd-monitor": "workspace:*"

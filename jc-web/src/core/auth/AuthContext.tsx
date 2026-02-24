@@ -4,7 +4,7 @@ import { createContext, useContext } from 'react';
  * Manages the global authenticated signal for the JobChaser domain.
  **/
 
-// TODO: Move this into a shared type
+// TODO: Move this into a shared type, this should be the safe User from my domain
 export interface User {
   name: string;
 }

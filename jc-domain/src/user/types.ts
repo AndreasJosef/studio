@@ -17,15 +17,24 @@ export const CreateUserSchema = createInsertSchema(usersTable, {
     password: z.string().min(8, 'Password must be at least 8 characters'),
   });
 
+export const SafeUserSchema = UserSchema.omit({ passwordHash: true });
+
 export const LoginSchema = z.object({
   email: z.email('Email not valid!'),
   password: z.string().min(1, 'Password is required'),
 });
 
-export const SafeUserSchema = UserSchema.omit({ passwordHash: true });
+export const LoginResponseSchema = z.object({
+  user: SafeUserSchema,
+  token: z.string(),
+});
 
 export type User = z.infer<typeof UserSchema>;
+
 export type CreateUserInput = z.infer<typeof CreateUserSchema>;
 export type CreateUserDB = typeof usersTable.$inferInsert;
+
 export type LoginInput = z.infer<typeof LoginSchema>;
+export type LoginResponse = z.infer<typeof LoginResponseSchema>;
+
 export type SafeUser = z.infer<typeof SafeUserSchema>;
