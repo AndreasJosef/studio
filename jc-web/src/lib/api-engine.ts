@@ -1,3 +1,4 @@
+import z from 'zod';
 import { Result, ok, fail } from './result';
 /**
  * Configuration options for `fetchSafeList`.
@@ -128,40 +129,36 @@ export async function fetchSafeItem<T>(
 }
 
 /**
- * A reusable poster for sending data.
+ * A reusable poster for sending data where Input and Output types can differ.
+ * TIn = The shape of the data we send (e.g., LoginInput)
+ * TOut = The shape of the data we receive (e.g., SafeUser)
  */
-export async function safePost<T>(
+export async function safePost<TIn, TOut>(
   url: string,
-  payload: T,
+  payload: TIn,
   config: RequestInit = {},
-  parser?: (input: unknown) => Result<T> // Optional: Parse the response
-): Promise<Result<T | null>> {
+  parser: (input: unknown) => Result<TOut>
+): Promise<Result<TOut>> {
   try {
-    config.method = 'POST';
-
-    // Prepare the headers
-    const headers = new Headers({
-      'Content-Type': 'application/json',
-    });
-
-    // merge user headers
-    if (config.headers) {
-      const userHeaders = new Headers(config.headers);
-      userHeaders.forEach((value, key) => headers.set(key, value));
+    const headers = new Headers(config.headers || {});
+    if (!headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
     }
 
     const response = await fetch(url, {
       ...config,
+      method: 'POST',
       headers,
       body: JSON.stringify(payload),
     });
 
-    if (!response.ok) return fail(`HTTP ${response.status}`);
-
-    // If we don't care about the response data (fire and forget)
-    if (!parser) return ok(null);
+    if (!response.ok) {
+      return fail(`HTTP Error: ${response.status}`);
+    }
 
     const rawData: unknown = await response.json();
+
+    // Pipe the raw result through the parser to get the TOut
     return parser(rawData);
   } catch (e) {
     return fail(e instanceof Error ? e.message : 'Network Error');
@@ -242,3 +239,29 @@ export async function updateSafe<T>(
     return fail(e instanceof Error ? e.message : 'Network Error');
   }
 }
+
+/**
+ * A utility function that wraps the parser function for for the safeFetch into an Zod parser so that I get clean runtime validation and mapping them onto types.
+ *
+ * @param schema a zod schema to to apply
+ * @returns a railway result of the parsing
+ ***/
+export const zodParser = <T>(schema: z.ZodSchema<T>) => {
+  return (input: unknown): Result<T> => {
+    console.log('Got something: ', input);
+    const wrapper = input as Result<any>;
+
+    if (!wrapper.ok) {
+      return fail(wrapper.error || 'API returned an Error');
+    }
+
+    console.log('value', wrapper.value);
+
+    const result = schema.safeParse(wrapper.value);
+
+    console.log('Parsed server response ', input);
+    console.log('And got this ', result);
+
+    return result.success ? ok(result.data) : fail('Input validation failed!');
+  };
+};

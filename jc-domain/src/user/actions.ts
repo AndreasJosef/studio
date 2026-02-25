@@ -16,6 +16,16 @@ export const userActions = {
     return result;
   },
 
+  async findById(id: string): Promise<User> {
+    const [result] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, id));
+
+    console.log('[USER BY ID RESULT]: ', result);
+    return result;
+  },
+
   async findByEmail(email: string): Promise<User | undefined> {
     const [result] = await db
       .select()

@@ -5,3 +5,11 @@
   --color-background: #131311;
   --color-background: var(--color-zinc-900);
 }
+
+.lucide {
+  color: var(--color-zinc-500);
+}
+
+.lucide:hover {
+  color: var(--color-zinc-200);
+}

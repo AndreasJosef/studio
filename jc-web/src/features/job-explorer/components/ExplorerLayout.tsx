@@ -17,16 +17,15 @@ export default function ExplorerLayout({
 
   return (
     <div className="flex flex-col gap-6 max-w-8xl mx-auto">
-      <header
-        className={`w-full ${isDetailActive ? 'hidden md:block' : 'block'}`}
-      >
-        {Search}
-      </header>
-
       <div className="grid grid-cols-12 gap-8 items-start">
         <aside
           className={`${isDetailActive ? 'hidden md:block' : 'block'} col-span-12 md:col-span-5 pb-20`}
         >
+          <header
+            className={`w-full ${isDetailActive ? 'hidden md:block' : 'block'}`}
+          >
+            {Search}
+          </header>
           {List}
         </aside>
         <main className="col-span-12 md:col-span-7 sticky top-6 h-[calc(100vh-3rem)]">

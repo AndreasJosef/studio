@@ -10,66 +10,74 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRootRouteImport } from './routes/_app-root'
-import { Route as AuthSignupRouteImport } from './routes/auth.signup'
-import { Route as AuthSigninRouteImport } from './routes/auth.signin'
+import { Route as AppRootMyJobsRouteImport } from './routes/_app-root.my-jobs'
 import { Route as AppRootExploreRouteImport } from './routes/_app-root.explore'
+import { Route as AppRootAuthSignupRouteImport } from './routes/_app-root.auth.signup'
+import { Route as AppRootAuthSigninRouteImport } from './routes/_app-root.auth.signin'
 
 const AppRootRoute = AppRootRouteImport.update({
   id: '/_app-root',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthSignupRoute = AuthSignupRouteImport.update({
-  id: '/auth/signup',
-  path: '/auth/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthSigninRoute = AuthSigninRouteImport.update({
-  id: '/auth/signin',
-  path: '/auth/signin',
-  getParentRoute: () => rootRouteImport,
+const AppRootMyJobsRoute = AppRootMyJobsRouteImport.update({
+  id: '/my-jobs',
+  path: '/my-jobs',
+  getParentRoute: () => AppRootRoute,
 } as any)
 const AppRootExploreRoute = AppRootExploreRouteImport.update({
   id: '/explore',
   path: '/explore',
   getParentRoute: () => AppRootRoute,
 } as any)
+const AppRootAuthSignupRoute = AppRootAuthSignupRouteImport.update({
+  id: '/auth/signup',
+  path: '/auth/signup',
+  getParentRoute: () => AppRootRoute,
+} as any)
+const AppRootAuthSigninRoute = AppRootAuthSigninRouteImport.update({
+  id: '/auth/signin',
+  path: '/auth/signin',
+  getParentRoute: () => AppRootRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppRootRouteWithChildren
   '/explore': typeof AppRootExploreRoute
-  '/auth/signin': typeof AuthSigninRoute
-  '/auth/signup': typeof AuthSignupRoute
+  '/my-jobs': typeof AppRootMyJobsRoute
+  '/auth/signin': typeof AppRootAuthSigninRoute
+  '/auth/signup': typeof AppRootAuthSignupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppRootRouteWithChildren
   '/explore': typeof AppRootExploreRoute
-  '/auth/signin': typeof AuthSigninRoute
-  '/auth/signup': typeof AuthSignupRoute
+  '/my-jobs': typeof AppRootMyJobsRoute
+  '/auth/signin': typeof AppRootAuthSigninRoute
+  '/auth/signup': typeof AppRootAuthSignupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app-root': typeof AppRootRouteWithChildren
   '/_app-root/explore': typeof AppRootExploreRoute
-  '/auth/signin': typeof AuthSigninRoute
-  '/auth/signup': typeof AuthSignupRoute
+  '/_app-root/my-jobs': typeof AppRootMyJobsRoute
+  '/_app-root/auth/signin': typeof AppRootAuthSigninRoute
+  '/_app-root/auth/signup': typeof AppRootAuthSignupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/explore' | '/auth/signin' | '/auth/signup'
+  fullPaths: '/' | '/explore' | '/my-jobs' | '/auth/signin' | '/auth/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/explore' | '/auth/signin' | '/auth/signup'
+  to: '/' | '/explore' | '/my-jobs' | '/auth/signin' | '/auth/signup'
   id:
     | '__root__'
     | '/_app-root'
     | '/_app-root/explore'
-    | '/auth/signin'
-    | '/auth/signup'
+    | '/_app-root/my-jobs'
+    | '/_app-root/auth/signin'
+    | '/_app-root/auth/signup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AppRootRoute: typeof AppRootRouteWithChildren
-  AuthSigninRoute: typeof AuthSigninRoute
-  AuthSignupRoute: typeof AuthSignupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -81,19 +89,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRootRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/signup': {
-      id: '/auth/signup'
-      path: '/auth/signup'
-      fullPath: '/auth/signup'
-      preLoaderRoute: typeof AuthSignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth/signin': {
-      id: '/auth/signin'
-      path: '/auth/signin'
-      fullPath: '/auth/signin'
-      preLoaderRoute: typeof AuthSigninRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_app-root/my-jobs': {
+      id: '/_app-root/my-jobs'
+      path: '/my-jobs'
+      fullPath: '/my-jobs'
+      preLoaderRoute: typeof AppRootMyJobsRouteImport
+      parentRoute: typeof AppRootRoute
     }
     '/_app-root/explore': {
       id: '/_app-root/explore'
@@ -102,15 +103,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRootExploreRouteImport
       parentRoute: typeof AppRootRoute
     }
+    '/_app-root/auth/signup': {
+      id: '/_app-root/auth/signup'
+      path: '/auth/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AppRootAuthSignupRouteImport
+      parentRoute: typeof AppRootRoute
+    }
+    '/_app-root/auth/signin': {
+      id: '/_app-root/auth/signin'
+      path: '/auth/signin'
+      fullPath: '/auth/signin'
+      preLoaderRoute: typeof AppRootAuthSigninRouteImport
+      parentRoute: typeof AppRootRoute
+    }
   }
 }
 
 interface AppRootRouteChildren {
   AppRootExploreRoute: typeof AppRootExploreRoute
+  AppRootMyJobsRoute: typeof AppRootMyJobsRoute
+  AppRootAuthSigninRoute: typeof AppRootAuthSigninRoute
+  AppRootAuthSignupRoute: typeof AppRootAuthSignupRoute
 }
 
 const AppRootRouteChildren: AppRootRouteChildren = {
   AppRootExploreRoute: AppRootExploreRoute,
+  AppRootMyJobsRoute: AppRootMyJobsRoute,
+  AppRootAuthSigninRoute: AppRootAuthSigninRoute,
+  AppRootAuthSignupRoute: AppRootAuthSignupRoute,
 }
 
 const AppRootRouteWithChildren =
@@ -118,8 +139,6 @@ const AppRootRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   AppRootRoute: AppRootRouteWithChildren,
-  AuthSigninRoute: AuthSigninRoute,
-  AuthSignupRoute: AuthSignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -4,6 +4,10 @@ import { usersTable } from './schema.ts';
 
 export const UserSchema = createSelectSchema(usersTable);
 
+export const UserSchemaFrontend = UserSchema.extend({
+  createdAt: z.coerce.date(),
+});
+
 export const CreateUserSchema = createInsertSchema(usersTable, {
   email: z.email('Email not valid!'),
   displayName: z.string().min(3, 'Name must be at least 3 characters'),
@@ -18,6 +22,9 @@ export const CreateUserSchema = createInsertSchema(usersTable, {
   });
 
 export const SafeUserSchema = UserSchema.omit({ passwordHash: true });
+export const SafeUserSchemaFrontend = UserSchemaFrontend.omit({
+  passwordHash: true,
+});
 
 export const LoginSchema = z.object({
   email: z.email('Email not valid!'),

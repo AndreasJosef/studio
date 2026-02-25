@@ -1,24 +1,21 @@
+import { Result } from '@/lib/result';
+import { LoginInput, SafeUser } from '@jobchaser/domain';
 import { createContext, useContext } from 'react';
 
 /**
  * Manages the global authenticated signal for the JobChaser domain.
  **/
 
-// TODO: Move this into a shared type, this should be the safe User from my domain
-export interface User {
-  name: string;
-}
-
 // This lets me use an AuthState interface in the app without exposing setUser on it
 export interface AuthState {
-  user: User | null;
+  user: SafeUser | null;
   isAuthenticated: boolean;
   isInitializing: boolean;
 }
 
 // Whereas this is the whole auth context interface
 export type AuthContextValue = AuthState & {
-  setUser: (user: User | null) => void;
+  loginAction: (input: LoginInput) => Promise<Result<SafeUser>>;
 };
 
 export const AuthContext = createContext<AuthContextValue | undefined>(

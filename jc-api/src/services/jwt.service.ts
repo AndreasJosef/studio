@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { ok, fail, type Result } from '@jobchaser/utils';
+import { ok, fail, type Result, AuthErrorCode } from '@jobchaser/domain';
 
 /**
  * Helper function to make sure that the environment indeed provides a valid secret.
@@ -9,7 +9,7 @@ import { ok, fail, type Result } from '@jobchaser/utils';
 const getSecret = (): string => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
-    throw new Error('JWT secret is not configured!');
+    throw new Error('JWT secret is not configured for the environment!');
   }
   return secret;
 };
@@ -25,7 +25,7 @@ export const jwtService = {
       const verified = jwt.verify(token, JWT_SECRET) as { sub: string };
       return ok(verified);
     } catch (e) {
-      return fail('Invalid or expired token');
+      return fail('Session expired.', AuthErrorCode.SESSION_EXPIRED);
     }
   },
 };

@@ -1,6 +1,12 @@
 import { Router } from 'express';
 
-import { CreateUserSchema, LoginSchema } from '@jobchaser/domain';
+import {
+  fail,
+  ok,
+  CreateUserSchema,
+  LoginSchema,
+  AuthErrorCode,
+} from '@jobchaser/domain';
 
 import { authLogic } from './users.logic.ts';
 import { authenticate } from '../../middleware/auth.ts';
@@ -8,8 +14,6 @@ import { validateReq } from '../../middleware/validate.ts';
 import { asyncHandler } from '../../middleware/asyncHandler.ts';
 
 import { jwtService } from '../../services/jwt.service.ts';
-
-import { ok } from '@jobchaser/utils';
 
 const router: Router = Router();
 
@@ -62,7 +66,7 @@ router.post(
 router.post(
   '/logout',
   asyncHandler(async (req, res) => {
-    res.clearCookie('auth_tooken', {
+    res.clearCookie('auth_token', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
@@ -77,7 +81,20 @@ router.get(
   '/me',
   authenticate,
   asyncHandler(async (req, res) => {
-    res.status(200).json(ok({ userId: req.userId }));
+    // get the actual user from the db
+    if (!req.userId)
+      return res
+        .status(401)
+        .json(fail('Invalid credentials', AuthErrorCode.INVALID_CREDENTIALS));
+
+    const result = await authLogic.getMe(req.userId);
+
+    if (!result.ok) {
+      res.clearCookie('auth_token');
+      res.status(404).json(result);
+    }
+
+    res.status(200).json(result);
   })
 );
 

@@ -10,11 +10,14 @@
     "cdd": "tsc --watch --noEmit --preserveWatchOutput | node ../../../packages/cdd-monitor/src/index.ts --fast"
   },
   "dependencies": {
+    "@jobchaser/domain": "workspace:*",
     "@tanstack/react-router": "^1.159.5",
+    "lucide-react": "^0.575.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.1",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",
