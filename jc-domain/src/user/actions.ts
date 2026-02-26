@@ -22,7 +22,6 @@ export const userActions = {
       .from(usersTable)
       .where(eq(usersTable.id, id));
 
-    console.log('[USER BY ID RESULT]: ', result);
     return result;
   },
 

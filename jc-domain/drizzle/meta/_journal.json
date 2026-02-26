@@ -8,6 +8,20 @@
       "when": 1771773324695,
       "tag": "0000_dear_toad",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1772138863509,
+      "tag": "0001_perfect_steve_rogers",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1772138942760,
+      "tag": "0002_sticky_chameleon",
+      "breakpoints": true
     }
   ]
 }
