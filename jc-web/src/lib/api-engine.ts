@@ -1,5 +1,5 @@
 import z from 'zod';
-import { Result, ok, fail } from './result';
+import { Result, ok, fail } from '@jobchaser/domain';
 /**
  * Configuration options for `fetchSafeList`.
  * Extends standard `RequestInit` to allow passing custom headers, etc
@@ -135,7 +135,7 @@ export async function fetchSafeItem<T>(
  */
 export async function safePost<TIn, TOut>(
   url: string,
-  payload: TIn,
+  payload: TIn | null,
   config: RequestInit = {},
   parser: (input: unknown) => Result<TOut>
 ): Promise<Result<TOut>> {
@@ -145,11 +145,13 @@ export async function safePost<TIn, TOut>(
       headers.set('Content-Type', 'application/json');
     }
 
+    const body = payload ? JSON.stringify(payload) : undefined;
+
     const response = await fetch(url, {
       ...config,
       method: 'POST',
+      body,
       headers,
-      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -248,20 +250,24 @@ export async function updateSafe<T>(
  ***/
 export const zodParser = <T>(schema: z.ZodSchema<T>) => {
   return (input: unknown): Result<T> => {
-    console.log('Got something: ', input);
+    // eslint-disable-next-line
     const wrapper = input as Result<any>;
 
     if (!wrapper.ok) {
       return fail(wrapper.error || 'API returned an Error');
     }
 
-    console.log('value', wrapper.value);
-
     const result = schema.safeParse(wrapper.value);
-
-    console.log('Parsed server response ', input);
-    console.log('And got this ', result);
 
     return result.success ? ok(result.data) : fail('Input validation failed!');
   };
+};
+
+export const identityParser = <T>(input: unknown) => {
+  const wrapper = input as Result<T>;
+
+  if (!wrapper.ok)
+    return fail(wrapper.error || 'Operation failed!', wrapper.code);
+
+  return ok(wrapper.value);
 };

@@ -14,8 +14,9 @@
 - [x] Setup Tanstack Router
 - [x] Add pagination functionality in JobList
 - [x] Create SignIn and SignUp routes
-- [ ] Add SignIn and SignUp forms
+- [x] Add SignIn and SignUp forms
 - [ ] Add keyboard nav to suggestion pop up
 - [ ] Replace useEffect with TanStack Query 
 - [ ] Implement filter functionality in Joblist
 - [ ] Close detail view with Escape
+- [ ] Think about an app wide error handling feature

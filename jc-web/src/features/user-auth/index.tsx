@@ -1,18 +1,30 @@
+import {
+  useRouter,
+  useNavigate,
+  useSearch,
+  Link,
+} from '@tanstack/react-router';
+
+import z from 'zod';
+
 import { useAuth } from '@/core/auth/AuthContext';
-import { useNavigate } from '@tanstack/react-router';
 
 import { LoginSchema } from '@jobchaser/domain';
-import { Link } from '@tanstack/react-router';
-import z from 'zod';
 
 interface AuthPageProps {
   mode: 'signin' | 'signup';
 }
 
 export default function AuthPage({ mode }: AuthPageProps) {
-  const isSignup = mode === 'signup';
-  const { loginAction } = useAuth();
+  const router = useRouter();
+
   const navigate = useNavigate();
+  const { loginAction } = useAuth();
+
+  const search = useSearch({ from: '/_app-root/auth/signin' });
+  const redirectTo = search.redirect || '/explore';
+
+  const isSignup = mode === 'signup';
 
   const onSubmit = async (formData: FormData) => {
     const data = Object.fromEntries(formData.entries());
@@ -28,7 +40,9 @@ export default function AuthPage({ mode }: AuthPageProps) {
       const result = await loginAction(validateInput.data);
 
       if (result.ok) {
-        navigate({ to: '/my-jobs' });
+        // makes sure the router has the latest context
+        await router.invalidate();
+        navigate({ to: redirectTo, replace: true });
       }
     }
   };

@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, Link } from '@tanstack/react-router';
 
 import { Search, Bookmark, Inbox, BookUser, User } from 'lucide-react';
+import LogoutButton from '@/shared/components/LogoutButton';
 
 const AppShell = () => (
   <>
@@ -18,6 +19,7 @@ const AppShell = () => (
             <p className="ml-2">Login</p>
           </div>
         </Link>
+        <LogoutButton />
       </header>
       <main className="flex flex-col md:flex-row gap-4 h-full">
         <aside className="w-full min-h-full md:w-20 p-2 border-b-2 md:border-r-2 border-zinc-800 flex flex-row md:flex-col md:items-center gap-2">

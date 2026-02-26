@@ -9,6 +9,7 @@ interface JobDetailsControls {
   id: string | undefined;
 }
 
+// TODO: this effect should be cleaned up and the whole api bit moved into the jobtech service -> set the fetchJobs version
 const BASE_URL = 'https://jobsearch.api.jobtechdev.se/';
 
 export function useJobDetails({ id }: JobDetailsControls) {

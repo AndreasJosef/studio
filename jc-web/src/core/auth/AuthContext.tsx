@@ -1,4 +1,4 @@
-import { Result } from '@/lib/result';
+import { Result } from '@jobchaser/domain';
 import { LoginInput, SafeUser } from '@jobchaser/domain';
 import { createContext, useContext } from 'react';
 
@@ -11,11 +11,13 @@ export interface AuthState {
   user: SafeUser | null;
   isAuthenticated: boolean;
   isInitializing: boolean;
+  isLoggingOut: boolean;
 }
 
 // Whereas this is the whole auth context interface
 export type AuthContextValue = AuthState & {
   loginAction: (input: LoginInput) => Promise<Result<SafeUser>>;
+  logoutAction: () => Promise<Result<string>>;
 };
 
 export const AuthContext = createContext<AuthContextValue | undefined>(

@@ -18,15 +18,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<SafeUser | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const loginAction = async (data: LoginInput) => {
     const result = await authService.login(data);
 
-    console.log('Login response :', result);
-
     if (result.ok) setUser(result.value);
 
     // whoever called it gets the result as well
+    return result;
+  };
+
+  const logoutAction = async () => {
+    const result = await authService.logout();
+
+    setIsLoggingOut(true);
+
+    if (result.ok) setUser(null);
+
+    setIsLoggingOut(false);
     return result;
   };
 
@@ -41,7 +51,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         { credentials: 'include' }
       );
 
-      console.log('Got this in the auth provider effect: ', result);
       if (result.ok) {
         setUser(result.value);
       } else {
@@ -58,7 +67,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     user,
     isAuthenticated: !!user,
     isInitializing,
+    isLoggingOut,
     loginAction,
+    logoutAction,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
