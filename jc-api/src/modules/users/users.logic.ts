@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
+
 import { ok, fail, type Result, AuthErrorCode } from '@jobchaser/domain';
 import { userActions } from '@jobchaser/domain/actions';
+
 import {
   type CreateUserDB,
   type CreateUserInput,

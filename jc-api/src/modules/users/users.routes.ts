@@ -1,15 +1,9 @@
 import { Router } from 'express';
 
-import {
-  fail,
-  ok,
-  CreateUserSchema,
-  LoginSchema,
-  AuthErrorCode,
-} from '@jobchaser/domain';
+import { ok, CreateUserSchema, LoginSchema } from '@jobchaser/domain';
 
 import { authLogic } from './users.logic.ts';
-import { authenticate } from '../../middleware/auth.ts';
+import { authenticate, type AuthRequest } from '../../middleware/auth.ts';
 import { validateReq } from '../../middleware/validate.ts';
 import { asyncHandler } from '../../middleware/asyncHandler.ts';
 
@@ -80,13 +74,7 @@ router.post(
 router.get(
   '/me',
   authenticate,
-  asyncHandler(async (req, res) => {
-    // get the actual user from the db
-    if (!req.userId)
-      return res
-        .status(401)
-        .json(fail('Invalid credentials', AuthErrorCode.INVALID_CREDENTIALS));
-
+  asyncHandler<AuthRequest>(async (req, res) => {
     const result = await authLogic.getMe(req.userId);
 
     if (!result.ok) {

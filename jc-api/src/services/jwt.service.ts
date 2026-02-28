@@ -2,7 +2,8 @@ import jwt from 'jsonwebtoken';
 import { ok, fail, type Result, AuthErrorCode } from '@jobchaser/domain';
 
 /**
- * Helper function to make sure that the environment indeed provides a valid secret.
+ * Helper function to make sure that the environment indeed provides a valid secret. If not I
+ * want to fail immediately
  *
  * @returns The actual secret and throws otherwise
  **/
