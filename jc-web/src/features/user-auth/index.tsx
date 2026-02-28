@@ -25,7 +25,7 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
         onSubmit={mode === 'signup' ? handleSignup : handleLogin}
       />
 
-      <AuthFooter mode={mode} />
+      <AuthFooter mode={mode} redirect={redirect} />
     </div>
   );
 }
