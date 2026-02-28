@@ -1,4 +1,4 @@
-import { Result } from '@jobchaser/domain';
+import { CreateUserInput, Result } from '@jobchaser/domain';
 import { LoginInput, SafeUser } from '@jobchaser/domain';
 import { createContext, useContext } from 'react';
 
@@ -18,6 +18,7 @@ export interface AuthState {
 export type AuthContextValue = AuthState & {
   loginAction: (input: LoginInput) => Promise<Result<SafeUser>>;
   logoutAction: () => Promise<Result<string>>;
+  signupAction: (input: CreateUserInput) => Promise<Result<SafeUser>>;
 };
 
 export const AuthContext = createContext<AuthContextValue | undefined>(

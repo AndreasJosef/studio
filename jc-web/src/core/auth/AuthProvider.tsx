@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { AuthContext, AuthContextValue } from './AuthContext';
 import {
+  CreateUserInput,
   LoginInput,
   SafeUser,
   SafeUserSchemaFrontend,
@@ -19,6 +20,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<SafeUser | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const signupAction = async (data: CreateUserInput) => {
+    const result = await authService.signup(data);
+
+    if (result.ok) setUser(result.value);
+
+    return result;
+  };
 
   const loginAction = async (data: LoginInput) => {
     const result = await authService.login(data);
@@ -70,6 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     isLoggingOut,
     loginAction,
     logoutAction,
+    signupAction,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
