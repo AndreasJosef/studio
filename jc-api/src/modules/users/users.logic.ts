@@ -82,6 +82,8 @@ export const authLogic = {
 
       const safeUser = SafeUserSchema.parse(user);
 
+      console.log('[API USER MODULE]: User signed in ', safeUser.id);
+
       return ok(safeUser);
     } catch (e) {
       console.error('[Internal Error Log]: ', e);

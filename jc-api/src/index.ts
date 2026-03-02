@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
 import userRoutes from './modules/users/users.routes.ts';
+import jobRoutes from './modules/jobs/jobs.routes.ts';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -18,7 +19,11 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+// API Routers
 app.use('/api/users', userRoutes);
+app.use('/api/jobs', jobRoutes);
+
+// Global health check endpoint
 app.get('/health', (req, res) => {
   res.json({
     status: 'online',
@@ -27,13 +32,14 @@ app.get('/health', (req, res) => {
 });
 
 /**
- * Final safety net. If something lands here it is a critical system error. Everything else I handled with domain error codes and railway repsonses innan
+ * Final safety net. If something lands here it is a critical system error.
+ * Everything else I handled with domain error codes and railway repsonses innan
  **/
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   const isError = err instanceof Error;
   const message = isError ? err.message : 'Unknown Error';
 
-  console.error(`[JOBCHASER SYSTEM ERROR ]: ${message}`);
+  console.error(`[JOBCHASER CRITICAL SYSTEM ERROR]: ${message}`);
 
   res.status(500).json({
     ok: false,

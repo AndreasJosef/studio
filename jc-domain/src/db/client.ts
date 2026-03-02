@@ -3,6 +3,8 @@ import pg from 'pg';
 
 import * as schema from './schema.ts';
 
+export * from './errors.ts';
+
 export const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
 });

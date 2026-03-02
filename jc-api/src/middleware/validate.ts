@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 
-import { ZodObject, ZodError } from 'zod';
+import { ZodObject, ZodError, prettifyError } from 'zod';
 import { fail } from '@jobchaser/utils';
 
 export const validateReq =
@@ -11,7 +11,7 @@ export const validateReq =
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        return res.status(400).json(fail(error.message) || 'Invalid Input');
+        return res.status(400).json(fail(prettifyError(error)));
       }
 
       return res.status(400).json(fail('Invalid request'));

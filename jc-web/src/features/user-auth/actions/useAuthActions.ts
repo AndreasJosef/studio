@@ -20,7 +20,6 @@ export default function useAuthActions({
   const router = useRouter();
   const navigate = useNavigate();
 
-  // TODO: Create Signup Action
   const { loginAction, signupAction } = useAuth();
 
   // Login
@@ -38,9 +37,12 @@ export default function useAuthActions({
     if (result.ok) {
       await router.invalidate();
       navigate({ to: redirectTo, replace: true });
+    } else {
+      console.log(result);
     }
   };
 
+  // Signup
   const handleSignup = async (data: Record<string, unknown>) => {
     const validate = CreateUserSchema.safeParse(data);
 

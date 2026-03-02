@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { jobsTable } from './schema.ts';
 
 export const StoredJobSchema = createSelectSchema(jobsTable);
-export type StoredJob = z.infer<typeof StoredJobSchema>;
 
 export const JobSchema = StoredJobSchema.omit({
   id: true,
@@ -12,7 +11,12 @@ export const JobSchema = StoredJobSchema.omit({
   userId: true,
 });
 
-export type Job = z.infer<typeof JobSchema>;
+export const CreateJobSchema = StoredJobSchema.omit({
+  id: true,
+  createdAt: true,
+}).extend({
+  contact: z.uuid().nullable().default(null),
+});
 
 export const AFJobResponseSchema = z.object({
   id: z.coerce.number(),
@@ -53,4 +57,7 @@ export const AFJobResponseSchema = z.object({
   publication_date: z.string(),
 });
 
+export type Job = z.infer<typeof JobSchema>;
+export type CreateJob = z.infer<typeof CreateJobSchema>;
+export type StoredJob = z.infer<typeof StoredJobSchema>;
 export type AFJobResponse = z.infer<typeof AFJobResponseSchema>;

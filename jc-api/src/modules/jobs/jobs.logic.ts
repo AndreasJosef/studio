@@ -1,12 +1,17 @@
-import type { StoredJob, Result } from '@jobchaser/domain/types';
+import { jobActions } from '@jobchaser/domain/actions';
+
+import type { StoredJob, Result, CreateJob } from '@jobchaser/domain/types';
 
 export const jobsLogic = {
-  async getAll(user: string): Promise<Result<StoredJob>> {
-    console.log('[JOBS API TODOj]: get all jobs for user ', user);
+  async getAll(userid: string): Promise<Result<StoredJob[]>> {
+    const result = await jobActions.findAllFromUser(userid);
 
-    return {
-      ok: false,
-      error: 'Not implemented yet',
-    };
+    return result;
+  },
+
+  async addJob(input: CreateJob): Promise<Result<StoredJob>> {
+    const result = await jobActions.storeJob(input);
+
+    return result;
   },
 };
