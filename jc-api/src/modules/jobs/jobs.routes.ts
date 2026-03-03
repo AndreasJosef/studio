@@ -26,6 +26,7 @@ router.get(
 );
 
 // Add Job
+// TODO: make sure to pass user id as well so I can ref in when adding. In the passed passed in on the body but should of take it from AuthRequest
 router.post(
   '/',
   authenticate,

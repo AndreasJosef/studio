@@ -1,4 +1,4 @@
-import { Job } from '@/shared/types';
+import { Job } from '@jobchaser/domain';
 
 interface JobListItemProbs {
   job: Job;
@@ -17,12 +17,12 @@ export default function JobListItem({
 
   return (
     <li
-      key={job.id}
+      key={job.externalId}
       className={`mb-4 p-4 rounded hover:cursor-pointer border-2 hover:border-indigo-500/60 transition-colors ${styleComputed}`}
-      onClick={() => onClick(String(job.id))}
+      onClick={() => onClick(String(job.externalId))}
     >
       <article className="flex flex-col">
-        <h2 className="text-xl font-semibold truncate">{job.headline}</h2>
+        <h2 className="text-xl font-semibold truncate">{job.jobTitle}</h2>
         <h3 className="text-lg text-neutral-400 truncate">{job.employer}</h3>
       </article>
     </li>

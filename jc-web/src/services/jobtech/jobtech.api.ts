@@ -1,5 +1,7 @@
-import { Job, JobResponseMeta } from '@/shared/types';
 import { Result } from '@/lib/result';
+
+import { Job } from '@jobchaser/domain';
+import { JobResponseMeta } from '@/shared/types';
 
 interface JobApiResult {
   jobs: Job[];
@@ -8,7 +10,7 @@ interface JobApiResult {
 
 import { parseAFJobs } from '@/features/job-search/logic/parser';
 import { fetchSafeList } from '@/lib/api-engine';
-// import { delay } from '@/lib/utils';
+// import { delay } from '@/lib/utils'; // simulates a slow api
 
 const BASE_URL = 'https://jobsearch.api.jobtechdev.se/';
 const LIMIT = 5;

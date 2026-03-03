@@ -2,6 +2,7 @@ import { createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
 import { jobsTable } from './schema.ts';
+import { cleanString } from '../shared/utils.ts';
 
 export const StoredJobSchema = createSelectSchema(jobsTable);
 
@@ -22,37 +23,41 @@ export const AFJobResponseSchema = z.object({
   id: z.coerce.number(),
   headline: z.string(),
   description: z.object({
-    text_formatted: z.string().default(''),
+    text_formatted: cleanString,
   }),
-  logo_url: z.string().default(''),
+  logo_url: cleanString,
   application_deadline: z.string(),
-  webpage_url: z.string().default(''),
+  webpage_url: cleanString,
   employer: z.object({
-    name: z.string().default(''),
-    phone_number: z.string().default(''),
-    email: z.email(),
-    url: z.string(),
+    name: cleanString,
+    phone_number: cleanString,
+    email: cleanString,
+    url: cleanString,
   }),
-  application_deadlines: z.object({
-    email: z.email(),
-    url: z.string(),
+  application_details: z.object({
+    email: cleanString,
+    url: cleanString,
   }),
   workplace_address: z.object({
-    municipaplity: z.string(),
+    municipality: cleanString,
   }),
   must_have: z.object({
-    skills: z.array(
-      z.object({
-        label: z.string(),
-      })
-    ),
+    skills: z
+      .array(
+        z.object({
+          label: cleanString,
+        })
+      )
+      .default([]),
   }),
   nice_to_have: z.object({
-    skills: z.array(
-      z.object({
-        label: z.string(),
-      })
-    ),
+    skills: z
+      .array(
+        z.object({
+          label: cleanString,
+        })
+      )
+      .default([]),
   }),
   publication_date: z.string(),
 });

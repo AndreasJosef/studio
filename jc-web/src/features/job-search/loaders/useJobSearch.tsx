@@ -1,5 +1,6 @@
 import { fetchJobs } from '@/services/jobtech/jobtech.api';
-import { Job, JobResponseMeta } from '@/shared/types';
+import { JobResponseMeta } from '@/shared/types';
+import { Job } from '@jobchaser/domain';
 
 import { useEffect } from 'react';
 

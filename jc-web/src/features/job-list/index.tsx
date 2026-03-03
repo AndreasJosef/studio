@@ -1,4 +1,4 @@
-import { Job } from '@/shared/types';
+import { Job } from '@jobchaser/domain';
 
 import { selectableJobsProjection } from './logic/selectableJobsProjection';
 import { useListActions } from './actions/useListActions';
@@ -45,7 +45,7 @@ export default function JobList({
         <ul>
           {displayJobs.map((job) => (
             <JobListItem
-              key={job.id}
+              key={job.externalId}
               job={job}
               onClick={handleItemClick}
               isSelected={job.isSelected}
