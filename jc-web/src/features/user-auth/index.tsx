@@ -1,10 +1,10 @@
+import { useSearch } from '@tanstack/react-router';
+
 import useAuthActions from './actions/useAuthActions';
 
 import AuthHeader from './components/AuthHeader';
 import AuthForm from './components/AuthForm';
 import AuthFooter from './components/AuthFooter';
-
-import { useSearch } from '@tanstack/react-router';
 
 export type AuthMode = 'signin' | 'signup';
 
