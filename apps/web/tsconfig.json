@@ -1,0 +1,15 @@
+{
+  "extends": "../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@services/*": ["./src/services"],
+      "@shared/*": ["./src/shared"],
+      "@studio/*": ["../../../packages/*/src"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@jobchaser/shared",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./html-parse": "./src/html-parse/index.ts"
+  }
+}
