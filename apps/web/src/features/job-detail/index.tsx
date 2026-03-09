@@ -1,19 +1,27 @@
 import { useEffect, useRef } from 'react';
 
 import { useJobDetails } from './loaders/useJobDetails';
+import useJobDetailActions from './actions/useJobDetailActions';
 
 import { Detail } from '../../shared/components/Detail';
-import useJobDetailActions from './actions/useJobDetailActions';
+import { Bookmark } from 'lucide-react';
 
 interface JobDetailProps {
   id: string | undefined;
+  isSaved: boolean;
   onBack: () => void;
+  onSave: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
-export default function JobDetails({ id, onBack }: JobDetailProps) {
+export default function JobDetails({
+  id,
+  isSaved,
+  onBack,
+  onSave,
+}: JobDetailProps) {
   const { job, error } = useJobDetails({ id });
   const scrollResetRef = useRef<HTMLDivElement>(null);
-  const { handleSave } = useJobDetailActions();
+  const { handleSave } = useJobDetailActions(onSave);
 
   // Reset Scroll when new detail is loaded
   useEffect(() => {
@@ -37,19 +45,26 @@ export default function JobDetails({ id, onBack }: JobDetailProps) {
       ref={scrollResetRef}
       className="h-full overflow-y-auto rounded-lg bg-indigo-500/10 p-4 scroll-smooth"
     >
-      <header className="gap-4 font-bold mb-4">
-        <button
-          className="md:hidden mb-4 text-indigo-500 cursor-pointer hover:underline"
-          onClick={() => onBack()}
-        >
-          ← Back
-        </button>
-        <h2 className="text-3xl text-balance">{job.jobTitle}</h2>
-        <h3 className="text-xl text-neutral-400 text-balance">
-          {job.employer}
-        </h3>
-        <button onClick={() => handleSave(job)}>Save Job TEst</button>
-        <p className="text-xl text-orange-500">EMAIL: {job.contactEmail}</p>
+      <header className="gap-4 font-bold mb-4 flex justify-between">
+        <div>
+          <button
+            className="md:hidden mb-4 text-indigo-500 cursor-pointer hover:underline"
+            onClick={() => onBack()}
+          >
+            ← Back
+          </button>
+          <h2 className="text-3xl text-balance">{job.jobTitle}</h2>
+          <h3 className="text-xl text-neutral-400 text-balance">
+            {job.employer}
+          </h3>
+          <p>email: {job.contactEmail}</p>
+        </div>
+        <div>
+          <Bookmark
+            fill={isSaved ? 'var(--color-indigo-600)' : 'none'}
+            onClick={() => handleSave(job)}
+          />
+        </div>
       </header>
       <div className="prose prose-indigo prose-invert prose-lg">
         <Detail nodes={job.description} />

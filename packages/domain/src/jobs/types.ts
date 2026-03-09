@@ -101,3 +101,13 @@ export const JobDetailViewSchema = JobSchema.omit({
 });
 
 export type JobDetailView = z.infer<typeof JobDetailViewSchema>;
+
+/**
+ * SyncConfirmation: This is the response for any Toggle operation.
+ */
+export const SyncConfirmationSchema = z.object({
+  externalId: z.number(),
+  isSaved: z.boolean(),
+});
+
+export type SyncConfirmation = z.infer<typeof SyncConfirmationSchema>;

@@ -1,16 +1,21 @@
-import { useState } from 'react';
-import { JobResponseMeta } from '@/shared/types';
+import { useMemo, useState } from 'react';
+
 import { Route } from '@/routes/_app-root.explore';
+
+import { JobResponseMeta } from '@/shared/types';
 import { JobListItem } from '@jobchaser/domain';
 
-import ExplorerLayout from './components/ExplorerLayout';
+import PaginationControls from '@/shared/components/Pagination';
 import JobSearch from '@/features/job-search';
 import JobList from '@/features/job-list';
 import JobDetails from '@/features/job-detail';
-import PaginationControls from '@/shared/components/Pagination';
+import ExplorerLayout from './components/ExplorerLayout';
+
+import useExplorerActions from './actions/useExplorerActions';
 
 import { useJobsSearch } from '@/features/job-search/loaders/useJobSearch';
-import useExplorerActions from './actions/useExplorerActions';
+import { useSyncSavedStatus } from './loaders/useSyncSavedStatus';
+import { jobSyncProjection } from './logic/jobSyncProjection';
 
 /**
  * The JobExplorer features is the central hub composing search, list and details features.
@@ -20,13 +25,23 @@ export default function JobExplorer() {
 
   const [jobs, setJobs] = useState<JobListItem[]>([]);
   const [meta, setMeta] = useState<JobResponseMeta>({ total: 0, pages: 0 });
+  const [savedIds, setSavedIds] = useState<number[]>([]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useJobsSearch(q, p, { onJobs: setJobs, setIsLoading, setError, setMeta });
+  useSyncSavedStatus(jobs, setSavedIds);
 
   const { updateUrl, handleResultsPageChange, handleSearch } =
     useExplorerActions();
+
+  const enrichedJobs = useMemo(
+    () => jobSyncProjection(jobs, savedIds),
+    [jobs, savedIds]
+  );
+
+  console.log(savedIds);
 
   return (
     <ExplorerLayout isDetailActive={!!id}>
@@ -34,7 +49,8 @@ export default function JobExplorer() {
       <>
         <JobList
           query={q}
-          jobs={jobs}
+          jobs={enrichedJobs}
+          saved={savedIds}
           error={error}
           isLoading={isLoading}
           jobsTotal={meta.total}
@@ -47,7 +63,12 @@ export default function JobExplorer() {
           onPageChange={handleResultsPageChange}
         />
       </>
-      <JobDetails id={id} onBack={() => updateUrl({ id: undefined })} />
+      <JobDetails
+        id={id}
+        isSaved={savedIds.includes(Number(id))}
+        onSave={setSavedIds}
+        onBack={() => updateUrl({ id: undefined })}
+      />
     </ExplorerLayout>
   );
 }

@@ -1,15 +1,16 @@
-import { eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 
 import { type Result, ok, fail } from '../shared/result.ts';
 import { DomainErrorCode } from '../shared/errors.ts';
-import type { Job, JobRecord } from './types.ts';
 
 import { db, getDbErrorCode, PG_CODES } from '../db/client.ts';
 import { jobsTable } from './schema.ts';
 
 import { contactsTable } from '../contacts/schema.ts';
 import { contactActions } from '../contacts/actions.ts';
+
 import { mapContactJoinToJob } from './mappers.ts';
+import type { Job, JobRecord } from './types.ts';
 
 /**
  * Job Actions Repository
@@ -70,6 +71,32 @@ export const jobActions = {
       }
 
       return fail('Could not save job!');
+    }
+  },
+
+  async checkSavedStatus(
+    userId: string,
+    externalIds: number[]
+  ): Promise<Result<number[]>> {
+    try {
+      if (externalIds.length === 0) return ok([]);
+
+      const existing = await db
+        .select({ externalId: jobsTable.externalId })
+        .from(jobsTable)
+        .where(
+          and(
+            eq(jobsTable.userId, userId),
+            inArray(jobsTable.externalId, externalIds)
+          )
+        );
+
+      const savedIds = existing.map((row) => row.externalId);
+
+      return ok(savedIds);
+    } catch (e) {
+      console.error(e);
+      return fail('[DB ERROR] - Could not sync job status.');
     }
   },
 };

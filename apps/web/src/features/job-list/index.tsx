@@ -10,6 +10,7 @@ import JobListItemSkeleton from './components/JobListItemSkeleton';
 
 interface JobListProps {
   jobs: JobListItem[];
+  saved: number[];
   query: string;
   error: string | null;
   isLoading: boolean;
@@ -20,6 +21,7 @@ interface JobListProps {
 
 export default function JobList({
   jobs,
+  saved,
   error,
   isLoading: rawLoading,
   onSelected,
@@ -49,6 +51,7 @@ export default function JobList({
               job={job}
               onClick={handleItemClick}
               isSelected={job.isSelected}
+              isSaved={saved.includes(job.externalId)}
             />
           ))}
         </ul>

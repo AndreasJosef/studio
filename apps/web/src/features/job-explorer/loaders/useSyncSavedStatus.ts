@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 
 import { jobsService } from '@/services/jobchaser/jobs.service';
-import { Job } from '@jobchaser/domain';
+import { Job, JobListItem } from '@jobchaser/domain';
 
 export function useSyncSavedStatus(
-  jobs: Job[],
-  { onSync }: { onSync: (ids: string[]) => void }
+  jobs: Job[] | JobListItem[],
+  onSync: (ids: number[]) => void
 ) {
   useEffect(() => {
     if (jobs.length === 0) return;

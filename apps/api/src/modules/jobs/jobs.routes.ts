@@ -1,12 +1,15 @@
 import { Router } from 'express';
 
+import { ok, type SyncConfirmation } from '@jobchaser/domain';
+
 import { asyncHandler } from '../../middleware/asyncHandler.ts';
 import { authenticate, type AuthRequest } from '../../middleware/auth.ts';
 import { validateReq } from '../../middleware/validate.ts';
 
 import { jobsLogic } from './jobs.logic.ts';
 
-import { type JobDraft, JobSchema } from '@jobchaser/domain';
+import { JobSchema, fail } from '@jobchaser/domain';
+import { jobActions } from '@jobchaser/domain/actions';
 
 const router: Router = Router();
 
@@ -27,7 +30,6 @@ router.get(
 );
 
 // Add Job
-// TODO: make sure to pass user id as well so I can ref in when adding. In the passed passed in on the body but should of take it from AuthRequest
 router.post(
   '/',
   authenticate,
@@ -44,7 +46,34 @@ router.post(
       }
     }
 
-    res.status(201).json(result);
+    const confirmation: SyncConfirmation = {
+      externalId: result.value.externalId,
+      isSaved: true,
+    };
+
+    res.status(201).json(ok(confirmation));
+  })
+);
+
+router.post(
+  '/sync',
+  authenticate,
+  asyncHandler<AuthRequest>(async (req, res) => {
+    const externalIds = req.body;
+
+    if (!Array.isArray(externalIds)) {
+      return res.status(400).json(fail('Invalid ID manifest.'));
+    }
+
+    const result = await jobActions.checkSavedStatus(req.userId, externalIds);
+
+    if (!result.ok) {
+      return res.status(500).json(result);
+    }
+
+    console.log(result);
+
+    res.status(200).json(result);
   })
 );
 
