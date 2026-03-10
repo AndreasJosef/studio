@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react';
 
 import { useJobDetails } from './loaders/useJobDetails';
-import useJobDetailActions from './actions/useJobDetailActions';
 
-import { Detail } from '../../shared/components/Detail';
-import { Bookmark } from 'lucide-react';
+import { ToggleJobButton } from '@/shared/components/ToggleJobButton';
+import { Detail } from '@/shared/components/Detail';
 
 interface JobDetailProps {
   id: string | undefined;
@@ -21,7 +20,6 @@ export default function JobDetails({
 }: JobDetailProps) {
   const { job, error } = useJobDetails({ id });
   const scrollResetRef = useRef<HTMLDivElement>(null);
-  const { handleSave } = useJobDetailActions(onSave);
 
   // Reset Scroll when new detail is loaded
   useEffect(() => {
@@ -59,12 +57,7 @@ export default function JobDetails({
           </h3>
           <p>email: {job.contactEmail}</p>
         </div>
-        <div>
-          <Bookmark
-            fill={isSaved ? 'var(--color-indigo-600)' : 'none'}
-            onClick={() => handleSave(job)}
-          />
-        </div>
+        <ToggleJobButton job={job} isSaved={isSaved} setSavedIds={onSave} />
       </header>
       <div className="prose prose-indigo prose-invert prose-lg">
         <Detail nodes={job.description} />

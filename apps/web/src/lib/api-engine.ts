@@ -171,6 +171,17 @@ export async function safePost<TIn, TOut>(
 // Safe Delete
 export async function safeDelete<T>(
   url: string,
+  config: RequestInit,
+  parser: (input: unknown) => Result<T>
+): Promise<Result<T>>;
+
+export async function safeDelete(
+  url: string,
+  config?: RequestInit
+): Promise<Result<null>>;
+
+export async function safeDelete<T>(
+  url: string,
   config: RequestInit = {},
   parser?: (input: unknown) => Result<T> // Optional: Parse the response
 ): Promise<Result<T | null>> {

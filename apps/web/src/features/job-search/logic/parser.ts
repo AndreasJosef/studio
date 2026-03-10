@@ -88,6 +88,9 @@ export function parseAFJobAd(input: unknown): Result<JobDetailView> {
   });
 }
 
+/**
+ * @deprecated use parseAFJobAd instead
+ * **/
 export function parseAFJobDetail(input: unknown): Result<JobDetail> {
   if (!input || typeof input !== 'object') {
     return fail('Invalid data: Not an object');

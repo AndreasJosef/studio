@@ -56,6 +56,7 @@ export default function JobExplorer() {
           jobsTotal={meta.total}
           selected={id}
           onSelected={(newId) => updateUrl({ id: newId })}
+          onSave={setSavedIds}
         />
         <PaginationControls
           currentPage={p}

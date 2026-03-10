@@ -1,8 +1,8 @@
 import { Result } from '@/lib/result';
 
-import { JobListItem } from '@jobchaser/domain';
+import { JobDetailView, JobListItem } from '@jobchaser/domain';
 
-import { JobDetail, JobResponseMeta } from '@/shared/types';
+import { JobResponseMeta } from '@/shared/types';
 
 interface JobApiResult {
   jobs: JobListItem[];
@@ -10,7 +10,7 @@ interface JobApiResult {
 }
 
 import {
-  parseAFJobDetail,
+  parseAFJobAd,
   parseAFSearchResults,
 } from '@/features/job-search/logic/parser';
 import { fetchSafeItem, fetchSafeList } from '@/lib/api-engine';
@@ -70,6 +70,6 @@ export const fetchJobs = async (
   };
 };
 
-export const fetchAd = async (id: string): Promise<Result<JobDetail>> => {
-  return await fetchSafeItem(`${BASE_URL}/ad/${id}`, parseAFJobDetail);
+export const fetchAd = async (id: string): Promise<Result<JobDetailView>> => {
+  return await fetchSafeItem(`${BASE_URL}/ad/${id}`, parseAFJobAd);
 };

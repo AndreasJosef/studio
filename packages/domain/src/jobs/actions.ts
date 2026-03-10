@@ -99,4 +99,30 @@ export const jobActions = {
       return fail('[DB ERROR] - Could not sync job status.');
     }
   },
+
+  async deleteJob(id: number, userid: string): Promise<Result<JobRecord>> {
+    try {
+      const [deleted] = await db
+        .delete(jobsTable)
+        .where(and(eq(jobsTable.externalId, id), eq(jobsTable.userId, userid)))
+
+        .returning();
+
+      if (!deleted) {
+        return fail('Job not found in DB');
+      }
+
+      /**
+       * TODO: Implement Orphaned Contact Cleanup
+       * In the future, might trigger a check here:
+       * 1. Count remaining jobs for deleted.contactId
+       * 2. If count === 0, emit a 'CONTACT_ORPHANED' signal to the UI
+       * 3. Let the user decide to keep or purge the recruiter.
+       */
+
+      return ok(deleted);
+    } catch (error) {
+      return fail('Error when trying to delete job!');
+    }
+  },
 };

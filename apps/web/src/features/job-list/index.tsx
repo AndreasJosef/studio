@@ -17,14 +17,16 @@ interface JobListProps {
   jobsTotal: number;
   selected: string | undefined;
   onSelected: (id: string) => void;
+  onSave: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 export default function JobList({
-  jobs,
   saved,
+  jobs,
   error,
   isLoading: rawLoading,
   onSelected,
+  onSave,
   selected,
 }: JobListProps) {
   // TODO: use a projected List based on filters
@@ -50,6 +52,7 @@ export default function JobList({
               key={job.externalId}
               job={job}
               onClick={handleItemClick}
+              onSave={onSave}
               isSelected={job.isSelected}
               isSaved={saved.includes(job.externalId)}
             />

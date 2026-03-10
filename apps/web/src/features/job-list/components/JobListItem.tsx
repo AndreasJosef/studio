@@ -1,18 +1,20 @@
+import { ToggleJobButton } from '@/shared/components/ToggleJobButton';
 import { type JobListItem } from '@jobchaser/domain';
-import { Bookmark } from 'lucide-react';
 
 interface JobListItemProbs {
   job: JobListItem;
-  onClick: (id: string) => void;
   isSelected: boolean;
   isSaved: boolean;
+  onClick: (id: string) => void;
+  onSave: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 export default function JobListItemUI({
   job,
-  onClick,
   isSelected,
   isSaved,
+  onClick,
+  onSave,
 }: JobListItemProbs) {
   const styleComputed = isSelected
     ? 'bg-indigo-500/10 border-indigo-500/60'
@@ -27,14 +29,7 @@ export default function JobListItemUI({
       <article className="flex flex-col">
         <div className="flex justify-between gap-4">
           <h2 className="text-xl font-semibold truncate">{job.jobTitle}</h2>
-          <div>
-            <Bookmark
-              fill={isSaved ? 'var(--color-indigo-700)' : 'none'}
-              stroke={
-                isSaved ? 'var(--color-indigo-700)' : 'var(--color-gray-500)'
-              }
-            />
-          </div>
+          <ToggleJobButton job={job} isSaved={isSaved} setSavedIds={onSave} />
         </div>
         <h3 className="text-lg text-neutral-400 truncate">{job.employer}</h3>
       </article>

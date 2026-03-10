@@ -77,4 +77,26 @@ router.post(
   })
 );
 
+router.delete(
+  '/:id',
+  authenticate,
+  asyncHandler<AuthRequest>(async (req, res) => {
+    const result = await jobActions.deleteJob(
+      Number(req.params.id),
+      req.userId
+    );
+
+    if (!result.ok) {
+      return res.status(500).json(result);
+    }
+
+    const confirmation: SyncConfirmation = {
+      externalId: result.value.externalId,
+      isSaved: false,
+    };
+
+    res.status(200).json(ok(confirmation));
+  })
+);
+
 export default router;
