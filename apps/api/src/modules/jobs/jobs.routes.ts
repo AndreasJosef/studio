@@ -1,6 +1,10 @@
 import { Router } from 'express';
 
-import { ok, type SyncConfirmation } from '@jobchaser/domain';
+import {
+  ok,
+  UpdateStatusRequestSchema,
+  type SyncConfirmation,
+} from '@jobchaser/domain';
 
 import { asyncHandler } from '../../middleware/asyncHandler.ts';
 import { authenticate, type AuthRequest } from '../../middleware/auth.ts';
@@ -96,6 +100,28 @@ router.delete(
     };
 
     res.status(200).json(ok(confirmation));
+  })
+);
+
+router.put(
+  '/:id/status',
+  authenticate,
+  asyncHandler<AuthRequest>(async (req, res) => {
+    const validation = UpdateStatusRequestSchema.safeParse(req.body);
+
+    if (!validation.success) {
+      return res.status(400).json(fail('Received invalid application status'));
+    }
+
+    const result = await jobActions.updateStatus(
+      Number(req.params.id),
+      req.userId,
+      validation.data.status
+    );
+
+    if (!result.ok) return res.status(500).json(result);
+
+    res.status(200).json(result);
   })
 );
 

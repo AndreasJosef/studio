@@ -31,6 +31,7 @@ export const authService = {
       zodParser(SafeUserSchemaFrontend)
     );
   },
+
   async logout(): Promise<Result<string>> {
     return safePost<null, string>(
       `${BASE_URL}/users/logout`,

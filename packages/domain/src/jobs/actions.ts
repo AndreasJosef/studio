@@ -10,7 +10,12 @@ import { contactsTable } from '../contacts/schema.ts';
 import { contactActions } from '../contacts/actions.ts';
 
 import { mapContactJoinToJob } from './mappers.ts';
-import type { Job, JobRecord } from './types.ts';
+import type {
+  ApplicationStatus,
+  Job,
+  JobRecord,
+  SyncConfirmation,
+} from './types.ts';
 
 /**
  * Job Actions Repository
@@ -124,5 +129,24 @@ export const jobActions = {
     } catch (error) {
       return fail('Error when trying to delete job!');
     }
+  },
+
+  async updateStatus(
+    id: number,
+    userid: string,
+    newStatus: ApplicationStatus
+  ): Promise<Result<SyncConfirmation>> {
+    const [updated] = await db
+      .update(jobsTable)
+      .set({ applicationStatus: newStatus })
+      .where(and(eq(jobsTable.externalId, id), eq(jobsTable.userId, userid)))
+      .returning();
+
+    if (!updated) return fail('Not Authorized or Job does not exist');
+
+    return ok({
+      externalId: updated.externalId,
+      applicationStatus: updated.applicationStatus,
+    });
   },
 };

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRootRouteImport } from './routes/_app-root'
 import { Route as AppRootMyJobsRouteImport } from './routes/_app-root.my-jobs'
 import { Route as AppRootExploreRouteImport } from './routes/_app-root.explore'
+import { Route as AppRootContactsRouteImport } from './routes/_app-root.contacts'
 import { Route as AppRootAuthSignupRouteImport } from './routes/_app-root.auth.signup'
 import { Route as AppRootAuthSigninRouteImport } from './routes/_app-root.auth.signin'
 
@@ -29,6 +30,11 @@ const AppRootExploreRoute = AppRootExploreRouteImport.update({
   path: '/explore',
   getParentRoute: () => AppRootRoute,
 } as any)
+const AppRootContactsRoute = AppRootContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => AppRootRoute,
+} as any)
 const AppRootAuthSignupRoute = AppRootAuthSignupRouteImport.update({
   id: '/auth/signup',
   path: '/auth/signup',
@@ -42,6 +48,7 @@ const AppRootAuthSigninRoute = AppRootAuthSigninRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof AppRootRouteWithChildren
+  '/contacts': typeof AppRootContactsRoute
   '/explore': typeof AppRootExploreRoute
   '/my-jobs': typeof AppRootMyJobsRoute
   '/auth/signin': typeof AppRootAuthSigninRoute
@@ -49,6 +56,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof AppRootRouteWithChildren
+  '/contacts': typeof AppRootContactsRoute
   '/explore': typeof AppRootExploreRoute
   '/my-jobs': typeof AppRootMyJobsRoute
   '/auth/signin': typeof AppRootAuthSigninRoute
@@ -57,6 +65,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app-root': typeof AppRootRouteWithChildren
+  '/_app-root/contacts': typeof AppRootContactsRoute
   '/_app-root/explore': typeof AppRootExploreRoute
   '/_app-root/my-jobs': typeof AppRootMyJobsRoute
   '/_app-root/auth/signin': typeof AppRootAuthSigninRoute
@@ -64,12 +73,25 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/explore' | '/my-jobs' | '/auth/signin' | '/auth/signup'
+  fullPaths:
+    | '/'
+    | '/contacts'
+    | '/explore'
+    | '/my-jobs'
+    | '/auth/signin'
+    | '/auth/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/explore' | '/my-jobs' | '/auth/signin' | '/auth/signup'
+  to:
+    | '/'
+    | '/contacts'
+    | '/explore'
+    | '/my-jobs'
+    | '/auth/signin'
+    | '/auth/signup'
   id:
     | '__root__'
     | '/_app-root'
+    | '/_app-root/contacts'
     | '/_app-root/explore'
     | '/_app-root/my-jobs'
     | '/_app-root/auth/signin'
@@ -103,6 +125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRootExploreRouteImport
       parentRoute: typeof AppRootRoute
     }
+    '/_app-root/contacts': {
+      id: '/_app-root/contacts'
+      path: '/contacts'
+      fullPath: '/contacts'
+      preLoaderRoute: typeof AppRootContactsRouteImport
+      parentRoute: typeof AppRootRoute
+    }
     '/_app-root/auth/signup': {
       id: '/_app-root/auth/signup'
       path: '/auth/signup'
@@ -121,6 +150,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRootRouteChildren {
+  AppRootContactsRoute: typeof AppRootContactsRoute
   AppRootExploreRoute: typeof AppRootExploreRoute
   AppRootMyJobsRoute: typeof AppRootMyJobsRoute
   AppRootAuthSigninRoute: typeof AppRootAuthSigninRoute
@@ -128,6 +158,7 @@ interface AppRootRouteChildren {
 }
 
 const AppRootRouteChildren: AppRootRouteChildren = {
+  AppRootContactsRoute: AppRootContactsRoute,
   AppRootExploreRoute: AppRootExploreRoute,
   AppRootMyJobsRoute: AppRootMyJobsRoute,
   AppRootAuthSigninRoute: AppRootAuthSigninRoute,

@@ -6,6 +6,8 @@ import { type HTMLTreeNode } from '@jobchaser/shared/html-parse';
 import { cleanString } from '../shared/utils.ts';
 import { jobsTable } from './schema.ts';
 
+import { APPLICATION_STATUS } from './constants.ts';
+
 /**
  * Core Internal Job Types all based on the actual jobs table schema
  **/
@@ -102,12 +104,24 @@ export const JobDetailViewSchema = JobSchema.omit({
 
 export type JobDetailView = z.infer<typeof JobDetailViewSchema>;
 
+export type ApplicationStatus =
+  (typeof APPLICATION_STATUS)[keyof typeof APPLICATION_STATUS];
+
+export const ApplicationStatusSchema = z.enum(APPLICATION_STATUS);
+
+export const UpdateStatusRequestSchema = z.object({
+  status: ApplicationStatusSchema,
+});
+
+export type UpdateStatusRequest = z.infer<typeof UpdateStatusRequestSchema>;
+
 /**
  * SyncConfirmation: This is the response for any Toggle operation.
  */
 export const SyncConfirmationSchema = z.object({
   externalId: z.number(),
-  isSaved: z.boolean(),
+  isSaved: z.boolean().optional(),
+  applicationStatus: ApplicationStatusSchema.optional(),
 });
 
 export type SyncConfirmation = z.infer<typeof SyncConfirmationSchema>;

@@ -1,4 +1,5 @@
 import { type ContactRecord } from '../contacts/types.ts';
+import { APPLICATION_STATUS } from './constants.ts';
 import type { AFJobResponse, Job, JobListItem, JobRecord } from './types.ts';
 
 export function mapAFToJob(rawJob: AFJobResponse): Job {
@@ -12,7 +13,7 @@ export function mapAFToJob(rawJob: AFJobResponse): Job {
     applyBy: rawJob.application_deadline,
     logoUrl: rawJob.logo_url,
     contactEmail: rawJob.application_details.email,
-    // TODO: Try to scrape the response for an actual contact name before
+    applicationStatus: APPLICATION_STATUS.BOOKMARKED,
     contactName: rawJob.employer.name,
   };
 }
@@ -36,7 +37,7 @@ export function mapContactJoinToJob(row: {
     description: row.jobs.description ?? '',
     applyBy: row.jobs.applyBy,
     logoUrl: row.jobs.logoUrl,
-
+    applicationStatus: row.jobs.applicationStatus,
     contactEmail: row.contacts?.email ?? null,
     contactName: row.contacts?.name ?? null,
   };

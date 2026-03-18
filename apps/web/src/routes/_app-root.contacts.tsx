@@ -1,8 +1,8 @@
-import JobBookmarks from '@/features/job-bookmarks';
+import Contacts from '@/features/user-contacts';
 
 import { createFileRoute, redirect } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_app-root/my-jobs')({
+export const Route = createFileRoute('/_app-root/contacts')({
   beforeLoad: ({ context, location }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({
@@ -13,5 +13,5 @@ export const Route = createFileRoute('/_app-root/my-jobs')({
       });
     }
   },
-  component: JobBookmarks,
+  component: Contacts,
 });

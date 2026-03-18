@@ -5,7 +5,7 @@ import LogoutButton from '@/shared/components/LogoutButton';
 
 const AppShell = () => (
   <>
-    <div className="fixed w-screen h-screen">
+    <div className="grid grid-rows-[auto_1fr] w-screen h-screen overflow-hidden">
       <header className="w-full p-4 flex items-center justify-between border-b-2 border-b-zinc-800">
         <h1 className="text-3xl font-bold text-neutral-300">
           Job<span className="text-indigo-700">Chaser</span>
@@ -21,8 +21,8 @@ const AppShell = () => (
         </Link>
         <LogoutButton />
       </header>
-      <main className="flex flex-col md:flex-row gap-4 h-full">
-        <aside className="w-full min-h-full md:w-20 p-2 border-b-2 md:border-r-2 border-zinc-800 flex flex-row md:flex-col md:items-center gap-2">
+      <main className="flex flex-col md:flex-row gap-4 overflow-hidden">
+        <aside className="w-full md:w-20 p-2 md:border-r-2 border-zinc-800 flex flex-row md:flex-col md:items-center gap-2">
           <Link
             className="bg-zinc-800 rounded hover:bg-zinc-700 w-12 h-12 flex justify-center items-center"
             to="/explore"
@@ -58,7 +58,7 @@ const AppShell = () => (
           </Link>
           <Link
             className="rounded hover:bg-zinc-700 p-2 w-12 flex justify-center"
-            to="/my-jobs"
+            to="/contacts"
             search={(prev) => ({
               q: prev.q || '',
               p: prev.p || 1,
@@ -72,7 +72,7 @@ const AppShell = () => (
             />
           </Link>
         </aside>
-        <div className="p-4 w-full">
+        <div className="w-full overflow-y-scroll pb-4">
           <Outlet />
         </div>
       </main>
