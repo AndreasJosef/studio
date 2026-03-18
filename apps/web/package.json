@@ -12,13 +12,15 @@
   "dependencies": {
     "@jobchaser/domain": "workspace:*",
     "@jobchaser/shared": "workspace:*",
+    "@tanstack/react-query": "^5.91.0",
     "@tanstack/react-router": "^1.159.5",
     "lucide-react": "^0.575.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.1",
     "tailwindcss": "^4.1.18",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",

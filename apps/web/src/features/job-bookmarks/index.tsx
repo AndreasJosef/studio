@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { ApplicationStatus, Job } from '@jobchaser/domain';
 
 import { jobsService } from '@/services/jobchaser/jobs.service';
+import { useBookmarkStore } from './store';
 
-import { Search, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import StatusSelect from './components/StatusSelect';
+import StatusFilters from './components/StatusFilters';
+import { FilterInput } from './components/FilterInput';
 
 export default function JobBookmarks() {
   const [bookmarks, setBookmarks] = useState<Job[]>([]);
+  const { activeFilter, searchQuery } = useBookmarkStore();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +35,21 @@ export default function JobBookmarks() {
 
     load();
   }, []);
+
+  const filteredBookmarks = useMemo(() => {
+    if (!bookmarks) return [];
+
+    return bookmarks.filter((job) => {
+      const matchesStatus =
+        activeFilter === 'all' || job.applicationStatus === activeFilter;
+
+      const matchesSearch =
+        job.employer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.jobTitle.toLowerCase().includes(searchQuery.toLowerCase());
+
+      return matchesStatus && matchesSearch;
+    });
+  }, [bookmarks, activeFilter, searchQuery]);
 
   // TODO: Migrate to react query to get load and error states from there
   if (isLoading) return <p>Loading...</p>;
@@ -75,28 +94,11 @@ export default function JobBookmarks() {
       )}
 
       <header className="flex gap-2 items-center my-4">
-        <ul className="flex gap-4 items-center">
-          <li className="bg-indigo-800 rounded-full px-2 font-semibold cursor-pointer">
-            All
-          </li>
-          <li className="bg-neutral-600 rounded-full px-2 font-semibold">
-            Applied
-          </li>
-          <li className="bg-neutral-600 rounded-full px-2 font-semibold">
-            Next
-          </li>
-        </ul>
-        <div className="flex gap-2 items-center ml-4">
-          <Search className="stroke-3" />
-          <input
-            className="bg-zinc-700 rounded w-48 px-2 py-0.5"
-            type="text"
-            placeholder="Filter"
-          />
-        </div>
+        <StatusFilters />
+        <FilterInput />
       </header>
       <ul className="grid grid-cols-3 gap-4">
-        {bookmarks.map((b) => (
+        {filteredBookmarks.map((b) => (
           <li>
             <article className="bg-zinc-800 p-4 rounded h-full">
               <div className="flex justify-between gap-2">

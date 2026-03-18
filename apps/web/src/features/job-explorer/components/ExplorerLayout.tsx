@@ -17,7 +17,7 @@ export default function ExplorerLayout({
 
   return (
     <div className="flex flex-col gap-6 max-w-8xl mx-auto">
-      <div className="grid grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-12 gap-8 items-start mt-4">
         <aside
           className={`${isDetailActive ? 'hidden md:block' : 'block'} col-span-12 md:col-span-5 pb-20`}
         >
