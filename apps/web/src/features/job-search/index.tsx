@@ -30,11 +30,11 @@ export default function JobSearch({ onSearch }: JobSearchProps) {
         onCommit={() => onCommit(queryDraft)}
         onTab={(e) => onTab(e, completionSuffix, queryDraft)}
       />
-      <ul className="bg-neutral-600 absolute z-20 rounded mt-2">
+      <ul className="bg-app-surface absolute z-20 rounded mt-2">
         {suggestions.map((suggestion) => (
           <li
             key={crypto.randomUUID()}
-            className="py-1 px-2 border-b-neutral-700 border-b"
+            className="py-1 px-2 border-b border-app-border"
           >
             {suggestion.value} <span>({suggestion.occurrences})</span>
           </li>

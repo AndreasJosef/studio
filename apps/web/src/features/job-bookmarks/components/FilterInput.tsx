@@ -13,12 +13,12 @@ export function FilterInput() {
       <input
         value={searchQuery}
         onChange={(e) => setQuery(e.target.value)}
-        className="bg-zinc-700 rounded w-48 px-2 py-0.5 outline-none"
+        className="bg-app-surface rounded w-48 px-2 py-0.5 outline-none"
         type="text"
         placeholder="Filter"
       />
       <button
-        className="text-sm font-semibold cursor-pointer px-3 py-0.5 rounded transition-all duration-150 border-2 border-zinc-700 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
+        className="text-sm font-semibold cursor-pointer px-3 py-0.5 rounded transition-all duration-150 border-2 border-app-border text-content-muted hover:bg-app-surface-hover hover:text-content-muted hover:border-app-surface-hover"
         type="button"
         onClick={() => setQuery('')}
       >

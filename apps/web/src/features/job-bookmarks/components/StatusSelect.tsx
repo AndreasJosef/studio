@@ -11,7 +11,7 @@ export default function StatusSelect({
     <select
       value={current}
       onChange={(e) => onUpdate(e.target.value as ApplicationStatus)}
-      className="bg-zinc-700 text-zinc-200 text-sm rounded px-2 py-1"
+      className="bg-app-surface-raised text-center text-content-muted text-sm rounded-full px-2 py-0.5 appearance-none cursor-pointer font-semibold"
     >
       {Object.entries(APPLICATION_STATUS).map(([key, value]) => (
         <option key={value} value={value}>

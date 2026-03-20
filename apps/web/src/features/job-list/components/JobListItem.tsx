@@ -17,8 +17,8 @@ export default function JobListItemUI({
   onSave,
 }: JobListItemProbs) {
   const styleComputed = isSelected
-    ? 'bg-indigo-500/10 border-indigo-500/60'
-    : 'bg-app-surface border-zinc-800';
+    ? 'bg-brand-primary/10 border-indigo-500/60'
+    : 'bg-app-surface border-app-border';
 
   return (
     <li

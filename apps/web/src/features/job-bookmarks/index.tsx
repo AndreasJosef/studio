@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { ApplicationStatus, Job } from '@jobchaser/domain';
+import { APPLICATION_STATUS, ApplicationStatus, Job } from '@jobchaser/domain';
 
 import { jobsService } from '@/services/jobchaser/jobs.service';
 import { useBookmarkStore } from './store';
@@ -100,23 +100,28 @@ export default function JobBookmarks() {
       <ul className="grid grid-cols-3 gap-4">
         {filteredBookmarks.map((b) => (
           <li>
-            <article className="bg-zinc-800 p-4 rounded h-full">
+            <article className="bg-app-surface p-4 rounded h-full">
               <div className="flex justify-between gap-2">
-                <h3 className="text-2xl truncate font-semibold">
+                <h3 className="text-2xl text-content-main truncate font-semibold">
                   {b.employer}
                 </h3>
-                <button
-                  type="button"
-                  onClick={() => handleDelete(b.externalId)}
-                  className="cursor-pointer"
-                >
-                  <Trash2 className="stroke-zinc-700 hover:stroke-red-500 transition-colors duration-100" />
-                </button>
+
+                {b.applicationStatus === APPLICATION_STATUS.ARCHIVED && (
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(b.externalId)}
+                    className="cursor-pointer"
+                  >
+                    <Trash2 className="stroke-zinc-700 hover:stroke-red-500 transition-colors duration-100" />
+                  </button>
+                )}
               </div>
-              <h4 className="truncate text-zinc-400">{b.jobTitle}</h4>
-              <p className="text-zinc-400 mb-2">
+              <h4 className="truncate text-content-muted">{b.jobTitle}</h4>
+              <p className="text-content-subtle mb-2">
                 Apply By:{' '}
-                <span className="font-bold text-zinc-200">{b.applyBy}</span>
+                <span className="font-bold text-content-muted/80">
+                  {b.applyBy}
+                </span>
               </p>
               <StatusSelect
                 current={b.applicationStatus as ApplicationStatus}

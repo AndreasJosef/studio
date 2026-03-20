@@ -44,7 +44,7 @@ export function UserHUD() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 bg-app-bg border border-app-border p-1.5 pr-3 rounded-lg hover:bg-zinc-800 transition-all cursor-pointer"
+        className="flex items-center gap-2 bg-app-bg border border-app-border p-1.5 pr-3 rounded-lg hover:bg-app-surface-hover transition-all cursor-pointer"
       >
         <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
           {user.displayName
@@ -52,7 +52,7 @@ export function UserHUD() {
             : user.email[0].toUpperCase()}
         </div>
         <div className="hidden md:block text-left">
-          <p className="text-xs font-bold text-zinc-200 leading-none">
+          <p className="text-xs font-bold text-content-muted leading-none">
             {user.displayName}
           </p>
         </div>
@@ -69,12 +69,12 @@ export function UserHUD() {
             onClick={() => setIsOpen(false)}
           />
 
-          <div className="absolute right-0 mt-2 w-56 bg-zinc-950 border border-zinc-800 rounded-xl shadow-2xl z-50 py-2 overflow-hidden animate-in fade-in zoom-in duration-100">
-            <div className="px-4 py-3 border-b border-zinc-800/50 mb-1">
-              <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest">
+          <div className="absolute right-0 mt-2 w-56 bg-app-bg border border-app-border rounded-xl shadow-2xl z-50 py-2 overflow-hidden animate-in fade-in zoom-in duration-100">
+            <div className="px-4 py-3 border-b border-app-border/50 mb-1">
+              <p className="text-xs text-content-muted font-bold uppercase tracking-widest">
                 Account
               </p>
-              <p className="text-sm text-zinc-300 truncate font-medium">
+              <p className="text-sm text-content-subtle truncate font-medium">
                 {user.email}
               </p>
             </div>
@@ -89,7 +89,7 @@ export function UserHUD() {
               </span>
             </button>
 
-            <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-400 hover:bg-zinc-800 transition-colors">
+            <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-400 hover:bg-app-surface-hover transition-colors">
               <Settings size={16} />
               <span>Settings</span>
             </button>

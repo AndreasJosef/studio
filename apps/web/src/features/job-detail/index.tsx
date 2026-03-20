@@ -29,7 +29,11 @@ export default function JobDetails({
   }, [id]);
 
   if (error)
-    return <h2 className="text-red-500 font-semibold">Error Loading Job</h2>;
+    return (
+      <div className="p-8 text-center text-red-500 font-bold">
+        Error: Could not load job details.
+      </div>
+    );
 
   if (!job)
     return (
@@ -41,7 +45,7 @@ export default function JobDetails({
   return (
     <div
       ref={scrollResetRef}
-      className="h-full overflow-y-auto rounded-lg bg-indigo-500/10 p-4 scroll-smooth"
+      className="h-full overflow-y-auto rounded-lg bg-app-bg p-4 scroll-smooth"
     >
       <header className="gap-4 font-bold mb-4 flex justify-between">
         <div>
@@ -59,7 +63,7 @@ export default function JobDetails({
         </div>
         <ToggleJobButton job={job} isSaved={isSaved} setSavedIds={onSave} />
       </header>
-      <div className="prose prose-indigo prose-invert prose-lg">
+      <div className="prose prose-zinc prose-lg">
         <Detail nodes={job.description} />
       </div>
     </div>
