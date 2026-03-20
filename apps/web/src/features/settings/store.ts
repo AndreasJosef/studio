@@ -11,8 +11,10 @@ interface SetttingsState {
 export const useSettingsStore = create<SetttingsState>()(
   persist(
     (set) => ({
-      theme: 'dark',
-      setTheme: (theme) => set({ theme }),
+      theme: 'system',
+      setTheme: (theme) => {
+        set({ theme });
+      },
     }),
     {
       name: 'jc-user-settings',

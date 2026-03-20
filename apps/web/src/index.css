@@ -2,14 +2,25 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-background: #131311;
-  --color-background: var(--color-zinc-900);
+  --color-app-bg: var(--bg-primary);
+  --color-app-surface: var(--bg-secondary);
+  --color-app-border: var(--border-main);
 }
 
-.lucide {
-  color: var(--color-zinc-500);
+@layer base {
+  :root {
+    --bg-primary: var(--color-white);
+    --bg-secondary: var(--color-zinc-400);
+    --border-main: var(--color-zinc-400);
+  }
+
+  .dark {
+    --bg-primary: var(--color-zinc-900);
+    --bg-secondary: var(--color-zinc-800);
+    --border-main: var(--color-zinc-800);
+  }
 }
 
-.lucide:hover {
-  color: var(--color-zinc-200);
-}
+/* .lucide { */
+/*   color: var(--color-zinc-500); */
+/* } */
