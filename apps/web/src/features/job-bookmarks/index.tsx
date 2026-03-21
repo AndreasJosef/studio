@@ -86,14 +86,14 @@ export default function JobBookmarks() {
   };
 
   return (
-    <div className="overflow-y-scroll">
+    <div className="overflow-y-scroll p-4 h-full">
       {error && (
         <p className="my-2 bg-red-400 px-2 py-1 rounded font-semibold text-sm text-red-950">
           {error}
         </p>
       )}
 
-      <header className="flex gap-2 items-center my-4">
+      <header className="flex gap-2 items-center mb-4">
         <StatusFilters />
         <FilterInput />
       </header>
@@ -106,7 +106,7 @@ export default function JobBookmarks() {
                   {b.employer}
                 </h3>
 
-                {b.applicationStatus === APPLICATION_STATUS.ARCHIVED && (
+                {activeFilter === 'archived' && (
                   <button
                     type="button"
                     onClick={() => handleDelete(b.externalId)}

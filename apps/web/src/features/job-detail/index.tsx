@@ -45,9 +45,9 @@ export default function JobDetails({
   return (
     <div
       ref={scrollResetRef}
-      className="h-full overflow-y-auto rounded-lg bg-app-bg p-4 scroll-smooth"
+      className="h-full overflow-y-auto rounded-lg bg-app-bg scroll-smooth"
     >
-      <header className="gap-4 font-bold mb-4 flex justify-between">
+      <header className="pt-6 px-8 gap-4 font-bold mb-4 flex justify-between">
         <div>
           <button
             className="md:hidden mb-4 text-indigo-500 cursor-pointer hover:underline"
@@ -63,7 +63,7 @@ export default function JobDetails({
         </div>
         <ToggleJobButton job={job} isSaved={isSaved} setSavedIds={onSave} />
       </header>
-      <div className="prose prose-zinc prose-lg">
+      <div className="pb-6 px-8 prose prose-zinc prose-lg">
         <Detail nodes={job.description} />
       </div>
     </div>

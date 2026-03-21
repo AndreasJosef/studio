@@ -13,7 +13,7 @@ const AppShell = () => {
           </h1>
           <UserHUD />
         </header>
-        <main className="flex flex-col md:flex-row overflow-hidden">
+        <main className="flex flex-col md:flex-row overflow-hidden h-full">
           <aside className="text-content-muted w-full md:w-20 p-2 md:border-r-2 border-app-border flex flex-row md:flex-col md:items-center gap-2">
             <Link
               className="rounded hover:bg-app-surface-hover w-12 h-12 flex justify-center items-center"
@@ -60,7 +60,7 @@ const AppShell = () => {
               <BookUser size={24} strokeWidth={3} />
             </Link>
           </aside>
-          <div className="w-full overflow-y-scroll px-4 pb-4">
+          <div className="flex-1 overflow-hidden w-full">
             <Outlet />
           </div>
         </main>

@@ -16,21 +16,22 @@ export default function ExplorerLayout({
   const [Search, List, Detail] = React.Children.toArray(children);
 
   return (
-    <div className="flex flex-col gap-6 max-w-8xl mx-auto">
-      <div className="grid grid-cols-12 gap-8 items-start mt-4">
-        <aside
-          className={`${isDetailActive ? 'hidden md:block' : 'block'} col-span-12 md:col-span-5 pb-20`}
-        >
-          <header
-            className={`w-full ${isDetailActive ? 'hidden md:block' : 'block'}`}
-          >
-            {Search}
-          </header>
+    <div className="grid grid-cols-1 md:grid-cols-[2fr_3fr] h-full w-full overflow-hidden">
+      <div
+        className={`flex flex-col h-full overflow-hidden ${isDetailActive ? 'hidden md:flex' : 'flex'}`}
+      >
+        <div className="flex-1 overflow-y-auto p-4">
+          {Search}
           {List}
-        </aside>
-        <main className="col-span-12 md:col-span-7 sticky top-6 h-[calc(100vh-3rem)]">
+        </div>
+      </div>
+
+      <div
+        className={`h-full overflow-hidden md:border-l-2 border-app-border ${isDetailActive ? 'flex' : 'hidden md:flex'}`}
+      >
+        <div className="flex-1 h-full scroll-smooth [scrollbar-width:none]">
           {Detail}
-        </main>
+        </div>
       </div>
     </div>
   );
