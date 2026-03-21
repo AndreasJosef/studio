@@ -22,7 +22,7 @@ export default function JobSearch({ onSearch }: JobSearchProps) {
   });
 
   return (
-    <div className="relative mb-4">
+    <div className="relative p-4">
       <AutoCompleteSearchBar
         value={queryDraft}
         completion={completionSuffix}

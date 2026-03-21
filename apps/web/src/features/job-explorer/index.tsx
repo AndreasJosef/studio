@@ -41,29 +41,25 @@ export default function JobExplorer() {
     [jobs, savedIds]
   );
 
-  console.log(savedIds);
-
   return (
     <ExplorerLayout isDetailActive={!!id}>
       <JobSearch onSearch={handleSearch} />
-      <>
-        <JobList
-          query={q}
-          jobs={enrichedJobs}
-          saved={savedIds}
-          error={error}
-          isLoading={isLoading}
-          jobsTotal={meta.total}
-          selected={id}
-          onSelected={(newId) => updateUrl({ id: newId })}
-          onSave={setSavedIds}
-        />
-        <PaginationControls
-          currentPage={p}
-          totalPages={meta.pages}
-          onPageChange={handleResultsPageChange}
-        />
-      </>
+      <JobList
+        query={q}
+        jobs={enrichedJobs}
+        saved={savedIds}
+        error={error}
+        isLoading={isLoading}
+        jobsTotal={meta.total}
+        selected={id}
+        onSelected={(newId) => updateUrl({ id: newId })}
+        onSave={setSavedIds}
+      />
+      <PaginationControls
+        currentPage={p}
+        totalPages={meta.pages}
+        onPageChange={handleResultsPageChange}
+      />
       <JobDetails
         id={id}
         isSaved={savedIds.includes(Number(id))}

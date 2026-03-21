@@ -46,7 +46,7 @@ export default function JobList({
         ))}
 
       {!isLoading && (
-        <ul>
+        <ul className="p-4">
           {displayJobs.map((job) => (
             <JobListItemUI
               key={job.externalId}

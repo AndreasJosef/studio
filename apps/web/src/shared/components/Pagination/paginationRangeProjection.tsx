@@ -1,6 +1,5 @@
 /**
- * STATION: Refiner
- * JOB: Generates a balanced array of page numbers and ellipses.
+ * Generates a balanced array of page numbers and ellipses.
  */
 export const projectPaginationRange = (
   currentPage: number,
@@ -34,5 +33,3 @@ export const projectPaginationRange = (
 
   return range;
 };
-
-console.log(projectPaginationRange(22, 40, 2));

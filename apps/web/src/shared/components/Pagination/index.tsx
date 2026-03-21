@@ -14,7 +14,7 @@ export default function PaginationControls({
   const pages = projectPaginationRange(currentPage, totalPages);
 
   return (
-    <nav className="flex items-center justify-center rounded gap-2 mt-4 py-4">
+    <nav className="py-2 flex items-center justify-center rounded gap-2">
       {pages.map((page, idx) => {
         if (page === '...') {
           return (
@@ -34,8 +34,8 @@ export default function PaginationControls({
               w-10 h-10 rounded-md transition-colors font-medium
               ${
                 isActive
-                  ? 'bg-indigo-700 text-white'
-                  : 'text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100'
+                  ? 'bg-brand-primary text-white'
+                  : 'text-neutral-400 hover:bg-app-surface-hover hover:text-content-muted'
               }
             `}
           >
