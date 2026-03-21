@@ -22,7 +22,7 @@ export default function AuthForm({ mode, onSubmit, isLoading }: AuthFormProps) {
       {isSignup && (
         <input
           name="displayName"
-          className="bg-zinc-800 border border-zinc-700 p-3 rounded text-white focus:ring-2 focus:ring-indigo-600 outline-none"
+          className="bg-app-surface-raised border border-app-border p-3 rounded text-content-main focus:ring-2 focus:ring-app-ring  outline-none"
           type="text"
           placeholder="Profile Name"
           required
@@ -30,14 +30,14 @@ export default function AuthForm({ mode, onSubmit, isLoading }: AuthFormProps) {
       )}
       <input
         name="email"
-        className="bg-zinc-800 border border-zinc-700 p-3 rounded text-white focus:ring-2 focus:ring-indigo-600 outline-none"
+        className="bg-app-surface-raised border border-app-border p-3 rounded text-content-main focus:ring-2 focus:ring-app-ring  outline-none"
         type="email"
         placeholder="Email Address"
         required
       />
       <input
         name="password"
-        className="bg-zinc-800 border border-zinc-700 p-3 rounded text-white focus:ring-2 focus:ring-indigo-600 outline-none"
+        className="bg-app-surface-raised border border-app-border p-3 rounded text-content-main focus:ring-2 focus:ring-app-ring  outline-none"
         type="password"
         placeholder="Password"
         required
@@ -45,7 +45,7 @@ export default function AuthForm({ mode, onSubmit, isLoading }: AuthFormProps) {
 
       <button
         disabled={isLoading}
-        className="bg-indigo-700 hover:bg-indigo-600 disabled:opacity-50 text-white font-bold py-3 rounded transition-colors mt-2 cursor-pointer"
+        className="bg-brand-primary hover:bg-indigo-600 disabled:opacity-50 text-white font-bold py-3 rounded transition-colors mt-2 cursor-pointer"
         type="submit"
       >
         {isLoading ? 'Processing...' : isSignup ? 'Sign Up' : 'Sign In'}

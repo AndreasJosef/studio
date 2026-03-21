@@ -17,7 +17,7 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
   });
 
   return (
-    <div className="max-w-md mx-auto p-8 bg-zinc-900 border border-zinc-800 rounded-lg mt-20">
+    <div className="max-w-md mx-auto p-8 bg-app-bg border border-app-border rounded-lg mt-20">
       <AuthHeader mode={mode} />
 
       <AuthForm

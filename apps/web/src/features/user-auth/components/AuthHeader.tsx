@@ -8,10 +8,10 @@ export default function AuthHeader({ mode }: AuthHeaderProps) {
 
   return (
     <header className="mb-8 text-center">
-      <h2 className="text-3xl font-bold text-white">
+      <h2 className="text-3xl font-bold text-content-main">
         {isSignup ? 'Create Account' : 'Welcome Back'}
       </h2>
-      <p className="text-zinc-400 mt-2">
+      <p className="text-content-subtle mt-2">
         {isSignup
           ? 'Start your job chase today.'
           : 'Sign to bookmark interesting Jobs.'}
