@@ -1,68 +1,67 @@
-# JobChaser – Fullstack-projekt (Chas Academy)
+# JobChaser – Fullstack Project
 
-JobChaser är en modern webbapplikation för att söka, bevaka och hantera jobbannonser. Projektet är utvecklat som en inlämningsuppgift inom Fullstack JavaScript-programmet vid Chas Academy.
+JobChaser is a modern, high-performance web application designed to scout, track, and manage job applications. This project was developed as a capstone assignment for the Fullstack JavaScript program at **Chas Academy**.
 
-Fokus i projektet har varit att bygga en industriell "Refinery"-arkitektur där data förädlas genom strikt typsäkerhet, från externa API-svar till lagring i databas och slutligen presentation i ett reaktivt UI.
+The core philosophy of the project is the "Refinery" architecture: transforming raw data from external sources through strict domain-driven validation, ensuring data integrity from the database all the way to the reactive UI.
 
-## Teknisk Arkitektur & Typsäkerhet
+## 🏗 Technical Architecture & Type Safety
 
-Projektets ryggrad är en End-to-End typsäkerhet som säkerställer att ingen korrupt data når systemets kärna.
-Domändriven validering (Zod + Drizzle)
+The backbone of this project is **End-to-End Type Safety**, preventing corrupt data from entering the system's core.
 
- - API-Refinery: För att hantera externa data (t.ex. från Arbetsförmedlingen) har jag byggt valideringslogik med Zod. Detta garanterar att externa svar transformeras till våra interna domäntyper innan de används.
+### Domain-Driven Validation (Zod + Drizzle)
+* **API Refinery:** To handle external data (e.g., from the Swedish Public Employment Service), **Zod** is used to transform and validate external payloads into internal domain types before they are consumed.
+* **Persistence Layer:** Using **Drizzle ORM**, our domain schemas are mirrored directly in PostgreSQL, eliminating the "type drift" often found between database schemas and application code.
+* **Middleware Logic:** The backend utilizes custom Express middlewares that validate incoming requests against Zod schemas, rendering our controllers 100% type-safe.
 
-- Persistent Lager: Genom Drizzle ORM speglas våra domänscheman direkt i PostgreSQL. Detta eliminerar glappet mellan kod och databas.
+### Advanced Data Fetching
+I have developed a custom **Type-Safe Fetch Wrapper**. This allows us to inject Zod schemas into every fetch call, providing automatic type inference and validation in a single step. This layer is architected for a seamless migration to **TanStack Query**.
 
-- Middleware-logik: I backend används specialbyggda Express-middlewares som validerar inkommande requests mot Zod-scheman, vilket gör våra controllers 100% typsäkra.
+## 📁 Project Structure (Monorepo)
 
-**Avancerad Datahämtning**
+The project is organized as a **pnpm monorepo** to enforce separation of concerns and enable shared code between the frontend and backend.
 
-Jag har utvecklat en egen typsäker fetch-wrapper. Denna tillåter oss att skicka in Zod-scheman vid varje anrop, vilket ger oss automatiskt typat resultat och validering i ett och samma steg. Detta lager är förberett för att enkelt kunna migrera till TanStack Query för optimerad caching.
-Frontend-filosofi
+```text
+.
+├── apps
+│   ├── api          # Express Server (Backend Refinery)
+│   └── web          # React Application (Vite + Tailwind 4)
+├── packages
+│   ├── domain       # Core: Schema, DB Client, Types & Validation
+│   └── shared       # Shared utilities, helpers, and constants
+├── BACKLOG.md       
+├── NEXT.md          
+└── README.md
+```
 
-Applikationen använder TanStack Router för typsäker routing. Frontend är idag organiserad enligt en Feature-based layout, men som ett led i projektets utveckling har jag påbörjat en övergång mot en Fluid Functional-struktur (slice-based development) för att bättre isolera domänlogik från UI.
+### 🧠 The `@jobchaser/domain` Package
+This is the "heart" of the system, serving as the **Single Source of Truth**:
+* **Database Client:** Configuration and connection handling for PostgreSQL.
+* **Schemas & Actions:** Table definitions and all CRUD operations encapsulated as type-safe functions.
+* **Transformations:** Zod schemas describing domain objects and the allowed data transformations within the system.
 
-## Deployment
+## 🌐 Distribution & Deployment
 
-Projektet är driftsatt på en egen Linux-server (Hetzner) med en modern container-baserad arkitektur.
-Infrastrukturöversikt
+The project is deployed on a dedicated Linux server (**Hetzner**) using a modern container-based architecture.
 
-Systemet är uppdelat i tre isolerade lager:
+### Infrastructure Overview
+* **Reverse Proxy (Caddy):** Automatically handles HTTPS (SSL) and directs traffic (`/api/*` to backend, all other traffic to frontend).
+* **Application Layer (Podman):** Both frontend and backend run as isolated OCI containers (`node:24-slim`) for maximum security and minimal image size.
+* **Monorepo Build:** Containers are built from the root directory to give the Docker build context access to all local dependencies in `/packages`.
+* **Deployment Pipeline:** A manual pipeline using `rsync` for synchronization and `drizzle-kit push` to ensure the database schema always matches the production code.
 
-- Reverse Proxy (Caddy): Hanterar HTTPS (SSL) automatiskt och dirigerar trafik. /api/* pekar mot backend, medan övrig trafik landar i frontend-containern.
+## 🛠 Future Enhancements & Next Steps
 
-- Applikationslager (Podman): Både frontend (Vite) och backend (Express) körs som isolerade OCI-containrar (node:24-slim) för maximal säkerhet och minimal image-storlek.
+* **State & Caching:** Complete the integration of **TanStack Query** to optimize network requests and user experience.
+* **UI Stability:** Implement a global error and success component (Error Boundaries/Toasts) for clearer user feedback.
+* **Responsiveness:** Further refine the layout for 100% optimization across all screen sizes (Mobile-First approach).
+* **Feature Completion:** Enable backend logic in the UI for the automatic extraction of contacts and email addresses from job descriptions.
+* **Fluid Architecture:** Migrate remaining frontend components to a fully "slice-based" functional development model.
 
-- Databaslager (PostgreSQL): Körs i en dedikerad container med persistenta volymer.
+---
 
-## Monorepo & Build-pipeline
-
-Projektet är ett pnpm-monorepo med delade paket (t.ex. @jobchaser/domain).
-
-- Byggprocess: Containrarna byggs från rotkatalogen för att ge Docker-build-kontexten tillgång till alla lokala beroenden i /packages.
-
-- Git Submoduler: Används för att integrera kodbaser från olika repon men hanteras sömlöst i build-steget på servern.
-
-- Migrations: Databasschemat synkas i realtid via drizzle-kit push inifrån API-containern vid deployment.
+## 🛠 Tech Stack
+* **Frontend:** React (Vite), Tailwind 4, TanStack Router, Zustand.
+* **Backend:** Node.js (Express), Zod, Drizzle ORM.
+* **Infrastructure:** PostgreSQL, Caddy, Podman, Hetzner Cloud.
 
 
-## Framtida Förbättringar
-
-Robust Felhantering i UI: Implementera en global fel-komponent för att hantera "success/error states" mer enhetligt i UI:t.
-
-State & Caching: Fullfölja integrationen av TanStack Query för att minska antalet API-anrop och förbättra användarupplevelsen.
-
-### UI-Refinement:
-
-- Fortsätta utvecklingen av det semantiska temasystemet (Tailwind 4) för att täcka fler edge-cases i dark/light mode.
-- Förbättra Responsiveness
-- Bygga klart features som jag har redan påbörjat: kontaktsida etc.
-
-### Tech Stack
-
-- Frontend: React (Vite), Tailwind 4, TanStack Router, Zustand.
-- Backend: Node.js (Express), Zod, Drizzle ORM.
-- Infrastruktur: PostgreSQL, Caddy, Podman, Hetzner Cloud.
-- Verktyg: pnpm workspaces, Typescript, Git Submodules.
-
-Projektet representerar en djupdykning i hur man bygger skalbara, typsäkra system med modern webbteknik.
