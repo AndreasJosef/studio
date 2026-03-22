@@ -1,6 +1,7 @@
 # JobChaser – Fullstack Project
 
-JobChaser is a modern, high-performance web application designed to scout, track, and manage job applications. This project was developed as a capstone assignment for the Fullstack JavaScript program at **Chas Academy**.
+JobChaser is a modern web application designed to scout, track, and manage job
+applications. This project was developed as an assignment for the Fullstack JavaScript program at **Chas Academy**.
 
 The core philosophy of the project is the "Refinery" architecture: transforming raw data from external sources through strict domain-driven validation, ensuring data integrity from the database all the way to the reactive UI.
 
@@ -53,7 +54,7 @@ The project is deployed on a dedicated Linux server (**Hetzner**) using a modern
 
 * **State & Caching:** Complete the integration of **TanStack Query** to optimize network requests and user experience.
 * **UI Stability:** Implement a global error and success component (Error Boundaries/Toasts) for clearer user feedback.
-* **Responsiveness:** Further refine the layout for 100% optimization across all screen sizes (Mobile-First approach).
+* **Responsiveness:** Further refine the layout for 100% optimization across all screen sizes.
 * **Feature Completion:** Enable backend logic in the UI for the automatic extraction of contacts and email addresses from job descriptions.
 * **Fluid Architecture:** Migrate remaining frontend components to a fully "slice-based" functional development model.
 
