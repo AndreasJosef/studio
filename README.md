@@ -5,6 +5,8 @@ applications. This project was developed as an assignment for the Fullstack Java
 
 The core philosophy of the project is the "Refinery" architecture: transforming raw data from external sources through strict domain-driven validation, ensuring data integrity from the database all the way to the reactive UI.
 
+View a [live demo](https://jobchaser.andreasjosef.se/) of the project here!
+
 ## 🏗 Technical Architecture & Type Safety
 
 The backbone of this project is **End-to-End Type Safety**, preventing corrupt data from entering the system's core.
