@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRootRouteImport } from './routes/_app-root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRootMyJobsRouteImport } from './routes/_app-root.my-jobs'
 import { Route as AppRootExploreRouteImport } from './routes/_app-root.explore'
 import { Route as AppRootContactsRouteImport } from './routes/_app-root.contacts'
@@ -18,6 +19,11 @@ import { Route as AppRootAuthSigninRouteImport } from './routes/_app-root.auth.s
 
 const AppRootRoute = AppRootRouteImport.update({
   id: '/_app-root',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRootMyJobsRoute = AppRootMyJobsRouteImport.update({
@@ -47,7 +53,7 @@ const AppRootAuthSigninRoute = AppRootAuthSigninRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AppRootRouteWithChildren
+  '/': typeof IndexRoute
   '/contacts': typeof AppRootContactsRoute
   '/explore': typeof AppRootExploreRoute
   '/my-jobs': typeof AppRootMyJobsRoute
@@ -55,7 +61,7 @@ export interface FileRoutesByFullPath {
   '/auth/signup': typeof AppRootAuthSignupRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof AppRootRouteWithChildren
+  '/': typeof IndexRoute
   '/contacts': typeof AppRootContactsRoute
   '/explore': typeof AppRootExploreRoute
   '/my-jobs': typeof AppRootMyJobsRoute
@@ -64,6 +70,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_app-root': typeof AppRootRouteWithChildren
   '/_app-root/contacts': typeof AppRootContactsRoute
   '/_app-root/explore': typeof AppRootExploreRoute
@@ -90,6 +97,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
   id:
     | '__root__'
+    | '/'
     | '/_app-root'
     | '/_app-root/contacts'
     | '/_app-root/explore'
@@ -99,6 +107,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AppRootRoute: typeof AppRootRouteWithChildren
 }
 
@@ -109,6 +118,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AppRootRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app-root/my-jobs': {
@@ -169,6 +185,7 @@ const AppRootRouteWithChildren =
   AppRootRoute._addFileChildren(AppRootRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AppRootRoute: AppRootRouteWithChildren,
 }
 export const routeTree = rootRouteImport

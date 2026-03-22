@@ -36,6 +36,7 @@
     --border-subtle: var(--color-zinc-200);
     --ring-focus: var(--color-indigo-500);
     --brand-solid: var(--color-indigo-600);
+    --brand-muted: var(--color-indigo-400);
   }
 
   .dark {
@@ -51,6 +52,7 @@
     --border-subtle: var(--color-zinc-700);
     --ring-focus: var(--color-indigo-400);
     --brand-solid: var(--color-indigo-500);
+    --brand-muted: var(--color-indigo-400);
   }
 }
 
