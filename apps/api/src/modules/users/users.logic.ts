@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 import { ok, fail, type Result, AuthErrorCode } from '@jobchaser/domain';
 import { userActions } from '@jobchaser/domain/actions';
