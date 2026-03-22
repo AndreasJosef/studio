@@ -10,6 +10,7 @@
     "cdd": "tsc --watch --noEmit --preserveWatchOutput | node ../../../../packages/cdd-monitor/src/index.ts --fast"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@jobchaser/domain": "workspace:*",
     "@jobchaser/shared": "workspace:*",
     "@tanstack/react-query": "^5.91.0",
