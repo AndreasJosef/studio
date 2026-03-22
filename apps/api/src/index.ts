@@ -10,12 +10,27 @@ import jobRoutes from './modules/jobs/jobs.routes.ts';
 const PORT = 4000;
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173', // Local Dev (Vite)
+  'http://localhost:3000', // Production (Web container)
+  'https://jobchaser.andreasjosef.se', // my actual domain
+];
+
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 

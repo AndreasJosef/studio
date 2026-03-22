@@ -155,7 +155,7 @@ export async function safePost<TIn, TOut>(
     });
 
     if (!response.ok) {
-      console.log('this error');
+      console.log(response);
       return fail(`HTTP Error: ${response.status}`);
     }
 
