@@ -1,19 +1,14 @@
 {
-  "name": "@field-logic/cdd",
+  "name": "@studio/cdd-monitor",
   "version": "1.0.0",
-  "description": "A focus-mode compiler monitor for Field Logic.",
   "type": "module",
   "bin": {
-    "cdd": "./src/index.ts"
+    "cdd-monitor": "./src/index.ts"
   },
-  "scripts": {
-    "test": "echo 'src/index.ts(10,5): error TS2322: Type number is not string' | bun ./src/index.ts"
-  },
-  "devDependencies": {
-    "bun-types": "latest",
-    "typescript": "^5.0.0"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">=23.6.0"
   }
 }

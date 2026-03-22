@@ -29,3 +29,6 @@ bun.lockb.tmp
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+# DEV DB
+pgdata/
