@@ -7,7 +7,7 @@ import cors from 'cors';
 import userRoutes from './modules/users/users.routes.ts';
 import jobRoutes from './modules/jobs/jobs.routes.ts';
 
-const PORT = process.env.PORT || 3000;
+const PORT = 4000;
 const app = express();
 
 app.use(
@@ -48,6 +48,6 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log('[ JobChaser API Status ] Online at port: ', PORT);
 });

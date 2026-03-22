@@ -22,7 +22,7 @@ import { fetchAd } from '../jobtech/jobtech.api';
 import { serializeTreeToHTML } from '@jobchaser/shared/html-parse';
 import { safePutItem } from '@/lib/safe-fetch';
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = '/api';
 
 export const jobsService = {
   async loadJobs(): Promise<Result<Job[]>> {

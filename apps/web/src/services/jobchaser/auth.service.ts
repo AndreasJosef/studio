@@ -8,7 +8,7 @@ import {
 
 import { safePost, zodParser, identityParser } from '@/lib/api-engine';
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = '/api';
 
 export const authService = {
   async signup(input: CreateUserInput): Promise<Result<SafeUser>> {

@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const checkAuth = async () => {
       setIsInitializing(true);
       const result = await fetchSafeItem<SafeUser>(
-        'http://localhost:3000/api/users/me',
+        '/api/users/me',
         zodParser(SafeUserSchemaFrontend),
         { credentials: 'include' }
       );
