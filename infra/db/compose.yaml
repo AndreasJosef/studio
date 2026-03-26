@@ -7,9 +7,13 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      # APP DATABSE CREDENTIALS
+      - JC_DB_USER=${JC_DB_USER}
+      - JC_DB_PASSWORD=${JC_DB_PASSWORD}
+      - JC_DB_NAME=${JC_DB_NAME}
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
       - ./pgdata:/var/lib/postgresql/data:Z
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:Z
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:Z
 
