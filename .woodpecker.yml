@@ -32,17 +32,18 @@ steps:
       debug: true
 
   # JOBCHASER API: Build and Deploy directly on the host
-  #
   deploy-api:
     image: appleboy/drone-ssh
     settings:
       <<: *ssh_connection
-      # 1. Map secrets directly in settings (v3 way)
-      # This creates PLUGIN_JC_DATABASE_URL and PLUGIN_JWT_SECRET inside the container
+      # 1. Correct v3 Secret Mapping (No environment block needed)
       JC_DATABASE_URL:
         from_secret: JC_DATABASE_URL
       JWT_SECRET:
         from_secret: JWT_SECRET
+      
+      # 2. This tells the plugin to find these keys and send them to your VPS
+      envs: [ JC_DATABASE_URL, JWT_SECRET ]
       
       script:
         - cd /var/www/studio-deploy
@@ -54,8 +55,8 @@ steps:
           --name jc-api 
           --restart always 
           --network host 
-          -e DATABASE_URL=$$PLUGIN_JC_DATABASE_URL 
-          -e JWT_SECRET=$$PLUGIN_JWT_SECRET 
+          -e DATABASE_URL=$$JC_DATABASE_URL 
+          -e JWT_SECRET=$$JWT_SECRET 
           jc-api:latest
     when:
       - path: [ "apps/jobchaser/apps/api/**", "apps/jobchaser/packages/domain/**", "packages/**" ]
