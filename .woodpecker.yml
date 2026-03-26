@@ -35,16 +35,25 @@ steps:
   #
   deploy-api:
     image: appleboy/drone-ssh
-    settings:
-      <<: *ssh_connection
+    # Use only 'environment' to satisfy the v3 linter and avoid the 'settings' conflict
+    environment:
+      # 1. The Secrets (Directly named so the plugin can find them)
       JC_DATABASE_URL:
         from_secret: JC_DATABASE_URL
       JWT_SECRET:
         from_secret: JWT_SECRET
+
+      # 2. SSH Config (Manual PLUGIN_ prefix to satisfy the drone-ssh plugin)
+      PLUGIN_HOST: 10.89.0.1 # <--- Use your working Gateway IP from the SCP step
+      PLUGIN_USERNAME: root
+      PLUGIN_KEY:
+        from_secret: ssh_key
       
-      envs: [ JC_DATABASE_URL, JWT_SECRET ]
+      # 3. Tell the plugin exactly which variables to carry to the VPS
+      PLUGIN_ENVS: "JC_DATABASE_URL,JWT_SECRET"
       
-      script:
+      # 4. The Deployment Script
+      PLUGIN_SCRIPT:
         - cd /var/www/studio-deploy
         - podman build -t jc-api:latest -f apps/jobchaser/apps/api/Dockerfile .
         - podman stop jc-api || true
@@ -54,8 +63,8 @@ steps:
           --name jc-api 
           --restart always 
           --network host 
-          -e DATABASE_URL=$$JC_DATABASE_URL 
-          -e JWT_SECRET=$$JWT_SECRET 
+          -e DATABASE_URL=$JC_DATABASE_URL 
+          -e JWT_SECRET=$JWT_SECRET 
           jc-api:latest
     when:
       - path: [ "apps/jobchaser/apps/api/**", "apps/jobchaser/packages/domain/**", "packages/**" ]
