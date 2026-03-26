@@ -34,6 +34,11 @@ steps:
   # 2. JOBCHASER API: Build and Deploy directly on the host
   deploy-api:
     image: appleboy/drone-ssh
+    environment:
+      JWT_SECRET:
+        from_secret: JWT_SECRET
+      JC_DATABASE_URL:
+        from_secret: JC_DATABASE_URL
     settings:
       <<: *ssh_connection
       # Injects secrets as environment variables for the SSH script
@@ -49,8 +54,8 @@ steps:
           --name jc-api 
           --restart always 
           --network host 
-          -e DATABASE_URL=$JC_DATABASE_URL 
-          -e JWT_SECRET=$JWT_SECRET 
+          -e DATABASE_URL=$${JC_DATABASE_URL} 
+          -e JWT_SECRET=$${JWT_SECRET}
           jc-api:latest
     when:
       - path: [ "apps/jobchaser/apps/api/**", "apps/jobchaser/packages/domain/**", "packages/**" ]
