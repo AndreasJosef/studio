@@ -54,7 +54,7 @@ steps:
         - >
           podman run --rm 
           --network host 
-          -e DATABASE_URL=$$JC_DATABASE_URL 
+          -e DATABASE_URL=$$PLUGIN_JC_DATABASE_URL 
           jc-api:latest 
           pnpm --filter @jobchaser/domain exec drizzle-kit push
         - podman stop jc-api || true
