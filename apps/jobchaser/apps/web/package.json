@@ -1,0 +1,33 @@
+{
+  "name": "@jobchaser/web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "cdd": "tsc --watch --noEmit --preserveWatchOutput | node ../../../../packages/cdd-monitor/src/index.ts --fast"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@jobchaser/domain": "workspace:*",
+    "@jobchaser/shared": "workspace:*",
+    "@tanstack/react-query": "^5.91.0",
+    "@tanstack/react-router": "^1.159.5",
+    "lucide-react": "^0.575.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.71.1",
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.3.6",
+    "zustand": "^5.0.12"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/router-plugin": "^1.159.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^7.2.4"
+  }
+}
