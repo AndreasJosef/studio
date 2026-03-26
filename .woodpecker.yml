@@ -1,85 +1,63 @@
-# Studio - CI/CD Pipeline 2026
-pipeline:
+# Studio CI/CD 2026
 
-  # --- WEBHOOK HANDLER (Build & Deploy) ---
-  build-webhook:
-    image: woodpeckerci/plugin-docker-buildx
-    settings:
-      dockerfile: apps/webhook-handler/Dockerfile
-      repo: studio-webhook
-      context: .
-    when:
-      branch: prod
-      path: "apps/webhook-handler/**"
-
-  deploy-webhook:
-    image: appleboy/drone-ssh
-    settings:
-      host: 127.0.0.1
-      username: root
-      key:
-        from_secret: ssh_key
-      script:
-        - podman stop studio-webhook || true
-        - podman rm studio-webhook || true
-        - podman run -d --name studio-webhook --restart always --network host -e DISCORD_WEBHOOK=$${DISCORD_WEBHOOK_URL} studio-webhook:latest
-    when:
-      branch: prod
-      path: "apps/webhook-handler/**"
-
-  # --- JOBCHASER API (Build & Deploy) ---
-  build-jobchaser-server:
-    image: woodpeckerci/plugin-docker-buildx
-    settings:
-      dockerfile: apps/jobchaser/apps/server/Dockerfile
-      repo: jobchaser-api
-      context: .
-    when:
-      branch: prod
-      path: "apps/jobchaser/**"
-
-  deploy-jobchaser-server:
-    image: appleboy/drone-ssh
-    settings:
-      host: 127.0.0.1
-      username: root
-      key:
-        from_secret: ssh_key
-      script:
-        - podman stop jobchaser-api || true
-        - podman rm jobchaser-api || true
-        - podman run -d --name jobchaser-api --restart always --network host -e DATABASE_URL=$${JC_DATABASE_URL} jobchaser-api:latest
-    when:
-      branch: prod
-      path: "apps/jobchaser/**"
-
-  # --- 4. JOBCHASER WEB (Build & Deploy) ---
-  build-jobchaser-web:
-    image: woodpeckerci/plugin-docker-buildx
-    settings:
-      dockerfile: apps/jobchaser/apps/web/Dockerfile
-      repo: jobchaser-web
-      context: .
-    when:
-      branch: prod
-      path: "apps/jobchaser/apps/web/**"
-
-  deploy-jobchaser-web:
-    image: appleboy/drone-ssh
-    settings:
-      host: 127.0.0.1
-      username: root
-      key:
-        from_secret: ssh_key
-      script:
-        - podman stop jobchaser-web || true
-        - podman rm jobchaser-web || true
-        - podman run -d --name jobchaser-web --restart always --network host jobchaser-web:latest
-    when:
-      branch: prod
-      path: "apps/jobchaser/apps/web/**"
-
-# Global Filters
+# Global configuration for the whole pipeline
 when:
-  event: push
-  branch: prod
+  - event: [push, manual]
+    branch: prod
+
+steps:
+  # 1. THE SYNC: Move the code from the CI container to the VPS disk
+  sync-source:
+    image: appleboy/drone-scp
+    settings:
+      host: 127.0.0.1
+      username: root
+      key:
+        from_secret: ssh_key
+      target: /var/www/studio-deploy
+      source: .
+      rm: true # Wipes old code in target first to keep it clean
+
+  # 2. JOBCHASER API: Build and Deploy directly on the host
+  deploy-api:
+    image: appleboy/drone-ssh
+    settings:
+      host: 127.0.0.1
+      username: root
+      key:
+        from_secret: ssh_key
+      # Injects secrets as environment variables for the SSH script
+      envs: [ JC_DATABASE_URL, JWT_SECRET ]
+      script:
+        - cd /var/www/studio-deploy
+        # Build the image using the host's Podman engine
+        - podman build -t jc-api:latest -f apps/jobchaser/apps/api/Dockerfile .
+        - podman stop jc-api || true
+        - podman rm jc-api || true
+        - >
+          podman run -d 
+          --name jc-api 
+          --restart always 
+          --network host 
+          -e DATABASE_URL=$JC_DATABASE_URL 
+          -e JWT_SECRET=$JWT_SECRET 
+          jc-api:latest
+    when:
+      - path: [ "apps/jobchaser/apps/api/**", "apps/jobchaser/packages/domain/**", "packages/**" ]
+
+  # 3. JOBCHASER WEB: Build and Deploy
+  deploy-web:
+    image: appleboy/drone-ssh
+    settings:
+      host: 127.0.0.1
+      username: root
+      key:
+        from_secret: ssh_key
+      script:
+        - cd /var/www/studio-deploy
+        - podman build -t jc-web:latest -f apps/jobchaser/apps/web/Dockerfile .
+        - podman stop jc-web || true
+        - podman rm jc-web || true
+        - podman run -d --name jc-web --restart always --network host jc-web:latest
+    when:
+      - path: [ "apps/jobchaser/apps/web/**", "packages/**" ]
