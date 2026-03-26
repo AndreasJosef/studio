@@ -47,12 +47,16 @@ steps:
       
       script:
         - cd /var/www/studio-deploy
-        # --- DIAGNOSTICS ---
-        - echo "Checking secrets on VPS..."
-        - "echo \"DB URL Length: ${#JC_DATABASE_URL}\""
-        - "echo \"JWT Secret Length: ${#JWT_SECRET}\""
-        # -------------------
         - podman build -t jc-api:latest -f apps/jobchaser/apps/api/Dockerfile .
+
+        # DRIZZLE PUSH
+        # We target the domain package specifically where the schema lives
+        - >
+          podman run --rm 
+          --network host 
+          -e DATABASE_URL=$$JC_DATABASE_URL 
+          jc-api:latest 
+          pnpm --filter @jobchaser/domain exec drizzle-kit push
         - podman stop jc-api || true
         - podman rm jc-api || true
         - >
