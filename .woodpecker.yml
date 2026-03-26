@@ -27,7 +27,7 @@ steps:
       <<: *ssh_connection
       target: /var/www/studio-deploy
       source: .
-      exclude: [ ".git/*", "node_modules/*", ".woodpecker.yml" ]
+      exclude: [ ".git/*", "node_modules/*"]
       rm: true # Wipes old code in target first to keep it clean
       debug: true
 
