@@ -34,11 +34,16 @@ steps:
   # JOBCHASER API: Build and Deploy directly on the host
   deploy-api:
     image: appleboy/drone-ssh
-    # Pull the capitalized secrets directly from the UI vault
-    secrets: [ JC_DATABASE_URL, JWT_SECRET ]
+    # 1. The NEW way: Map secrets into the container environment
+    environment:
+      JC_DATABASE_URL:
+        from_secret: JC_DATABASE_URL
+      JWT_SECRET:
+        from_secret: JWT_SECRET
+    # 2. Plugin configuration
     settings:
       <<: *ssh_connection
-      # Pass these specific variables through the SSH tunnel
+      # Tell the plugin to pass these from the container to the VPS
       envs: [ JC_DATABASE_URL, JWT_SECRET ]
       script:
         - cd /var/www/studio-deploy
@@ -52,7 +57,7 @@ steps:
           --network host 
           -e DATABASE_URL=$$JC_DATABASE_URL 
           -e JWT_SECRET=$$JWT_SECRET 
-          jc-api:latest  
+          jc-api:latest
     when:
       - path: [ "apps/jobchaser/apps/api/**", "apps/jobchaser/packages/domain/**", "packages/**" ]
 
