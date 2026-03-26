@@ -43,7 +43,7 @@ steps:
         from_secret: JWT_SECRET
       
       # 2. This tells the plugin to find these keys and send them to your VPS
-      envs: [ JC_DATABASE_URL, JWT_SECRET ]
+      envs: [ PLUGIN_JC_DATABASE_URL, PLUGIN_JWT_SECRET ]
       
       script:
         - cd /var/www/studio-deploy
@@ -60,8 +60,8 @@ steps:
           --name jc-api 
           --restart always 
           --network host 
-          -e DATABASE_URL=$$JC_DATABASE_URL 
-          -e JWT_SECRET=$$JWT_SECRET 
+          -e DATABASE_URL=$$PLUGIN_JC_DATABASE_URL 
+          -e JWT_SECRET=$$PLUGIN_JWT_SECRET 
           jc-api:latest
     when:
       - path: [ "apps/jobchaser/apps/api/**", "apps/jobchaser/packages/domain/**", "packages/**" ]
