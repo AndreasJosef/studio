@@ -47,6 +47,11 @@ steps:
       
       script:
         - cd /var/www/studio-deploy
+        # --- DIAGNOSTICS ---
+        - echo "Checking secrets on VPS..."
+        - "echo \"DB URL Length: ${#JC_DATABASE_URL}\""
+        - "echo \"JWT Secret Length: ${#JWT_SECRET}\""
+        # -------------------
         - podman build -t jc-api:latest -f apps/jobchaser/apps/api/Dockerfile .
         - podman stop jc-api || true
         - podman rm jc-api || true
