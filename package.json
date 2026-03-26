@@ -9,7 +9,7 @@
     "check": "pnpm format && pnpm lint && pnpm -r exec tsc --noEmit",
     "serve": "live-server",
     "create:backend": "pnpm --filter @studio/create-backend studio-gen",
-    "db:root": "podman exec -it studio_db_central psql -U studio_root -d postgres",
+    "db:root": "podman exec -it studio_db_central psql -U studio_admin -d postgres",
     "db:list": "podman exec studio_db_central psql -U studio_root -d postgres -c '\\l'",
     "db:usage": "podman exec studio_db_central psql -U studio_root -d postgres -c 'SELECT datname, pg_size_pretty(pg_database_size(datname)) FROM pg_database'"
   },
