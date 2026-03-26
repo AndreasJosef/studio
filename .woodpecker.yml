@@ -31,21 +31,17 @@ steps:
       rm: true # Wipes old code in target first to keep it clean
       debug: true
 
-  # 2. JOBCHASER API: Build and Deploy directly on the host
+  # JOBCHASER API: Build and Deploy directly on the host
   deploy-api:
     image: appleboy/drone-ssh
-    environment:
-      JWT_SECRET:
-        from_secret: JWT_SECRET
-      JC_DATABASE_URL:
-        from_secret: JC_DATABASE_URL
+    # Pull the capitalized secrets directly from the UI vault
+    secrets: [ JC_DATABASE_URL, JWT_SECRET ]
     settings:
       <<: *ssh_connection
-      # Injects secrets as environment variables for the SSH script
+      # Pass these specific variables through the SSH tunnel
       envs: [ JC_DATABASE_URL, JWT_SECRET ]
       script:
         - cd /var/www/studio-deploy
-        # Build the image using the host's Podman engine
         - podman build -t jc-api:latest -f apps/jobchaser/apps/api/Dockerfile .
         - podman stop jc-api || true
         - podman rm jc-api || true
@@ -54,9 +50,9 @@ steps:
           --name jc-api 
           --restart always 
           --network host 
-          -e DATABASE_URL=$${JC_DATABASE_URL} 
-          -e JWT_SECRET=$${JWT_SECRET}
-          jc-api:latest
+          -e DATABASE_URL=$$JC_DATABASE_URL 
+          -e JWT_SECRET=$$JWT_SECRET 
+          jc-api:latest  
     when:
       - path: [ "apps/jobchaser/apps/api/**", "apps/jobchaser/packages/domain/**", "packages/**" ]
 
