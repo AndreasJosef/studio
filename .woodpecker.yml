@@ -5,6 +5,13 @@ when:
   - event: [push, manual]
     branch: prod
 
+variables:
+  - &ssh_connection
+    host: 10.89.2.1 
+    username: root
+    key:
+      from_secret: ssh_key
+
 steps:
   # Force everything to be readable
   # This kills the "Permission Denied" issue once and for all
@@ -17,10 +24,7 @@ steps:
   sync-source:
     image: appleboy/drone-scp
     settings:
-      host: 10.89.2.1
-      username: root
-      key:
-        from_secret: ssh_key
+      <<: *ssh_connection
       target: /var/www/studio-deploy
       source: .
       exclude: [ ".git/*", "node_modules/*", ".woodpecker.yml" ]
@@ -31,10 +35,7 @@ steps:
   deploy-api:
     image: appleboy/drone-ssh
     settings:
-      host: 127.0.0.1
-      username: root
-      key:
-        from_secret: ssh_key
+      <<: *ssh_connection
       # Injects secrets as environment variables for the SSH script
       envs: [ JC_DATABASE_URL, JWT_SECRET ]
       script:
@@ -58,10 +59,7 @@ steps:
   deploy-web:
     image: appleboy/drone-ssh
     settings:
-      host: 127.0.0.1
-      username: root
-      key:
-        from_secret: ssh_key
+      <<: *ssh_connection
       script:
         - cd /var/www/studio-deploy
         - podman build -t jc-web:latest -f apps/jobchaser/apps/web/Dockerfile .
