@@ -32,17 +32,19 @@ steps:
       debug: true
 
   # JOBCHASER API: Build and Deploy directly on the host
+  #
   deploy-api:
     image: appleboy/drone-ssh
-    # We move EVERYTHING here. The linter loves this because it's a standard Step schema.
-    environment:
-      # 1. SSH Settings (now prefixed with PLUGIN_)
-      PLUGIN_HOST: 10.89.0.1
-      PLUGIN_USERNAME: root
-      PLUGIN_KEY:
-        from_secret: ssh_key
-      PLUGIN_ENVS: "JC_DATABASE_URL,JWT_SECRET"
-      PLUGIN_SCRIPT:
+    settings:
+      <<: *ssh_connection
+      JC_DATABASE_URL:
+        from_secret: JC_DATABASE_URL
+      JWT_SECRET:
+        from_secret: JWT_SECRET
+      
+      envs: [ JC_DATABASE_URL, JWT_SECRET ]
+      
+      script:
         - cd /var/www/studio-deploy
         - podman build -t jc-api:latest -f apps/jobchaser/apps/api/Dockerfile .
         - podman stop jc-api || true
@@ -52,16 +54,9 @@ steps:
           --name jc-api 
           --restart always 
           --network host 
-          -e DATABASE_URL=$${JC_DATABASE_URL} 
-          -e JWT_SECRET=$${JWT_SECRET} 
+          -e DATABASE_URL=$$JC_DATABASE_URL 
+          -e JWT_SECRET=$$JWT_SECRET 
           jc-api:latest
-
-      # 2. Your Secrets (using the new v3 from_secret syntax)
-      JC_DATABASE_URL:
-        from_secret: JC_DATABASE_URL
-      JWT_SECRET:
-        from_secret: JWT_SECRET
-
     when:
       - path: [ "apps/jobchaser/apps/api/**", "apps/jobchaser/packages/domain/**", "packages/**" ]
 
