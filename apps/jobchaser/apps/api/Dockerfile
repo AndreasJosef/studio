@@ -7,7 +7,7 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/jobchaser/package.json ./apps/jobchaser/
 COPY packages ./packages
 COPY apps/jobchaser/apps/api/package.json ./apps/jobchaser/apps/api/
-COPY apps/jobchaser/domain/package.json ./apps/jobchaser/domain/
+COPY apps/jobchaser/packages/domain/package.json ./apps/jobchaser/packages/domain/
 
 # Install everything (including dev deps needed for TS execution)
 RUN pnpm install --frozen-lockfile

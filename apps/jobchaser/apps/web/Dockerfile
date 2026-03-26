@@ -6,7 +6,7 @@ WORKDIR /app
 # Caching Layer
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/jobchaser/apps/web/package.json ./apps/jobchaser/apps/web/
-COPY apps/jobchaser/domain/package.json ./apps/jobchaser/domain/
+COPY apps/jobchaser/packages/domain/package.json ./apps/jobchaser/packages/domain/
 
 RUN pnpm install --frozen-lockfile
 
