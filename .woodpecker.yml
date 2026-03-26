@@ -6,6 +6,14 @@ when:
     branch: prod
 
 steps:
+steps:
+  # Force everything to be readable
+  # This kills the "Permission Denied" issue once and for all
+  prepare-workspace:
+    image: alpine
+    commands:
+      - chmod -R +r .
+
   # 1. THE SYNC: Move the code from the CI container to the VPS disk
   sync-source:
     image: appleboy/drone-scp
