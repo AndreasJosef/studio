@@ -16,7 +16,9 @@ steps:
         from_secret: ssh_key
       target: /var/www/studio-deploy
       source: .
-      exclude: [.git, node_modules]
+      exclude: 
+        - .git
+        - node_modules
       rm: true # Wipes old code in target first to keep it clean
 
   # 2. JOBCHASER API: Build and Deploy directly on the host
