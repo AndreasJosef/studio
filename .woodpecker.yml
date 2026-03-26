@@ -17,7 +17,7 @@ steps:
   sync-source:
     image: appleboy/drone-scp
     settings:
-      host: 172.17.0.1
+      host: 10.89.2.1
       username: root
       key:
         from_secret: ssh_key
