@@ -1,0 +1,85 @@
+# Studio - CI/CD Pipeline 2026
+pipeline:
+
+  # --- WEBHOOK HANDLER (Build & Deploy) ---
+  build-webhook:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      dockerfile: apps/webhook-handler/Dockerfile
+      repo: studio-webhook
+      context: .
+    when:
+      branch: prod
+      path: "apps/webhook-handler/**"
+
+  deploy-webhook:
+    image: appleboy/drone-ssh
+    settings:
+      host: 127.0.0.1
+      username: root
+      key:
+        from_secret: ssh_key
+      script:
+        - podman stop studio-webhook || true
+        - podman rm studio-webhook || true
+        - podman run -d --name studio-webhook --restart always --network host -e DISCORD_WEBHOOK=$${DISCORD_WEBHOOK_URL} studio-webhook:latest
+    when:
+      branch: prod
+      path: "apps/webhook-handler/**"
+
+  # --- JOBCHASER API (Build & Deploy) ---
+  build-jobchaser-server:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      dockerfile: apps/jobchaser/apps/server/Dockerfile
+      repo: jobchaser-api
+      context: .
+    when:
+      branch: prod
+      path: "apps/jobchaser/**"
+
+  deploy-jobchaser-server:
+    image: appleboy/drone-ssh
+    settings:
+      host: 127.0.0.1
+      username: root
+      key:
+        from_secret: ssh_key
+      script:
+        - podman stop jobchaser-api || true
+        - podman rm jobchaser-api || true
+        - podman run -d --name jobchaser-api --restart always --network host -e DATABASE_URL=$${JC_DATABASE_URL} jobchaser-api:latest
+    when:
+      branch: prod
+      path: "apps/jobchaser/**"
+
+  # --- 4. JOBCHASER WEB (Build & Deploy) ---
+  build-jobchaser-web:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      dockerfile: apps/jobchaser/apps/web/Dockerfile
+      repo: jobchaser-web
+      context: .
+    when:
+      branch: prod
+      path: "apps/jobchaser/apps/web/**"
+
+  deploy-jobchaser-web:
+    image: appleboy/drone-ssh
+    settings:
+      host: 127.0.0.1
+      username: root
+      key:
+        from_secret: ssh_key
+      script:
+        - podman stop jobchaser-web || true
+        - podman rm jobchaser-web || true
+        - podman run -d --name jobchaser-web --restart always --network host jobchaser-web:latest
+    when:
+      branch: prod
+      path: "apps/jobchaser/apps/web/**"
+
+# Global Filters
+when:
+  event: push
+  branch: prod
