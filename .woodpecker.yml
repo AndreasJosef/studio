@@ -83,3 +83,16 @@ steps:
         - podman run -d --name jc-web --restart always --network host jc-web:latest
     when:
       - path: [ "apps/jobchaser/apps/web/**", "packages/**" ]
+
+  # 4. ANDREASJOSEF  Build and extract dist (Caddy serves static files)
+  deploy-andreasjosef:
+    image: appleboy/drone-ssh
+    settings:
+      <<: *ssh_connection
+      script:
+        - cd /var/www/studio-deploy
+        - podman build -t aj-site:latest -f apps/andreasjosef/Dockerfile .
+        - mkdir -p /var/www/andreasjosef
+        - podman run --rm aj-site:latest tar -cC /app/apps/andreasjosef/dist . | tar -xC /var/www/andreasjosef/
+    when:
+      - path: [ "apps/andreasjosef/**" ]
