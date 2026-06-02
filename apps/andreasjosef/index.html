@@ -10,13 +10,35 @@
     <meta name="color-scheme" content="dark" />
     <title>Andreas Josef</title>
     <style>
+      :root {
+        --bg: #131311;
+        --text: #ebdbb2;
+        --muted: #d5c4a1;
+        --border: #504945;
+        --hr-border: #3c3836;
+        --hover: #fbf1c7;
+        --skip-bg: #ebdbb2;
+        --skip-text: #131311;
+      }
+
+      :root.light {
+        --bg: #fbf1c7;
+        --text: #3c3836;
+        --muted: #504945;
+        --border: #d5c4a1;
+        --hr-border: #ebdbb2;
+        --hover: #282828;
+        --skip-bg: #3c3836;
+        --skip-text: #fbf1c7;
+      }
+
       .skip-link {
         position: absolute;
         top: -100%;
         left: 0;
         padding: 0.5rem 1rem;
-        background: #ebdbb2;
-        color: #131311;
+        background: var(--skip-bg);
+        color: var(--skip-text);
         font-weight: 600;
         z-index: 999;
       }
@@ -26,8 +48,8 @@
       }
 
       body {
-        background-color: #131311;
-        color: #ebdbb2; /* Warm Gruvbox cream */
+        background-color: var(--bg);
+        color: var(--text);
         font-family:
           ui-monospace,
           SFMono-Regular,
@@ -46,47 +68,26 @@
         font-size: 1.5rem;
         font-weight: 700;
         margin-bottom: 2.5rem;
-        color: #ebdbb2;
+        color: var(--text);
         letter-spacing: -0.01em;
       }
 
-      .mission {
+      .statement {
         font-size: 1rem;
         margin-bottom: 2rem;
-        color: #d5c4a1; /* Slightly muted cream for secondary hierarchy */
-      }
-
-      .vision {
-        font-size: 1.15rem;
-        color: #ebdbb2;
-        line-height: 1.6;
-        margin-bottom: 3rem;
-        border-left: 2px solid #504945; /* Subtle warm border split */
-        padding-left: 1.25rem;
-        font-style: italic;
-      }
-
-      .current-focus {
-        color: #d5c4a1;
-        font-size: 0.95rem;
-        margin-bottom: 4rem;
-      }
-
-      .current-focus strong {
-        color: #ebdbb2;
-        font-weight: 600;
+        color: var(--muted);
       }
 
       hr {
         border: 0;
-        border-top: 1px solid #3c3836;
+        border-top: 1px solid var(--hr-border);
         margin: 2rem 0;
       }
 
       a {
-        color: #ebdbb2;
+        color: var(--text);
         text-decoration: none;
-        border-bottom: 1px solid #504945;
+        border-bottom: 1px solid var(--border);
         transition:
           color 0.15s,
           border-color 0.15s;
@@ -95,18 +96,46 @@
       }
 
       a:hover {
-        color: #fbf1c7; /* Brighter highlight on hover */
-        border-bottom-color: #fbf1c7;
+        color: var(--hover);
+        border-bottom-color: var(--hover);
       }
 
       a:focus-visible,
       .skip-link:focus-visible {
-        outline: 2px solid #fbf1c7;
+        outline: 2px solid var(--hover);
         outline-offset: 2px;
+      }
+
+      .read-more {
+        font-size: 0.75rem;
+        font-style: italic;
+        white-space: nowrap;
+        display: inline-block;
       }
 
       blockquote {
         margin: 0;
+      }
+
+      .theme-toggle {
+        background: none;
+        border: 0;
+        cursor: pointer;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        font-size: 0.95rem;
+        font-family: inherit;
+        padding: 0;
+        transition:
+          color 0.15s,
+          border-color 0.15s;
+        vertical-align: baseline;
+        line-height: inherit;
+      }
+
+      .theme-toggle:hover {
+        color: var(--hover);
+        border-bottom-color: var(--hover);
       }
     </style>
   </head>
@@ -116,25 +145,34 @@
     <main id="content">
       <h1>Fullstack Dev &amp; Thinker</h1>
 
-      <p class="mission">
-        Hi, I'm Andreas. I strive to build single-purpose tools and minimalist
+      <p class="statement">
+        Hi, I'm Andreas. I strive to build and design  
         workflows that give people control over their tech and the space to
         contemplate, create, and contribute.
       </p>
 
-      <blockquote class="vision">
-        "I believe software should be clean and useful—a tool that helps humans
-        think and grow, not a machine built to distract and extract."
+      <p class="statement">
+        I believe in the open web, and that software should be clean and
+        useful—a tool that helps humans think and grow, not a machine built to
+        distract and extract.
       </blockquote>
 
-      <p class="current-focus">
-        Right now, I am exploring the intentional use of AI, clean software
-        craft, and human agency.
+      <p class="statement">
+        Right now, I am exploring domain-driven, hexagonal architectures inside
+        my own monorepo playground—building out a complete Woodpecker CI/CD and
+        Hetzner environment to aggressively shrink the time from a raw idea to a
+        shareable prototype on my own infrastructure.
+        <a href="/process/hetzner-woodpecker-setup.html" class="read-more">Read more &rarr;</a>
       </p>
 
       <hr aria-hidden="true" />
 
       <footer>
+        <a
+          href="./pages/links.html"
+          aria-label="My Links Page"
+          >Links</a
+        >
         <a href="mailto:hello.andreas@protonmail.com">Email</a>
         <a
           href="https://github.com/AndreasJosef"
@@ -150,7 +188,45 @@
           aria-label="LinkedIn profile (opens in new tab)"
           >LinkedIn</a
         >
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label="Toggle color scheme"
+        >
+          ☾
+        </button>
       </footer>
     </main>
+    <script>
+      (function () {
+        var key = 'theme';
+        var html = document.documentElement;
+        var btn = document.getElementById('theme-toggle');
+        var osTheme = matchMedia('(prefers-color-scheme: light)');
+        var saved = localStorage.getItem(key);
+
+        function apply(light) {
+          html.classList.toggle('light', light);
+          if (btn) btn.textContent = light ? '\u2600' : '\u263E';
+        }
+
+        if (saved) {
+          apply(saved === 'light');
+        } else {
+          apply(osTheme.matches);
+          osTheme.addEventListener('change', function (e) {
+            apply(e.matches);
+          });
+        }
+
+        if (btn) {
+          btn.addEventListener('click', function () {
+            var light = !html.classList.contains('light');
+            apply(light);
+            localStorage.setItem(key, light ? 'light' : 'dark');
+          });
+        }
+      })();
+    </script>
   </body>
 </html>
