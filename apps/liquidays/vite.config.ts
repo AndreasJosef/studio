@@ -19,7 +19,7 @@ export default defineConfig({
         name: 'liquidays',
         short_name: 'liquidays',
         description: 'Plan your day the smart way',
-        display: 'standalone',
+        display: 'fullscreen',
         theme_color: '#131311',
         background_color: '#131311',
       },
