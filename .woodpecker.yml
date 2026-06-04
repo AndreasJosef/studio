@@ -96,3 +96,17 @@ steps:
         - podman run --rm aj-site:latest tar -cC /app/apps/andreasjosef/dist . | tar -xC /var/www/andreasjosef/
     when:
       - path: [ "apps/andreasjosef/**" ]
+
+  # 5. LIQUIDAYS: Build and Deploy
+  deploy-liquidays:
+    image: appleboy/drone-ssh
+    settings:
+      <<: *ssh_connection
+      script:
+        - cd /var/www/studio-deploy
+        - podman build -t liquidays:latest -f apps/liquidays/Dockerfile .
+        - podman stop liquidays || true
+        - podman rm liquidays || true
+        - podman run -d --name liquidays --restart always --network host liquidays:latest
+    when:
+      - path: [ "apps/liquidays/**" ]
