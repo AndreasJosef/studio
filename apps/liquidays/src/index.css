@@ -1,10 +1,13 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-app-bg: var(--color-zinc-950);
+  --color-app-bg: light-dark(var(--color-zinc-50), var(--color-zinc-950));
 
-  --color-ink-main: var(--color-zinc-200);
-  --color-ink-muted: var(--color-zinc-400);
+  --color-ink-main: light-dark(var(--color-zinc-800), var(--color-zinc-200));
+  --color-ink-muted: light-dark(var(--color-zinc-500), var(--color-zinc-400));
 
-  --color-border: var(--color-zinc-800);
+  --color-border: light-dark(var(--color-zinc-200), var(--color-zinc-800));
 }
+
+:root[data-theme='light'] { color-scheme: light; }
+:root[data-theme='dark']  { color-scheme: dark; }

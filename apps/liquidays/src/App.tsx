@@ -1,15 +1,35 @@
-import { BookText, Calendar } from 'lucide-react';
+import { BookText, Calendar, Sun, Moon } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 function App() {
   const now = new Date();
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof document !== 'undefined') {
+      return (localStorage.getItem('theme') as 'light' | 'dark') || 'dark';
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
   return (
     <div className="grid grid-rows-[auto_1fr_auto] h-dvh">
-      <header className="px-4 pt-4 pb-2">
+      <header className="flex items-center justify-between px-4 pt-4 pb-2">
         <h1 className="text-xl font-semibold tracking-tight">
           {`${days[now.getDay()]}, ${now.toLocaleDateString()}`}
         </h1>
+        <button
+          type="button"
+          onClick={() => setTheme(t => (t === 'light' ? 'dark' : 'light'))}
+          className="text-ink-muted hover:text-ink-main transition-colors cursor-pointer"
+        >
+          {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+        </button>
       </header>
 
       <main className="px-4 pb-2 overflow-hidden">
