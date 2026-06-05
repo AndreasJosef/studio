@@ -3,5 +3,8 @@
 @theme {
   --color-app-bg: var(--color-zinc-950);
 
-  --color-ink-main: var(--color-amber-100);
+  --color-ink-main: var(--color-zinc-200);
+  --color-ink-muted: var(--color-zinc-400);
+
+  --color-border: var(--color-zinc-800);
 }
